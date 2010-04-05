@@ -13,25 +13,53 @@
  * to license@zend.com so we can send you a copy immediately.
  *
  * @category   Zend
- * @package    Zend_Acl
+ * @package    Zend_Console_Getopt
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  * @version    $Id$
  */
 
+/**
+ * @namespace
+ */
+namespace Zend\Console;
 
 /**
+ * @uses       \Zend\Exception
  * @category   Zend
- * @package    Zend_Acl
+ * @package    Zend_Console_Getopt
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-interface Zend_Acl_Role_Interface
+class GetoptException extends \DomainException implements Exception
 {
     /**
-     * Returns the string identifier of the Role
+     * Usage
+     *
+     * @var string
+     */
+    protected $usage = '';
+
+    /**
+     * Constructor
+     *
+     * @param string $message
+     * @param string $usage
+     * @return void
+     */
+    public function __construct($message, $usage = '')
+    {
+        $this->usage = $usage;
+        parent::__construct($message);
+    }
+
+    /**
+     * Returns the usage
      *
      * @return string
      */
-    public function getRoleId();
+    public function getUsageMessage()
+    {
+        return $this->usage;
+    }
 }

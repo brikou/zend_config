@@ -13,22 +13,23 @@
  * to license@zend.com so we can send you a copy immediately.
  *
  * @category   Zend
- * @package    Zend_Server
- * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
- * @license    http://framework.zend.com/license/new-bsd     New BSD License
- */
-
-/**
- * Function Reflection
- *
- * @uses       Zend_Server_Reflection_Function_Abstract
- * @category   Zend
- * @package    Zend_Server
- * @subpackage Reflection
+ * @package    Zend_Acl
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  * @version    $Id$
  */
-class Zend_Server_Reflection_Function extends Zend_Server_Reflection_Function_Abstract
-{
-}
+
+/**
+ * @namespace
+ */
+namespace Zend\Acl\Role;
+
+/**
+ * @uses       Zend\Acl\Exception
+ * @category   Zend
+ * @package    Zend_Acl
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
+ * @license    http://framework.zend.com/license/new-bsd     New BSD License
+ */
+class Exception extends \Zend\Acl\Exception
+{}

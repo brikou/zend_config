@@ -13,20 +13,24 @@
  * to license@zend.com so we can send you a copy immediately.
  *
  * @category   Zend
- * @package    Zend_Crypt
- * @subpackage Hmac
+ * @package    Zend_Console
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  * @version    $Id$
  */
 
 /**
- * @uses       Zend_Crypt_Exception
+ * @namespace
+ */
+namespace Zend\Console;
+
+/**
+ * @uses       Zend\Exception
  * @category   Zend
- * @package    Zend_Crypt
+ * @package    Zend_Console
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class Zend_Crypt_Hmac_Exception extends Zend_Crypt_Exception
+interface Exception
 {
 }

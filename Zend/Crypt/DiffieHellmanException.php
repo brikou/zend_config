@@ -13,48 +13,25 @@
  * to license@zend.com so we can send you a copy immediately.
  *
  * @category   Zend
- * @package    Zend_Console_Getopt
+ * @package    Zend_Crypt
+ * @subpackage DiffieHellman
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  * @version    $Id$
  */
 
 /**
- * @uses       Zend_Exception
+ * @namespace
+ */
+namespace Zend\Crypt;
+
+/**
+ * @uses       Zend\Crypt\Exception
  * @category   Zend
- * @package    Zend_Console_Getopt
+ * @package    Zend_Crypt
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class Zend_Console_Getopt_Exception extends Zend_Exception
+class DiffieHellmanException extends Exception
 {
-    /**
-     * Usage
-     *
-     * @var string
-     */
-    protected $usage = '';
-
-    /**
-     * Constructor
-     *
-     * @param string $message
-     * @param string $usage
-     * @return void
-     */
-    public function __construct($message, $usage = '')
-    {
-        $this->usage = $usage;
-        parent::__construct($message);
-    }
-
-    /**
-     * Returns the usage
-     *
-     * @return string
-     */
-    public function getUsageMessage()
-    {
-        return $this->usage;
-    }
 }

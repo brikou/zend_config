@@ -13,7 +13,8 @@
  * to license@zend.com so we can send you a copy immediately.
  *
  * @category   Zend
- * @package    Zend_Acl
+ * @package    Zend_Server
+ * @subpackage Zend_Server_Reflection
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  * @version    $Id$
@@ -22,20 +23,18 @@
 /**
  * @namespace
  */
-namespace Zend\Acl;
+namespace Zend\Server\Reflection;
 
 /**
+ * Function Reflection
+ *
+ * @uses       \Zend\Server\Reflection\AbstractFunction
  * @category   Zend
- * @package    Zend_Acl
+ * @package    Zend_Server
+ * @subpackage Zend_Server_Reflection
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-interface Resource
+class FunctionReflection extends AbstractFunction
 {
-    /**
-     * Returns the string identifier of the Resource
-     *
-     * @return string
-     */
-    public function getResourceId();
 }
