@@ -14,19 +14,26 @@
  *
  * @category   Zend
  * @package    Zend_Http
- * @subpackage Exception
+ * @subpackage Client_Adapter_Exception
  * @version    $Id$
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 
 /**
- * @uses       Zend_Exception
+ * @namespace
+ */
+namespace Zend\HTTP\Client\Adapter;
+
+/**
+ * @uses       \Zend\HTTP\Client\Exception
  * @category   Zend
  * @package    Zend_Http
- * @subpackage Client
+ * @subpackage Client_Adapter
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class Zend_Http_Exception extends Zend_Exception
-{}
+class Exception extends \Zend\HTTP\Client\Exception
+{
+    const READ_TIMEOUT = 1000;
+}

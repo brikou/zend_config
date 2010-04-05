@@ -14,19 +14,37 @@
  *
  * @category   Zend
  * @package    Zend_Http
- * @subpackage Client_Exception
+ * @subpackage Client_Adapter
  * @version    $Id$
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 
 /**
- * @uses       Zend_Http_Exception
+ * @namespace
+ */
+namespace Zend\HTTP\Client\Adapter;
+
+/**
+ * An interface description for Zend_Http_Client_Adapter_Stream classes.
+ *
+ * This interface decribes Zend_Http_Client_Adapter which supports streaming.
+ *
  * @category   Zend
  * @package    Zend_Http
- * @subpackage Client
+ * @subpackage Client_Adapter
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class Zend_Http_Client_Exception extends Zend_Http_Exception
-{}
+interface Stream
+{
+    /**
+     * Set output stream
+     * 
+     * This function sets output stream where the result will be stored.
+     * 
+     * @param resource $stream Stream to write the output to
+     * 
+     */
+    function setOutputStream($stream);
+}
