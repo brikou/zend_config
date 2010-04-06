@@ -13,21 +13,25 @@
  * to license@zend.com so we can send you a copy immediately.
  *
  * @category   Zend
- * @package    Zend_Oauth
+ * @package    Zend_OAuth
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  * @version    $Id$
  */
 
 /**
- * @uses       Zend_Crypt_Rsa
- * @uses       Zend_Oauth_Signature_SignatureAbstract
+ * @namespace
+ */
+namespace Zend\OAuth\Signature;
+
+/**
+ * @uses       Zend\OAuth\Signature\AbstractSignature;
  * @category   Zend
- * @package    Zend_Oauth
+ * @package    Zend_OAuth
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class Zend_Oauth_Signature_Rsa extends Zend_Oauth_Signature_SignatureAbstract
+class Plaintext extends AbstractSignature
 {
     /**
      * Sign a request
@@ -37,25 +41,12 @@ class Zend_Oauth_Signature_Rsa extends Zend_Oauth_Signature_SignatureAbstract
      * @param  null|string $url 
      * @return string
      */
-    public function sign(array $params, $method = null, $url = null) 
+    public function sign(array $params, $method = null, $url = null)
     {
-        $rsa = new Zend_Crypt_Rsa;
-        $rsa->setHashAlgorithm($this->_hashAlgorithm);
-        $sign = $rsa->sign(
-            $this->_getBaseSignatureString($params, $method, $url),
-            $this->_key,
-            Zend_Crypt_Rsa::BASE64
-        );
-        return $sign;
-    }
-
-    /**
-     * Assemble encryption key
-     * 
-     * @return string
-     */
-    protected function _assembleKey()
-    {
-        return $this->_consumerSecret;
+        if (is_null($this->_tokenSecret)) {
+            return $this->_consumerSecret . '&';
+        }
+        $return = implode('&', array($this->_consumerSecret, $this->_tokenSecret));
+        return $return;
     }
 }

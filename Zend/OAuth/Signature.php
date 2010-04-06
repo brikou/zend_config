@@ -13,21 +13,29 @@
  * to license@zend.com so we can send you a copy immediately.
  *
  * @category   Zend
- * @package    Zend_Oauth
+ * @package    Zend_OAuth
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  * @version    $Id$
  */
 
 /**
- * @uses       Zend_Oauth_Signature_SignatureAbstract
- * @category   Zend
- * @package    Zend_Oauth
- * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
- * @license    http://framework.zend.com/license/new-bsd     New BSD License
+ * @namespace
  */
-class Zend_Oauth_Signature_Plaintext extends Zend_Oauth_Signature_SignatureAbstract
+namespace Zend\OAuth;
+
+interface Signature
 {
+    /**
+     * Constructor
+     * 
+     * @param  string $consumerSecret 
+     * @param  null|string $tokenSecret 
+     * @param  null|string $hashAlgo 
+     * @return void
+     */
+    public function __construct($consumerSecret, $tokenSecret = null, $hashAlgo = null);
+
     /**
      * Sign a request
      * 
@@ -36,12 +44,5 @@ class Zend_Oauth_Signature_Plaintext extends Zend_Oauth_Signature_SignatureAbstr
      * @param  null|string $url 
      * @return string
      */
-    public function sign(array $params, $method = null, $url = null)
-    {
-        if (is_null($this->_tokenSecret)) {
-            return $this->_consumerSecret . '&';
-        }
-        $return = implode('&', array($this->_consumerSecret, $this->_tokenSecret));
-        return $return;
-    }
+    public function sign(array $params, $method = null, $url = null);
 }

@@ -13,20 +13,27 @@
  * to license@zend.com so we can send you a copy immediately.
  *
  * @category   Zend
- * @package    Zend_Oauth
+ * @package    Zend_OAuth
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  * @version    $Id$
  */
 
 /**
- * @uses       Zend_Http_Client
+ * @namespace
+ */
+namespace Zend\OAuth;
+
+use Zend\HTTP\Client as HTTPClient;
+
+/**
+ * @uses       Zend\HTTP\Client
  * @category   Zend
- * @package    Zend_Oauth
+ * @package    Zend_OAuth
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class Zend_Oauth
+class OAuth
 {
     const REQUEST_SCHEME_HEADER      = 'header';
     const REQUEST_SCHEME_POSTBODY    = 'postbody';
@@ -40,18 +47,18 @@ class Zend_Oauth
     /**
      * Singleton instance if required of the HTTP client
      *
-     * @var Zend_Http_Client
+     * @var Zend\HTTP\Client
      */
     protected static $httpClient = null;
 
     /**
-     * Allows the external environment to make Zend_Oauth use a specific
+     * Allows the external environment to make Zend_OAuth use a specific
      * Client instance.
      *
-     * @param Zend_Http_Client $httpClient
+     * @param Zend\HTTP\Client $httpClient
      * @return void
      */
-    public static function setHttpClient(Zend_Http_Client $httpClient)
+    public static function setHttpClient(HTTPClient $httpClient)
     {
         self::$httpClient = $httpClient;
     }
@@ -61,12 +68,12 @@ class Zend_Oauth
      * the instance is reset and cleared of previous parameters and
      * Authorization header values.
      *
-     * @return Zend_Http_Client
+     * @return Zend\HTTP\Client
      */
     public static function getHttpClient()
     {
         if (!isset(self::$httpClient)) {
-            self::$httpClient = new Zend_Http_Client;
+            self::$httpClient = new HTTPClient;
         } else {
             self::$httpClient->setHeaders('Authorization', null);
             self::$httpClient->resetParameters();

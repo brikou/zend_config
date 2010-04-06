@@ -13,21 +13,28 @@
  * to license@zend.com so we can send you a copy immediately.
  *
  * @category   Zend
- * @package    Zend_Oauth
+ * @package    Zend_OAuth
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  * @version    $Id$
  */
 
 /**
- * @uses       Zend_Oauth_Http_Utility
- * @uses       Zend_Oauth_Token
+ * @namespace
+ */
+namespace Zend\OAuth\Token;
+use Zend\OAuth\HTTP,
+    Zend\OAuth\Exception as OAuthException;
+
+/**
+ * @uses       Zend\OAuth\HTTP\Utility
+ * @uses       Zend\OAuth\Token\AbstractToken
  * @category   Zend
- * @package    Zend_Oauth
+ * @package    Zend_OAuth
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class Zend_Oauth_Token_AuthorizedRequest extends Zend_Oauth_Token
+class AuthorizedRequest extends AbstractToken
 {
     /**
      * @var array
@@ -38,11 +45,14 @@ class Zend_Oauth_Token_AuthorizedRequest extends Zend_Oauth_Token
      * Constructor
      *
      * @param  null|array $data
-     * @param  null|Zend_Oauth_Http_Utility $utility
+     * @param  null|Zend\OAuth\HTTP\Utility $utility
      * @return void
      */
-    public function __construct(array $data = null, Zend_Oauth_Http_Utility $utility = null)
+    public function __construct($data = null, HTTP\Utility $utility = null)
     {
+        if (!is_null($data) && !is_array($data)) {
+            throw new OAuthException('Invalid response provided');
+        }
         if (!is_null($data)) {
             $this->_data = $data;
             $params = $this->_parseData();
@@ -53,7 +63,7 @@ class Zend_Oauth_Token_AuthorizedRequest extends Zend_Oauth_Token
         if (!is_null($utility)) {
             $this->_httpUtility = $utility;
         } else {
-            $this->_httpUtility = new Zend_Oauth_Http_Utility;
+            $this->_httpUtility = new HTTP\Utility;
         }
     }
 

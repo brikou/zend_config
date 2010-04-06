@@ -13,20 +13,30 @@
  * to license@zend.com so we can send you a copy immediately.
  *
  * @category   Zend
- * @package    Zend_Oauth
+ * @package    Zend_OAuth
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  * @version    $Id$
  */
 
 /**
- * @uses       Zend_Oauth_Http_Utility
+ * @namespace
+ */
+namespace Zend\OAuth\Token;
+use Zend\HTTP\Response\Response as HTTPResponse,
+    Zend\OAuth\Token as OAuthToken,
+    Zend\OAuth\HTTP\Utility as HTTPUtility,
+    Zend\OAuth\Exception as OAuthException;
+
+/**
+ * @uses       Zend\HTTP\Response\Response
+ * @uses       Zend\OAuth\HTTP\Utility
  * @category   Zend
- * @package    Zend_Oauth
+ * @package    Zend_OAuth
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-abstract class Zend_Oauth_Token
+abstract class AbstractToken implements OAuthToken
 {
     /**@+
      * Token constants
@@ -46,26 +56,30 @@ abstract class Zend_Oauth_Token
     /**
      * OAuth response object
      * 
-     * @var Zend_Http_Response
+     * @var \Zend\HTTP\Response\Response
      */
     protected $_response = null;
 
     /**
-     * @var Zend_Oauth_Http_Utility
+     * @var \Zend\OAuth\HTTP\Utility
      */
     protected $_httpUtility = null;
 
     /**
      * Constructor; basic setup for any Token subclass.
      *
-     * @param  null|Zend_Http_Response $response
-     * @param  null|Zend_Oauth_Http_Utility $utility
+     * @param  null|\Zend\HTTP\Response\Response $response
+     * @param  null|\Zend\OAuth\HTTP\Utility $utility
      * @return void
      */
     public function __construct(
-        Zend_Http_Response $response = null,
-        Zend_Oauth_Http_Utility $utility = null
+        $response = null,
+        HTTPUtility $utility = null
     ) {
+        if (!is_null($response) && !($response instanceof HTTPResponse)) {
+            throw new OAuthException('Invalid response provided');
+        }
+
         if (!is_null($response)) {
             $this->_response = $response;
             $params = $this->_parseParameters($response);
@@ -76,7 +90,7 @@ abstract class Zend_Oauth_Token
         if (!is_null($utility)) {
             $this->_httpUtility = $utility;
         } else {
-            $this->_httpUtility = new Zend_Oauth_Http_Utility;
+            $this->_httpUtility = new HTTPUtility;
         }
     }
 
@@ -100,7 +114,7 @@ abstract class Zend_Oauth_Token
     /**
      * Return the HTTP response object used to initialise this instance.
      *
-     * @return Zend_Http_Response
+     * @return \Zend\HTTP\Response\Response
      */
     public function getResponse()
     {
@@ -112,7 +126,7 @@ abstract class Zend_Oauth_Token
      * requests with this Token.
      *
      * @param  string $secret
-     * @return Zend_Oauth_Token
+     * @return \Zend\OAuth\Token\AbstractToken
      */
     public function setTokenSecret($secret)
     {
@@ -137,7 +151,7 @@ abstract class Zend_Oauth_Token
      *
      * @param  string $key
      * @param  string $value
-     * @return Zend_Oauth_Token
+     * @return \Zend\OAuth\Token\AbstractToken
      */
     public function setParam($key, $value)
     {
@@ -150,7 +164,7 @@ abstract class Zend_Oauth_Token
      * a simple filter to remove any trailing newlines.
      *
      * @param  array $params
-     * @return Zend_Oauth_Token
+     * @return \Zend\OAuth\Token\AbstractToken
      */
     public function setParams(array $params)
     {
@@ -178,7 +192,7 @@ abstract class Zend_Oauth_Token
      * Sets the value for a Token.
      *
      * @param  string $token
-     * @return Zend_Oauth_Token
+     * @return \Zend\OAuth\Token\AbstractToken
      */
     public function setToken($token)
     {
@@ -243,10 +257,10 @@ abstract class Zend_Oauth_Token
      * Parse a HTTP response body and collect returned parameters
      * as raw url decoded key-value pairs in an associative array.
      *
-     * @param  Zend_Http_Response $response
+     * @param  \Zend\HTTP\Response\Response $response
      * @return array
      */
-    protected function _parseParameters(Zend_Http_Response $response)
+    protected function _parseParameters(HTTPResponse $response)
     {
         $params = array();
         $body   = $response->getBody();
@@ -277,7 +291,7 @@ abstract class Zend_Oauth_Token
     public function __wakeup() 
     {
         if (is_null($this->_httpUtility)) {
-            $this->_httpUtility = new Zend_Oauth_Http_Utility;
+            $this->_httpUtility = new HTTPUtility;
         }
     }
 }

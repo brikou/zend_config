@@ -13,21 +13,30 @@
  * to license@zend.com so we can send you a copy immediately.
  *
  * @category   Zend
- * @package    Zend_Oauth
+ * @package    Zend_OAuth
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  * @version    $Id$
  */
 
 /**
- * @uses       Zend_Oauth_Http_Utility
- * @uses       Zend_Uri_Http
+ * @namespace
+ */
+namespace Zend\OAuth\Signature;
+
+use Zend\OAuth\Signature as OAuthSignature,
+    Zend\OAuth\HTTP\Utility as HTTPUtility,
+    Zend\OAuth\Exception as OAuthException;
+
+/**
+ * @uses       Zend\OAuth\HTTP\Utility
+ * @uses       Zend\URI\URL
  * @category   Zend
- * @package    Zend_Oauth
+ * @package    Zend_OAuth
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-abstract class Zend_Oauth_Signature_SignatureAbstract
+abstract class AbstractSignature implements OAuthSignature
 {
     /**
      * Hash algorithm to use when generating signature
@@ -74,16 +83,6 @@ abstract class Zend_Oauth_Signature_SignatureAbstract
     }
 
     /**
-     * Sign a request
-     * 
-     * @param  array $params 
-     * @param  null|string $method 
-     * @param  null|string $url 
-     * @return string
-     */
-    public abstract function sign(array $params, $method = null, $url = null);
-
-    /**
      * Normalize the base signature URL
      * 
      * @param  string $url 
@@ -91,16 +90,18 @@ abstract class Zend_Oauth_Signature_SignatureAbstract
      */
     public function normaliseBaseSignatureUrl($url)
     {
-        $uri = Zend_Uri_Http::fromString($url);
+        $uri = new \Zend\URI\URL($url);
         if ($uri->getScheme() == 'http' && $uri->getPort() == '80') {
             $uri->setPort('');
         } elseif ($uri->getScheme() == 'https' && $uri->getPort() == '443') {
             $uri->setPort('');
+        } elseif (!in_array($uri->getScheme(), array('http', 'https'))) {
+            throw new OAuthException('Invalid URL provided; must be an HTTP or HTTPS scheme');
         }
         $uri->setQuery('');
         $uri->setFragment('');
         $uri->setHost(strtolower($uri->getHost()));
-        return $uri->getUri(true);
+        return $uri->generate();
     }
 
     /**
@@ -115,7 +116,7 @@ abstract class Zend_Oauth_Signature_SignatureAbstract
             $parts[] = $this->_tokenSecret;
         }
         foreach ($parts as $key => $secret) {
-            $parts[$key] = Zend_Oauth_Http_Utility::urlEncode($secret);
+            $parts[$key] = HTTPUtility::urlEncode($secret);
         }
         return implode('&', $parts);
     }
@@ -132,8 +133,8 @@ abstract class Zend_Oauth_Signature_SignatureAbstract
     {
         $encodedParams = array();
         foreach ($params as $key => $value) {
-            $encodedParams[Zend_Oauth_Http_Utility::urlEncode($key)] = 
-                Zend_Oauth_Http_Utility::urlEncode($value);
+            $encodedParams[HTTPUtility::urlEncode($key)] = 
+                HTTPUtility::urlEncode($value);
         }
         $baseStrings = array();
         if (isset($method)) {
@@ -141,14 +142,14 @@ abstract class Zend_Oauth_Signature_SignatureAbstract
         }
         if (isset($url)) {
             // should normalise later
-            $baseStrings[] = Zend_Oauth_Http_Utility::urlEncode(
+            $baseStrings[] = HTTPUtility::urlEncode(
                 $this->normaliseBaseSignatureUrl($url)
             );
         }
         if (isset($encodedParams['oauth_signature'])) {
             unset($encodedParams['oauth_signature']);
         }
-        $baseStrings[] = Zend_Oauth_Http_Utility::urlEncode(
+        $baseStrings[] = HTTPUtility::urlEncode(
             $this->_toByteValueOrderedQueryString($encodedParams)
         );
         return implode('&', $baseStrings);

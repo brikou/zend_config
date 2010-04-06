@@ -13,19 +13,24 @@
  * to license@zend.com so we can send you a copy immediately.
  *
  * @category   Zend
- * @package    Zend_Oauth
+ * @package    Zend_OAuth
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  * @version    $Id$
  */
 
 /**
+ * @namespace
+ */
+namespace Zend\OAuth;
+
+/**
  * @category   Zend
- * @package    Zend_Oauth
+ * @package    Zend_OAuth
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-interface Zend_Oauth_Config_ConfigInterface
+interface Config
 {
     public function setOptions(array $options);
 
@@ -69,7 +74,7 @@ interface Zend_Oauth_Config_ConfigInterface
 
     public function getUserAuthorizationUrl();
 
-    public function setToken(Zend_Oauth_Token $token);
+    public function setToken(Token $token);
 
     public function getToken();
 }

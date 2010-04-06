@@ -13,39 +13,44 @@
  * to license@zend.com so we can send you a copy immediately.
  *
  * @category   Zend
- * @package    Zend_Oauth
+ * @package    Zend_OAuth;
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  * @version    $Id$
  */
 
 /**
- * @uses       Zend_Http_Response
- * @uses       Zend_Oauth_Client
- * @uses       Zend_Oauth_Http_Utility
- * @uses       Zend_Oauth_Token
+ * @namespace
+ */
+namespace Zend\OAuth\Signature;
+use Zend\Crypt\HMAC as HMACEncryption;
+
+/**
+ * @uses       Zend\Crypt\HMAC
+ * @uses       Zend\OAuth\Signature\AbstractSignature
  * @category   Zend
- * @package    Zend_Oauth
+ * @package    Zend_OAuth
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class Zend_Oauth_Token_Request extends Zend_Oauth_Token
+class HMAC extends AbstractSignature
 {
     /**
-     * Constructor
-     *
-     * @param null|Zend_Http_Response $response
-     * @param null|Zend_Oauth_Http_Utility $utility
+     * Sign a request
+     * 
+     * @param  array $params 
+     * @param  mixed $method 
+     * @param  mixed $url 
+     * @return string
      */
-    public function __construct(
-        Zend_Http_Response $response = null,
-        Zend_Oauth_Http_Utility $utility = null
-    ) {
-        parent::__construct($response, $utility);
-
-        // detect if server supports OAuth 1.0a
-        if (isset($this->_params[Zend_Oauth_Token::TOKEN_PARAM_CALLBACK_CONFIRMED])) {
-            Zend_Oauth_Client::$supportsRevisionA = true;
-        }
+    public function sign(array $params, $method = null, $url = null)
+    {
+        $binaryHash = HMACEncryption::compute(
+            $this->_key,
+            $this->_hashAlgorithm,
+            $this->_getBaseSignatureString($params, $method, $url),
+            HMACEncryption::BINARY
+        );
+        return base64_encode($binaryHash);
     }
 }

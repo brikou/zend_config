@@ -13,36 +13,40 @@
  * to license@zend.com so we can send you a copy immediately.
  *
  * @category   Zend
- * @package    Zend_Oauth
+ * @package    Zend_OAuth
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  * @version    $Id$
  */
 
 /**
- * @uses       Zend_Oauth
- * @uses       Zend_Oauth_Http
+ * @namespace
+ */
+namespace Zend\OAuth\HTTP;
+
+use Zend\OAuth;
+
+/**
+ * @uses       Zend\OAuth\OAuth
+ * @uses       Zend\OAuth\HTTP
  * @category   Zend
- * @package    Zend_Oauth
+ * @package    Zend_OAuth
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class Zend_Oauth_Http_Utility
+class Utility
 {
     /**
      * Assemble all parameters for a generic OAuth request - i.e. no special
      * params other than the defaults expected for any OAuth query.
      *
      * @param  string $url
-     * @param  Zend_Oauth_Config_ConfigInterface $config
+     * @param  Zend\OAuth\Config $config
      * @param  null|array $serviceProviderParams
      * @return array
      */
-    public function assembleParams(
-        $url, 
-        Zend_Oauth_Config_ConfigInterface $config,
-        array $serviceProviderParams = null
-    ) {
+    public function assembleParams($url, OAuth\Config $config, array $serviceProviderParams = null) 
+    {
         $params = array(
             'oauth_consumer_key'     => $config->getConsumerKey(),
             'oauth_nonce'            => $this->generateNonce(),
@@ -144,13 +148,12 @@ class Zend_Oauth_Http_Utility
         $hashAlgo  = null;
         $parts     = explode('-', $signatureMethod);
         if (count($parts) > 1) {
-            $className = 'Zend_Oauth_Signature_' . ucfirst(strtolower($parts[0]));
+            $className = '\\Zend\\OAuth\\Signature\\' . ucfirst(strtolower($parts[0]));
             $hashAlgo  = $parts[1];
         } else {
-            $className = 'Zend_Oauth_Signature_' . ucfirst(strtolower($signatureMethod));
+            $className = '\\Zend\\OAuth\\Signature\\' . ucfirst(strtolower($signatureMethod));
         }
 
-        require_once str_replace('_', '/', $className) . '.php';
         $signatureObject = new $className($consumerSecret, $tokenSecret, $hashAlgo);
         return $signatureObject->sign($params, $method, $url);
     }

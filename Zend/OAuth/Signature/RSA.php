@@ -13,38 +13,55 @@
  * to license@zend.com so we can send you a copy immediately.
  *
  * @category   Zend
- * @package    Zend_Oauth
+ * @package    Zend_OAuth;
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  * @version    $Id$
  */
 
 /**
- * @uses       Zend_Crypt_Hmac
- * @uses       Zend_Oauth_Signature_SignatureAbstract
+ * @namespace
+ */
+namespace Zend\OAuth\Signature;
+use Zend\Crypt\RSA as RSAEncryption;
+
+/**
+ * @uses       Zend\Crypt\RSA
+ * @uses       Zend\OAuth\Signature\AbstractSignature
  * @category   Zend
- * @package    Zend_Oauth
+ * @package    Zend_OAuth
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class Zend_Oauth_Signature_Hmac extends Zend_Oauth_Signature_SignatureAbstract
+class RSA extends AbstractSignature
 {
     /**
      * Sign a request
      * 
      * @param  array $params 
-     * @param  mixed $method 
-     * @param  mixed $url 
+     * @param  null|string $method 
+     * @param  null|string $url 
      * @return string
      */
-    public function sign(array $params, $method = null, $url = null)
+    public function sign(array $params, $method = null, $url = null) 
     {
-        $binaryHash = Zend_Crypt_Hmac::compute(
-            $this->_key,
-            $this->_hashAlgorithm,
+        $rsa = new RSAEncryption;
+        $rsa->setHashAlgorithm($this->_hashAlgorithm);
+        $sign = $rsa->sign(
             $this->_getBaseSignatureString($params, $method, $url),
-            Zend_Crypt_Hmac::BINARY
+            $this->_key,
+            RSAEncryption::BASE64
         );
-        return base64_encode($binaryHash);
+        return $sign;
+    }
+
+    /**
+     * Assemble encryption key
+     * 
+     * @return string
+     */
+    protected function _assembleKey()
+    {
+        return $this->_consumerSecret;
     }
 }
