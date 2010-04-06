@@ -13,23 +13,31 @@
  * to license@zend.com so we can send you a copy immediately.
  *
  * @category   Zend
- * @package    Zend_Oauth
+ * @package    Zend_OAuth
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  * @version    $Id$
  */
 
 /**
- * @uses       Zend_Oauth
- * @uses       Zend_Oauth_Config_Interface
- * @uses       Zend_Oauth_Exception
- * @uses       Zend_Uri
+ * @namespace
+ */
+namespace Zend\OAuth\Config;
+use Zend\OAuth\Config as OAuthConfig,
+    Zend\OAuth,
+    Zend\URI;
+
+/**
+ * @uses       Zend\OAuth\OAuth
+ * @uses       Zend\OAuth\Config
+ * @uses       Zend\OAuth\Exception
+ * @uses       \Zend\Uri\Uri
  * @category   Zend
- * @package    Zend_Oauth
+ * @package    Zend_OAuth
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class Zend_Oauth_Config implements Zend_Oauth_Config_ConfigInterface
+class StandardConfig implements OAuthConfig
 {
     /**
      * Signature method used when signing all parameters for an HTTP request
@@ -45,16 +53,16 @@ class Zend_Oauth_Config implements Zend_Oauth_Config_ConfigInterface
      *
      * @var string
      */
-    protected $_requestScheme = Zend_Oauth::REQUEST_SCHEME_HEADER;
+    protected $_requestScheme = OAuth\OAuth::REQUEST_SCHEME_HEADER;
 
     /**
-     * Preferred request Method - one of GET or POST - which Zend_Oauth
+     * Preferred request Method - one of GET or POST - which Zend_OAuth
      * will enforce as standard throughout the library. Generally a default
      * of POST works fine unless a Provider specifically requires otherwise.
      *
      * @var string
      */
-    protected $_requestMethod = Zend_Oauth::POST;
+    protected $_requestMethod = OAuth\OAuth::POST;
 
     /**
      * OAuth Version; This defaults to 1.0 - Must not be changed!
@@ -122,7 +130,7 @@ class Zend_Oauth_Config implements Zend_Oauth_Config_ConfigInterface
      * If relevant, a PEM encoded RSA private key encapsulated as a
      * Zend_Crypt_Rsa Key
      *
-     * @var Zend_Crypt_Rsa_Key_Private
+     * @var \Zend\Crypt\RSA\PrivateKey
      */
     protected $_rsaPrivateKey = null;
 
@@ -130,15 +138,15 @@ class Zend_Oauth_Config implements Zend_Oauth_Config_ConfigInterface
      * If relevant, a PEM encoded RSA public key encapsulated as a
      * Zend_Crypt_Rsa Key
      *
-     * @var Zend_Crypt_Rsa_Key_Public
+     * @var \Zend\Crypt\RSA\PublicKey
      */
     protected $_rsaPublicKey = null;
 
     /**
      * Generally this will nearly always be an Access Token represented as a
-     * Zend_Oauth_Token_Access object.
+     * Zend_OAuth_Token_Access object.
      *
-     * @var Zend_Oauth_Token
+     * @var \Zend\OAuth\Token
      */
     protected $_token = null;
 
@@ -146,13 +154,13 @@ class Zend_Oauth_Config implements Zend_Oauth_Config_ConfigInterface
      * Constructor; create a new object with an optional array|Zend_Config
      * instance containing initialising options.
      *
-     * @param  array|Zend_Config $options
+     * @param  array|\Zend\Config\Config $options
      * @return void
      */
     public function __construct($options = null)
     {
         if (!is_null($options)) {
-            if ($options instanceof Zend_Config) {
+            if ($options instanceof \Zend\Config\Config) {
                 $options = $options->toArray();
             }
             $this->setOptions($options);
@@ -163,8 +171,8 @@ class Zend_Oauth_Config implements Zend_Oauth_Config_ConfigInterface
      * Parse option array or Zend_Config instance and setup options using their
      * relevant mutators.
      *
-     * @param  array|Zend_Config $options
-     * @return Zend_Oauth_Config
+     * @param  array|\Zend\Config\Config $options
+     * @return \Zend\OAuth\Config
      */
     public function setOptions(array $options)
     {
@@ -222,7 +230,7 @@ class Zend_Oauth_Config implements Zend_Oauth_Config_ConfigInterface
      * Set consumer key
      *
      * @param  string $key
-     * @return Zend_Oauth_Config
+     * @return \Zend\OAuth\Config
      */
     public function setConsumerKey($key)
     {
@@ -244,7 +252,7 @@ class Zend_Oauth_Config implements Zend_Oauth_Config_ConfigInterface
      * Set consumer secret
      *
      * @param  string $secret
-     * @return Zend_Oauth_Config
+     * @return \Zend\OAuth\Config
      */
     public function setConsumerSecret($secret)
     {
@@ -272,8 +280,8 @@ class Zend_Oauth_Config implements Zend_Oauth_Config_ConfigInterface
      * Set signature method
      *
      * @param  string $method
-     * @return Zend_Oauth_Config
-     * @throws Zend_Oauth_Exception if unsupported signature method specified
+     * @return \Zend\OAuth\Config
+     * @throws \Zend\OAuth\Exception if unsupported signature method specified
      */
     public function setSignatureMethod($method)
     {
@@ -282,7 +290,7 @@ class Zend_Oauth_Config implements Zend_Oauth_Config_ConfigInterface
                 'HMAC-SHA1', 'HMAC-SHA256', 'RSA-SHA1', 'PLAINTEXT'
             ))
         ) {
-            throw new Zend_Oauth_Exception('Unsupported signature method: '
+            throw new OAuth\Exception('Unsupported signature method: '
                 . $method
                 . '. Supported are HMAC-SHA1, RSA-SHA1, PLAINTEXT and HMAC-SHA256');
         }
@@ -304,26 +312,26 @@ class Zend_Oauth_Config implements Zend_Oauth_Config_ConfigInterface
      * Set request scheme
      *
      * @param  string $scheme
-     * @return Zend_Oauth_Config
-     * @throws Zend_Oauth_Exception if invalid scheme specified, or if POSTBODY set when request method of GET is specified
+     * @return \Zend\OAuth\Config
+     * @throws \Zend\OAuth\Exception if invalid scheme specified, or if POSTBODY set when request method of GET is specified
      */
     public function setRequestScheme($scheme)
     {
         $scheme = strtolower($scheme);
         if (!in_array($scheme, array(
-                Zend_Oauth::REQUEST_SCHEME_HEADER,
-                Zend_Oauth::REQUEST_SCHEME_POSTBODY,
-                Zend_Oauth::REQUEST_SCHEME_QUERYSTRING,
+                OAuth\OAuth::REQUEST_SCHEME_HEADER,
+                OAuth\OAuth::REQUEST_SCHEME_POSTBODY,
+                OAuth\OAuth::REQUEST_SCHEME_QUERYSTRING,
             ))
         ) {
-            throw new Zend_Oauth_Exception(
+            throw new OAuth\Exception(
                 '\'' . $scheme . '\' is an unsupported request scheme'
             );
         }
-        if ($scheme == Zend_Oauth::REQUEST_SCHEME_POSTBODY
-            && $this->getRequestMethod() == Zend_Oauth::GET
+        if ($scheme == OAuth\OAuth::REQUEST_SCHEME_POSTBODY
+            && $this->getRequestMethod() == OAuth\OAuth::GET
         ) {
-            throw new Zend_Oauth_Exception(
+            throw new OAuth\Exception(
                 'Cannot set POSTBODY request method if HTTP method set to GET'
             );
         }
@@ -345,7 +353,7 @@ class Zend_Oauth_Config implements Zend_Oauth_Config_ConfigInterface
      * Set version
      *
      * @param  string $version
-     * @return Zend_Oauth_Config
+     * @return \Zend\OAuth\Config
      */
     public function setVersion($version)
     {
@@ -367,16 +375,12 @@ class Zend_Oauth_Config implements Zend_Oauth_Config_ConfigInterface
      * Set callback URL
      *
      * @param  string $url
-     * @return Zend_Oauth_Config
-     * @throws Zend_Oauth_Exception for invalid URLs
+     * @return \Zend\OAuth\Config
+     * @throws \Zend\OAuth\Exception for invalid URLs
      */
     public function setCallbackUrl($url)
     {
-        if (!Zend_Uri::check($url)) {
-            throw new Zend_Oauth_Exception(
-                '\'' . $url . '\' is not a valid URI'
-            );
-        }
+        $this->_validateUrl($url);
         $this->_callbackUrl = $url;
         return $this;
     }
@@ -395,16 +399,12 @@ class Zend_Oauth_Config implements Zend_Oauth_Config_ConfigInterface
      * Set site URL
      *
      * @param  string $url
-     * @return Zend_Oauth_Config
-     * @throws Zend_Oauth_Exception for invalid URLs
+     * @return \Zend\OAuth\Config
+     * @throws \Zend\OAuth\Exception for invalid URLs
      */
     public function setSiteUrl($url)
     {
-        if (!Zend_Uri::check($url)) {
-            throw new Zend_Oauth_Exception(
-                '\'' . $url . '\' is not a valid URI'
-            );
-        }
+        $this->_validateUrl($url);
         $this->_siteUrl = $url;
         return $this;
     }
@@ -423,16 +423,12 @@ class Zend_Oauth_Config implements Zend_Oauth_Config_ConfigInterface
      * Set request token URL
      *
      * @param  string $url
-     * @return Zend_Oauth_Config
-     * @throws Zend_Oauth_Exception for invalid URLs
+     * @return \Zend\OAuth\Config
+     * @throws \Zend\OAuth\Exception for invalid URLs
      */
     public function setRequestTokenUrl($url)
     {
-        if (!Zend_Uri::check($url)) {
-            throw new Zend_Oauth_Exception(
-                '\'' . $url . '\' is not a valid URI'
-            );
-        }
+        $this->_validateUrl($url);
         $this->_requestTokenUrl = rtrim($url, '/');
         return $this;
     }
@@ -457,16 +453,12 @@ class Zend_Oauth_Config implements Zend_Oauth_Config_ConfigInterface
      * Set access token URL
      *
      * @param  string $url
-     * @return Zend_Oauth_Config
-     * @throws Zend_Oauth_Exception for invalid URLs
+     * @return \Zend\OAuth\Config
+     * @throws \Zend\OAuth\Exception for invalid URLs
      */
     public function setAccessTokenUrl($url)
     {
-        if (!Zend_Uri::check($url)) {
-            throw new Zend_Oauth_Exception(
-                '\'' . $url . '\' is not a valid URI'
-            );
-        }
+        $this->_validateUrl($url);
         $this->_accessTokenUrl = rtrim($url, '/');
         return $this;
     }
@@ -491,8 +483,8 @@ class Zend_Oauth_Config implements Zend_Oauth_Config_ConfigInterface
      * Set user authorization URL
      *
      * @param  string $url
-     * @return Zend_Oauth_Config
-     * @throws Zend_Oauth_Exception for invalid URLs
+     * @return \Zend\OAuth\Config
+     * @throws \Zend\OAuth\Exception for invalid URLs
      */
     public function setUserAuthorizationUrl($url)
     {
@@ -503,16 +495,12 @@ class Zend_Oauth_Config implements Zend_Oauth_Config_ConfigInterface
      * Set authorization URL
      *
      * @param  string $url
-     * @return Zend_Oauth_Config
-     * @throws Zend_Oauth_Exception for invalid URLs
+     * @return \Zend\OAuth\Config
+     * @throws \Zend\OAuth\Exception for invalid URLs
      */
     public function setAuthorizeUrl($url)
     {
-        if (!Zend_Uri::check($url)) {
-            throw new Zend_Oauth_Exception(
-                '\'' . $url . '\' is not a valid URI'
-            );
-        }
+        $this->_validateUrl($url);
         $this->_authorizeUrl = rtrim($url, '/');
         return $this;
     }
@@ -547,20 +535,20 @@ class Zend_Oauth_Config implements Zend_Oauth_Config_ConfigInterface
      * Set request method
      *
      * @param  string $method
-     * @return Zend_Oauth_Config
-     * @throws Zend_Oauth_Exception for invalid request methods
+     * @return \Zend\OAuth\Config
+     * @throws \Zend\OAuth\Exception for invalid request methods
      */
     public function setRequestMethod($method)
     {
         $method = strtoupper($method);
         if (!in_array($method, array(
-                Zend_Oauth::GET, 
-                Zend_Oauth::POST, 
-                Zend_Oauth::PUT, 
-                Zend_Oauth::DELETE,
+                OAuth\OAuth::GET, 
+                OAuth\OAuth::POST, 
+                OAuth\OAuth::PUT, 
+                OAuth\OAuth::DELETE,
             ))
         ) {
-            throw new Zend_Oauth_Exception('Invalid method: ' . $method);
+            throw new OAuth\Exception('Invalid method: ' . $method);
         }
         $this->_requestMethod = $method;
         return $this;
@@ -579,10 +567,10 @@ class Zend_Oauth_Config implements Zend_Oauth_Config_ConfigInterface
     /**
      * Set RSA public key
      *
-     * @param  Zend_Crypt_Rsa_Key_Public $key
-     * @return Zend_Oauth_Config
+     * @param  \Zend\Crypt\RSA\PublicKey $key
+     * @return \Zend\OAuth\Config
      */
-    public function setRsaPublicKey(Zend_Crypt_Rsa_Key_Public $key)
+    public function setRsaPublicKey(\Zend\Crypt\RSA\PublicKey $key)
     {
         $this->_rsaPublicKey = $key;
         return $this;
@@ -591,7 +579,7 @@ class Zend_Oauth_Config implements Zend_Oauth_Config_ConfigInterface
     /**
      * Get RSA public key
      *
-     * @return Zend_Crypt_Rsa_Key_Public
+     * @return \Zend\Crypt\RSA\PublicKey
      */
     public function getRsaPublicKey()
     {
@@ -601,10 +589,10 @@ class Zend_Oauth_Config implements Zend_Oauth_Config_ConfigInterface
     /**
      * Set RSA private key
      *
-     * @param  Zend_Crypt_Rsa_Key_Private $key
-     * @return Zend_Oauth_Config
+     * @param  \Zend\Crypt\RSA\PrivateKey $key
+     * @return \Zend\OAuth\Config
      */
-    public function setRsaPrivateKey(Zend_Crypt_Rsa_Key_Private $key)
+    public function setRsaPrivateKey(\Zend\Crypt\RSA\PrivateKey $key)
     {
         $this->_rsaPrivateKey = $key;
         return $this;
@@ -613,7 +601,7 @@ class Zend_Oauth_Config implements Zend_Oauth_Config_ConfigInterface
     /**
      * Get RSA private key
      *
-     * @return Zend_Crypt_Rsa_Key_Private
+     * @return \Zend\Crypt\RSA\PrivateKey
      */
     public function getRsaPrivateKey()
     {
@@ -623,10 +611,10 @@ class Zend_Oauth_Config implements Zend_Oauth_Config_ConfigInterface
     /**
      * Set OAuth token
      *
-     * @param  Zend_Oauth_Token $token
-     * @return Zend_Oauth_Config
+     * @param  Zend\OAuth\Token $token
+     * @return Zend\OAuth\Config
      */
-    public function setToken(Zend_Oauth_Token $token)
+    public function setToken(OAuth\Token $token)
     {
         $this->_token = $token;
         return $this;
@@ -635,10 +623,27 @@ class Zend_Oauth_Config implements Zend_Oauth_Config_ConfigInterface
     /**
      * Get OAuth token
      *
-     * @return Zend_Oauth_Token
+     * @return Zend\OAuth\Token
      */
     public function getToken()
     {
         return $this->_token;
+    }
+
+    /**
+     * Determine if a given URL is valid
+     * 
+     * @param  string $url 
+     * @return void
+     * @throws Zend\OAuth\Exception
+     */
+    protected function _validateUrl($url)
+    {
+        $uri = new URI\URL($url);
+        if (!$uri->isValid()) {
+            throw new OAuth\Exception(sprintf("'%s' is not a valid URI", $url));
+        } elseif (!in_array($uri->getScheme(), array('http', 'https'))) {
+            throw new OAuth\Exception(sprintf("'%s' is not a valid URI", $url));
+        }
     }
 }

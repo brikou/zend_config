@@ -13,22 +13,29 @@
  * to license@zend.com so we can send you a copy immediately.
  *
  * @category   Zend
- * @package    Zend_Oauth
+ * @package    Zend_OAuth
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  * @version    $Id$
  */
 
 /**
- * @uses       Zend_Oauth_Client
- * @uses       Zend_Oauth_Http
- * @uses       Zend_Uri_Http
+ * @namespace
+ */
+namespace Zend\OAuth\HTTP;
+
+use Zend\OAuth\HTTP as HTTPClient;
+
+/**
+ * @uses       \Zend\OAuth\Client
+ * @uses       \Zend\OAuth\HTTP
+ * @uses       \Zend\URI\URL
  * @category   Zend
- * @package    Zend_Oauth
+ * @package    Zend_OAuth
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class Zend_Oauth_Http_UserAuthorization extends Zend_Oauth_Http
+class UserAuthorization extends HTTPClient
 {
     /**
      * Generate a redirect URL from the allowable parameters and configured
@@ -39,13 +46,13 @@ class Zend_Oauth_Http_UserAuthorization extends Zend_Oauth_Http
     public function getUrl()
     {
         $params = $this->assembleParams();
-        $uri    = Zend_Uri_Http::fromString($this->_consumer->getUserAuthorizationUrl());
+        $uri    = new \Zend\URI\URL($this->_consumer->getUserAuthorizationUrl());
 
         $uri->setQuery(
             $this->_httpUtility->toEncodedQueryString($params)
         );
 
-        return $uri->getUri();
+        return $uri->generate();
     }
 
     /**
@@ -59,7 +66,7 @@ class Zend_Oauth_Http_UserAuthorization extends Zend_Oauth_Http
             'oauth_token' => $this->_consumer->getLastRequestToken()->getToken(),
         );
 
-        if (!Zend_Oauth_Client::$supportsRevisionA) {
+        if (!\Zend\OAuth\Client::$supportsRevisionA) {
             $callback = $this->_consumer->getCallbackUrl();
             if (!empty($callback)) {
                 $params['oauth_callback'] = $callback;
