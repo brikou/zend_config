@@ -13,27 +13,32 @@
  * to license@zend.com so we can send you a copy immediately.
  *
  * @category   Zend
- * @package    Zend_Auth
- * @subpackage Zend_Auth_Adapter
+ * @package    Zend_Authentication
+ * @subpackage Adapter
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  * @version    $Id$
  */
 
 /**
+ * @namespace
+ */
+namespace Zend\Authentication;
+
+/**
  * @category   Zend
- * @package    Zend_Auth
- * @subpackage Zend_Auth_Adapter
+ * @package    Zend_Authentication
+ * @subpackage Adapter
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-interface Zend_Auth_Adapter_Interface
+interface Adapter
 {
     /**
      * Performs an authentication attempt
      *
-     * @throws Zend_Auth_Adapter_Exception If authentication cannot be performed
-     * @return Zend_Auth_Result
+     * @return Zend\Authentication\Result
+     * @throws Zend\Authentication\Adapter\Exception If authentication cannot be performed
      */
     public function authenticate();
 }

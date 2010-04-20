@@ -13,7 +13,7 @@
  * to license@zend.com so we can send you a copy immediately.
  *
  * @category   Zend
- * @package    Zend_Auth
+ * @package    Zend_Authentication
  * @subpackage Adapter
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
@@ -21,15 +21,22 @@
  */
 
 /**
- * @uses       Zend_Auth_Adapter_Exception
- * @uses       Zend_Auth_Adapter_Interface
+ * @namespace
+ */
+namespace Zend\Authentication\Adapter;
+use Zend\Authentication\Adapter as AuthenticationAdapter,
+    Zend\Authentication\Result as AuthenticationResult;
+
+/**
+ * @uses       Zend\Authentication\Adapter\Exception
+ * @uses       Zend\Authentication\Adapter
  * @category   Zend
- * @package    Zend_Auth
+ * @package    Zend_Authentication
  * @subpackage Adapter
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class Zend_Auth_Adapter_Digest implements Zend_Auth_Adapter_Interface
+class Digest implements AuthenticationAdapter
 {
     /**
      * Filename against which authentication queries are performed
@@ -93,7 +100,7 @@ class Zend_Auth_Adapter_Digest implements Zend_Auth_Adapter_Interface
      * Sets the filename option value
      *
      * @param  mixed $filename
-     * @return Zend_Auth_Adapter_Digest Provides a fluent interface
+     * @return Zend\Authentication\Adapter\Digest Provides a fluent interface
      */
     public function setFilename($filename)
     {
@@ -115,7 +122,7 @@ class Zend_Auth_Adapter_Digest implements Zend_Auth_Adapter_Interface
      * Sets the realm option value
      *
      * @param  mixed $realm
-     * @return Zend_Auth_Adapter_Digest Provides a fluent interface
+     * @return Zend\Authentication\Adapter\Digest Provides a fluent interface
      */
     public function setRealm($realm)
     {
@@ -137,7 +144,7 @@ class Zend_Auth_Adapter_Digest implements Zend_Auth_Adapter_Interface
      * Sets the username option value
      *
      * @param  mixed $username
-     * @return Zend_Auth_Adapter_Digest Provides a fluent interface
+     * @return Zend\Authentication\Adapter\Digest Provides a fluent interface
      */
     public function setUsername($username)
     {
@@ -159,7 +166,7 @@ class Zend_Auth_Adapter_Digest implements Zend_Auth_Adapter_Interface
      * Sets the password option value
      *
      * @param  mixed $password
-     * @return Zend_Auth_Adapter_Digest Provides a fluent interface
+     * @return Zend\Authentication\Adapter\Digest Provides a fluent interface
      */
     public function setPassword($password)
     {
@@ -170,27 +177,27 @@ class Zend_Auth_Adapter_Digest implements Zend_Auth_Adapter_Interface
     /**
      * Defined by Zend_Auth_Adapter_Interface
      *
-     * @throws Zend_Auth_Adapter_Exception
-     * @return Zend_Auth_Result
+     * @throws Zend\Authentication\Adapter\Exception
+     * @return Zend\Authentication\Result
      */
     public function authenticate()
     {
         $optionsRequired = array('filename', 'realm', 'username', 'password');
         foreach ($optionsRequired as $optionRequired) {
             if (null === $this->{"_$optionRequired"}) {
-                throw new Zend_Auth_Adapter_Exception("Option '$optionRequired' must be set before authentication");
+                throw new Exception("Option '$optionRequired' must be set before authentication");
             }
         }
 
         if (false === ($fileHandle = @fopen($this->_filename, 'r'))) {
-            throw new Zend_Auth_Adapter_Exception("Cannot open '$this->_filename' for reading");
+            throw new Exception("Cannot open '$this->_filename' for reading");
         }
 
         $id       = "$this->_username:$this->_realm";
         $idLength = strlen($id);
 
         $result = array(
-            'code'  => Zend_Auth_Result::FAILURE,
+            'code'  => AuthenticationResult::FAILURE,
             'identity' => array(
                 'realm'    => $this->_realm,
                 'username' => $this->_username,
@@ -201,17 +208,17 @@ class Zend_Auth_Adapter_Digest implements Zend_Auth_Adapter_Interface
         while ($line = trim(fgets($fileHandle))) {
             if (substr($line, 0, $idLength) === $id) {
                 if (substr($line, -32) === md5("$this->_username:$this->_realm:$this->_password")) {
-                    $result['code'] = Zend_Auth_Result::SUCCESS;
+                    $result['code'] = AuthenticationResult::SUCCESS;
                 } else {
-                    $result['code'] = Zend_Auth_Result::FAILURE_CREDENTIAL_INVALID;
+                    $result['code'] = AuthenticationResult::FAILURE_CREDENTIAL_INVALID;
                     $result['messages'][] = 'Password incorrect';
                 }
-                return new Zend_Auth_Result($result['code'], $result['identity'], $result['messages']);
+                return new AuthenticationResult($result['code'], $result['identity'], $result['messages']);
             }
         }
 
-        $result['code'] = Zend_Auth_Result::FAILURE_IDENTITY_NOT_FOUND;
+        $result['code'] = AuthenticationResult::FAILURE_IDENTITY_NOT_FOUND;
         $result['messages'][] = "Username '$this->_username' and realm '$this->_realm' combination not found";
-        return new Zend_Auth_Result($result['code'], $result['identity'], $result['messages']);
+        return new AuthenticationResult($result['code'], $result['identity'], $result['messages']);
     }
 }

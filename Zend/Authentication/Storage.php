@@ -13,7 +13,7 @@
  * to license@zend.com so we can send you a copy immediately.
  *
  * @category   Zend
- * @package    Zend_Auth
+ * @package    Zend_Authentication
  * @subpackage Storage
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
@@ -21,18 +21,23 @@
  */
 
 /**
+ * @namespace
+ */
+namespace Zend\Authentication;
+
+/**
  * @category   Zend
- * @package    Zend_Auth
+ * @package    Zend_Authentication
  * @subpackage Storage
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-interface Zend_Auth_Storage_Interface
+interface Storage
 {
     /**
      * Returns true if and only if storage is empty
      *
-     * @throws Zend_Auth_Storage_Exception If it is impossible to determine whether storage is empty
+     * @throws Zend\Authentication\Storage\Exception If it is impossible to determine whether storage is empty
      * @return boolean
      */
     public function isEmpty();
@@ -42,7 +47,7 @@ interface Zend_Auth_Storage_Interface
      *
      * Behavior is undefined when storage is empty.
      *
-     * @throws Zend_Auth_Storage_Exception If reading contents from storage is impossible
+     * @throws Zend\Authentication\Storage\Exception If reading contents from storage is impossible
      * @return mixed
      */
     public function read();
@@ -51,7 +56,7 @@ interface Zend_Auth_Storage_Interface
      * Writes $contents to storage
      *
      * @param  mixed $contents
-     * @throws Zend_Auth_Storage_Exception If writing $contents to storage is impossible
+     * @throws Zend\Authentication\Storage\Exception If writing $contents to storage is impossible
      * @return void
      */
     public function write($contents);
@@ -59,7 +64,7 @@ interface Zend_Auth_Storage_Interface
     /**
      * Clears contents from storage
      *
-     * @throws Zend_Auth_Storage_Exception If clearing contents from storage is impossible
+     * @throws Zend\Authentication\Storage\Exception If clearing contents from storage is impossible
      * @return void
      */
     public function clear();

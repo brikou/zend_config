@@ -13,18 +13,27 @@
  * to license@zend.com so we can send you a copy immediately.
  *
  * @category   Zend
- * @package    Zend_Auth
+ * @package    Zend_Authentication
+ * @subpackage Adapter_HTTP
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  * @version    $Id$
  */
 
 /**
- * @uses       Zend_Exception
+ * @namespace
+ */
+namespace Zend\Authentication\Adapter\HTTP;
+
+/**
+ * HTTP Auth Resolver Exception
+ *
+ * @uses       Zend\Authentication\Exception
  * @category   Zend
- * @package    Zend_Auth
+ * @package    Zend_Authentication
+ * @subpackage Adapter_Http
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class Zend_Auth_Exception extends Zend_Exception
+class Exception extends \Zend\Authentication\Exception
 {}

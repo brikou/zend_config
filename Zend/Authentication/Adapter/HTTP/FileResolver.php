@@ -13,25 +13,30 @@
  * to license@zend.com so we can send you a copy immediately.
  *
  * @category   Zend
- * @package    Zend_Auth
- * @subpackage Zend_Auth_Adapter_Http
+ * @package    Zend_Authentication
+ * @subpackage Adapter_HTTP
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  * @version    $Id$
  */
 
 /**
+ * @namespace
+ */
+namespace Zend\Authentication\Adapter\HTTP;
+
+/**
  * HTTP Authentication File Resolver
  *
- * @uses        Zend_Auth_Adapter_Http_Resolver_Exception
- * @uses        Zend_Auth_Adapter_Http_Resolver_Interface
+ * @uses       Zend\Authentication\Adapter\HTTP\Exception
+ * @uses       Zend\Authentication\Adapter\HTTP\Resolver
  * @category   Zend
- * @package    Zend_Auth
- * @subpackage Zend_Auth_Adapter_Http
+ * @package    Zend_Authentication
+ * @subpackage Adapter_Http
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class Zend_Auth_Adapter_Http_Resolver_File implements Zend_Auth_Adapter_Http_Resolver_Interface
+class FileResolver implements Resolver
 {
     /**
      * Path to credentials file
@@ -57,13 +62,13 @@ class Zend_Auth_Adapter_Http_Resolver_File implements Zend_Auth_Adapter_Http_Res
      * Set the path to the credentials file
      *
      * @param  string $path
-     * @throws Zend_Auth_Adapter_Http_Resolver_Exception
-     * @return Zend_Auth_Adapter_Http_Resolver_File Provides a fluent interface
+     * @return Zend\Authentication\Adapter\Http\FileResolver Provides a fluent interface
+     * @throws Zend\Authentication\Adapter\Http\Exception
      */
     public function setFile($path)
     {
         if (empty($path) || !is_readable($path)) {
-            throw new Zend_Auth_Adapter_Http_Resolver_Exception('Path not readable: ' . $path);
+            throw new Exception('Path not readable: ' . $path);
         }
         $this->_file = $path;
 
@@ -97,29 +102,29 @@ class Zend_Auth_Adapter_Http_Resolver_File implements Zend_Auth_Adapter_Http_Res
      *
      * @param  string $username Username
      * @param  string $realm    Authentication Realm
-     * @throws Zend_Auth_Adapter_Http_Resolver_Exception
      * @return string|false User's shared secret, if the user is found in the
      *         realm, false otherwise.
+     * @throws Zend\Authentication\Adapter\Http\Exception
      */
     public function resolve($username, $realm)
     {
         if (empty($username)) {
-            throw new Zend_Auth_Adapter_Http_Resolver_Exception('Username is required');
+            throw new Exception('Username is required');
         } else if (!ctype_print($username) || strpos($username, ':') !== false) {
-            throw new Zend_Auth_Adapter_Http_Resolver_Exception('Username must consist only of printable characters, '
+            throw new Exception('Username must consist only of printable characters, '
                                                               . 'excluding the colon');
         }
         if (empty($realm)) {
-            throw new Zend_Auth_Adapter_Http_Resolver_Exception('Realm is required');
+            throw new Exception('Realm is required');
         } else if (!ctype_print($realm) || strpos($realm, ':') !== false) {
-            throw new Zend_Auth_Adapter_Http_Resolver_Exception('Realm must consist only of printable characters, '
+            throw new Exception('Realm must consist only of printable characters, '
                                                               . 'excluding the colon.');
         }
 
         // Open file, read through looking for matching credentials
         $fp = @fopen($this->_file, 'r');
         if (!$fp) {
-            throw new Zend_Auth_Adapter_Http_Resolver_Exception('Unable to open password file: ' . $this->_file);
+            throw new Exception('Unable to open password file: ' . $this->_file);
         }
 
         // No real validation is done on the contents of the password file. The

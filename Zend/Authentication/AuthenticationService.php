@@ -13,66 +13,44 @@
  * to license@zend.com so we can send you a copy immediately.
  *
  * @category   Zend
- * @package    Zend_Auth
+ * @package    Zend_Authentication
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  * @version    $Id$
  */
 
+/**
+ * @namespace
+ */
+namespace Zend\Authentication;
 
 /**
- * @uses       Zend_Auth_Storage_Session
+ * @uses       Zend\Authentication\Storage\Session
  * @category   Zend
- * @package    Zend_Auth
+ * @package    Zend_Authentication
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class Zend_Auth
+class AuthenticationService
 {
-    /**
-     * Singleton instance
-     *
-     * @var Zend_Auth
-     */
-    protected static $_instance = null;
-
     /**
      * Persistent storage handler
      *
-     * @var Zend_Auth_Storage_Interface
+     * @var Zend\Authentication\Storage
      */
     protected $_storage = null;
 
     /**
-     * Singleton pattern implementation makes "new" unavailable
-     *
+     * Constructor
+     * 
+     * @param  Storage $storage 
      * @return void
      */
-    protected function __construct()
-    {}
-
-    /**
-     * Singleton pattern implementation makes "clone" unavailable
-     *
-     * @return void
-     */
-    protected function __clone()
-    {}
-
-    /**
-     * Returns an instance of Zend_Auth
-     *
-     * Singleton pattern implementation
-     *
-     * @return Zend_Auth Provides a fluent interface
-     */
-    public static function getInstance()
+    public function __construct(Storage $storage = null)
     {
-        if (null === self::$_instance) {
-            self::$_instance = new self();
+        if (null !== $storage) {
+            $this->setStorage($storage);
         }
-
-        return self::$_instance;
     }
 
     /**
@@ -80,12 +58,12 @@ class Zend_Auth
      *
      * Session storage is used by default unless a different storage adapter has been set.
      *
-     * @return Zend_Auth_Storage_Interface
+     * @return Zend\Authentication\Storage
      */
     public function getStorage()
     {
         if (null === $this->_storage) {
-            $this->setStorage(new Zend_Auth_Storage_Session());
+            $this->setStorage(new Storage\Session());
         }
 
         return $this->_storage;
@@ -94,10 +72,10 @@ class Zend_Auth
     /**
      * Sets the persistent storage handler
      *
-     * @param  Zend_Auth_Storage_Interface $storage
-     * @return Zend_Auth Provides a fluent interface
+     * @param  Zend\Authentication\Storage $storage
+     * @return Zend\Authentication\AuthenticationService Provides a fluent interface
      */
-    public function setStorage(Zend_Auth_Storage_Interface $storage)
+    public function setStorage(Storage $storage)
     {
         $this->_storage = $storage;
         return $this;
@@ -106,10 +84,10 @@ class Zend_Auth
     /**
      * Authenticates against the supplied adapter
      *
-     * @param  Zend_Auth_Adapter_Interface $adapter
-     * @return Zend_Auth_Result
+     * @param  Zend\Authentication\Adapter $adapter
+     * @return Zend\Authentication\Result
      */
-    public function authenticate(Zend_Auth_Adapter_Interface $adapter)
+    public function authenticate(Adapter $adapter)
     {
         $result = $adapter->authenticate();
 
