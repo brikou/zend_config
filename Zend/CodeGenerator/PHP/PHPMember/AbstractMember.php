@@ -21,15 +21,21 @@
  */
 
 /**
- * @uses       Zend_CodeGenerator_Php_Abstract
- * @uses       Zend_CodeGenerator_Php_Docblock
- * @uses       Zend_CodeGenerator_Php_Exception
+ * @namespace
+ */
+namespace Zend\CodeGenerator\PHP\PHPMember;
+use Zend\CodeGenerator\PHP;
+
+/**
+ * @uses       \Zend\CodeGenerator\PHP\AbstractPHP
+ * @uses       \Zend\CodeGenerator\PHPDocblock
+ * @uses       \Zend\CodeGenerator\PHP\Exception
  * @category   Zend
  * @package    Zend_CodeGenerator
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-abstract class Zend_CodeGenerator_Php_Member_Abstract extends Zend_CodeGenerator_Php_Abstract
+abstract class AbstractMember extends PHP\AbstractPHP
 {
 
     /**#@+
@@ -41,7 +47,7 @@ abstract class Zend_CodeGenerator_Php_Member_Abstract extends Zend_CodeGenerator
     /**#@-*/
 
     /**
-     * @var Zend_CodeGenerator_Php_Docblock
+     * @var \Zend\CodeGenerator\PHPDocblock
      */
     protected $_docblock   = null;
 
@@ -73,8 +79,8 @@ abstract class Zend_CodeGenerator_Php_Member_Abstract extends Zend_CodeGenerator
     /**
      * setDocblock() Set the docblock
      *
-     * @param Zend_CodeGenerator_Php_Docblock|array|string $docblock
-     * @return Zend_CodeGenerator_Php_File
+     * @param \Zend\CodeGenerator\PHPDocblock|array|string $docblock
+     * @return \Zend\CodeGenerator\PHP\PHPFile
      */
     public function setDocblock($docblock)
     {
@@ -83,9 +89,9 @@ abstract class Zend_CodeGenerator_Php_Member_Abstract extends Zend_CodeGenerator
         }
 
         if (is_array($docblock)) {
-            $docblock = new Zend_CodeGenerator_Php_Docblock($docblock);
-        } elseif (!$docblock instanceof Zend_CodeGenerator_Php_Docblock) {
-            throw new Zend_CodeGenerator_Php_Exception('setDocblock() is expecting either a string, array or an instance of Zend_CodeGenerator_Php_Docblock');
+            $docblock = new PHP\PHPDocblock($docblock);
+        } elseif (!$docblock instanceof PHP\PHPDocblock) {
+            throw new PHP\Exception('setDocblock() is expecting either a string, array or an instance of Zend_CodeGenerator_Php_Docblock');
         }
 
         $this->_docblock = $docblock;
@@ -95,7 +101,7 @@ abstract class Zend_CodeGenerator_Php_Member_Abstract extends Zend_CodeGenerator
     /**
      * getDocblock()
      *
-     * @return Zend_CodeGenerator_Php_Docblock
+     * @return \Zend\CodeGenerator\PHPDocblock
      */
     public function getDocblock()
     {
@@ -106,7 +112,7 @@ abstract class Zend_CodeGenerator_Php_Member_Abstract extends Zend_CodeGenerator
      * setAbstract()
      *
      * @param bool $isAbstract
-     * @return Zend_CodeGenerator_Php_Member_Abstract
+     * @return \Zend\CodeGenerator\PHP\PHPMember\AbstractMember
      */
     public function setAbstract($isAbstract)
     {
@@ -128,7 +134,7 @@ abstract class Zend_CodeGenerator_Php_Member_Abstract extends Zend_CodeGenerator
      * setFinal()
      *
      * @param bool $isFinal
-     * @return Zend_CodeGenerator_Php_Member_Abstract
+     * @return \Zend\CodeGenerator\PHP\PHPMember\AbstractMember
      */
     public function setFinal($isFinal)
     {
@@ -150,7 +156,7 @@ abstract class Zend_CodeGenerator_Php_Member_Abstract extends Zend_CodeGenerator
      * setStatic()
      *
      * @param bool $isStatic
-     * @return Zend_CodeGenerator_Php_Member_Abstract
+     * @return \Zend\CodeGenerator\PHP\PHPMember\AbstractMember
      */
     public function setStatic($isStatic)
     {
@@ -172,7 +178,7 @@ abstract class Zend_CodeGenerator_Php_Member_Abstract extends Zend_CodeGenerator
      * setVisitibility()
      *
      * @param const $visibility
-     * @return Zend_CodeGenerator_Php_Member_Abstract
+     * @return \Zend\CodeGenerator\PHP\PHPMember\AbstractMember
      */
     public function setVisibility($visibility)
     {
@@ -194,7 +200,7 @@ abstract class Zend_CodeGenerator_Php_Member_Abstract extends Zend_CodeGenerator
      * setName()
      *
      * @param string $name
-     * @return Zend_CodeGenerator_Php_Member_Abstract
+     * @return \Zend\CodeGenerator\PHP\PHPMember\AbstractMember
      */
     public function setName($name)
     {

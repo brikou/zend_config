@@ -21,48 +21,59 @@
  */
 
 /**
- * @uses       Zend_CodeGenerator_Abstract
- * @uses       Zend_CodeGenerator_Php_Docblock_Tag_Param
- * @uses       Zend_CodeGenerator_Php_Docblock_Tag_Return
- * @uses       Zend_Loader_PluginLoader
+ * @namespace
+ */
+namespace Zend\CodeGenerator\PHP;
+
+/**
+ * @uses       \Zend\CodeGenerator\AbstractCodeGenerator
+ * @uses       \Zend\CodeGenerator\PHP\Docblock\Tag\Param
+ * @uses       \Zend\CodeGenerator\PHP\Docblock\Tag\Return
+ * @uses       \Zend\Loader\PluginLoader\PluginLoader
  * @category   Zend
  * @package    Zend_CodeGenerator
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class Zend_CodeGenerator_Php_Docblock_Tag extends Zend_CodeGenerator_Php_Abstract
+class PHPDocblockTag extends AbstractPHP
 {
 
-    /**
-     * @var Zend_Loader_PluginLoader
-     */
-    protected static $_pluginLoader = null;
-
+    protected static $_typeFormats = array(
+        array(
+            'param',
+            '@param <type> <variable> <description>'
+            ),
+        array(
+            'return',
+            '@return <type> <description>'
+            ),
+        array(
+            'tag',
+            '@<name> <description>'
+            )
+        );
+    
     /**
      * @var string
      */
     protected $_name = null;
 
     /**
-     * @var string
-     */
-    protected $_description = null;
-
-    /**
      * fromReflection()
      *
-     * @param Zend_Reflection_Docblock_Tag $reflectionTag
-     * @return Zend_CodeGenerator_Php_Docblock_Tag
+     * @param \Zend\Reflection\ReflectionDocblockTag $reflectionTag
+     * @return \Zend\CodeGenerator\PHP\PHPDocblockTag
      */
-    public static function fromReflection(Zend_Reflection_Docblock_Tag $reflectionTag)
+    public static function fromReflection(\Zend\Reflection\ReflectionDocblockTag $reflectionTag)
     {
         $tagName = $reflectionTag->getName();
 
-        $codeGenDocblockTag = self::factory($tagName);
+        $codeGenDocblockTag = new self();
+        $codeGenDocblockTag->setName($tagName);
 
         // transport any properties via accessors and mutators from reflection to codegen object
-        $reflectionClass = new ReflectionClass($reflectionTag);
-        foreach ($reflectionClass->getMethods(ReflectionMethod::IS_PUBLIC) as $method) {
+        $reflectionClass = new \ReflectionClass($reflectionTag);
+        foreach ($reflectionClass->getMethods(\ReflectionMethod::IS_PUBLIC) as $method) {
             if (substr($method->getName(), 0, 3) == 'get') {
                 $propertyName = substr($method->getName(), 3);
                 if (method_exists($codeGenDocblockTag, 'set' . $propertyName)) {
@@ -75,51 +86,10 @@ class Zend_CodeGenerator_Php_Docblock_Tag extends Zend_CodeGenerator_Php_Abstrac
     }
 
     /**
-     * setPluginLoader()
-     *
-     * @param Zend_Loader_PluginLoader $pluginLoader
-     */
-    public static function setPluginLoader(Zend_Loader_PluginLoader $pluginLoader)
-    {
-        self::$_pluginLoader = $pluginLoader;
-        return;
-    }
-
-    /**
-     * getPluginLoader()
-     *
-     * @return Zend_Loader_PluginLoader
-     */
-    public static function getPluginLoader()
-    {
-        if (self::$_pluginLoader == null) {
-            self::setPluginLoader(new Zend_Loader_PluginLoader(array(
-                'Zend_CodeGenerator_Php_Docblock_Tag' => dirname(__FILE__) . '/Tag/'))
-                );
-        }
-
-        return self::$_pluginLoader;
-    }
-
-    public static function factory($tagName)
-    {
-        $pluginLoader = self::getPluginLoader();
-
-        try {
-            $tagClass = $pluginLoader->load($tagName);
-        } catch (Zend_Loader_Exception $exception) {
-            $tagClass = 'Zend_CodeGenerator_Php_Docblock_Tag';
-        }
-
-        $tag = new $tagClass(array('name' => $tagName));
-        return $tag;
-    }
-
-    /**
      * setName()
      *
      * @param string $name
-     * @return Zend_CodeGenerator_Php_Docblock_Tag
+     * @return \Zend\CodeGenerator\PHP\PHPDocblockTag
      */
     public function setName($name)
     {
@@ -141,7 +111,7 @@ class Zend_CodeGenerator_Php_Docblock_Tag extends Zend_CodeGenerator_Php_Abstrac
      * setDescription()
      *
      * @param string $description
-     * @return Zend_CodeGenerator_Php_Docblock_Tag
+     * @return \Zend\CodeGenerator\PHP\PHPDocblockTag
      */
     public function setDescription($description)
     {

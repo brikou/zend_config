@@ -21,22 +21,37 @@
  */
 
 /**
- * @uses       Zend_CodeGenerator_Php_Abstract
- * @uses       Zend_CodeGenerator_Php_Docblock
- * @uses       Zend_CodeGenerator_Php_Exception
- * @uses       Zend_CodeGenerator_Php_Member_Container
- * @uses       Zend_CodeGenerator_Php_Method
- * @uses       Zend_CodeGenerator_Php_Property
+ * @namespace
+ */
+namespace Zend\CodeGenerator\PHP;
+
+/**
+ * @uses       \Zend\CodeGenerator\PHP\AbstractPHP
+ * @uses       \Zend\CodeGenerator\PHPDocblock
+ * @uses       \Zend\CodeGenerator\PHP\Exception
+ * @uses       \Zend\CodeGenerator\PHP\PHPMember\MemberContainer
+ * @uses       \Zend\CodeGenerator\PHP\PHPMethod
+ * @uses       \Zend\CodeGenerator\PHP\PHPProperty
  * @category   Zend
  * @package    Zend_CodeGenerator
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class Zend_CodeGenerator_Php_Class extends Zend_CodeGenerator_Php_Abstract
+class PHPClass extends AbstractPHP
 {
 
     /**
-     * @var Zend_CodeGenerator_Php_Docblock
+     * @var \Zend\CodeGenerator\PHP\PHPFile
+     */
+    protected $_phpFile = null;
+
+    /**
+     * @var string
+     */
+    protected $_namespaceName = null;
+    
+    /**
+     * @var \Zend\CodeGenerator\PHP\PHPDocblock
      */
     protected $_docblock = null;
 
@@ -73,10 +88,10 @@ class Zend_CodeGenerator_Php_Class extends Zend_CodeGenerator_Php_Abstract
     /**
      * fromReflection() - build a Code Generation PHP Object from a Class Reflection
      *
-     * @param Zend_Reflection_Class $reflectionClass
-     * @return Zend_CodeGenerator_Php_Class
+     * @param \Zend\Reflection\ReflectionClass $reflectionClass
+     * @return \Zend\CodeGenerator\PHP\PHPClass
      */
-    public static function fromReflection(Zend_Reflection_Class $reflectionClass)
+    public static function fromReflection(\Zend\Reflection\ReflectionClass $reflectionClass)
     {
         $class = new self();
 
@@ -84,12 +99,18 @@ class Zend_CodeGenerator_Php_Class extends Zend_CodeGenerator_Php_Abstract
         $class->setSourceDirty(false);
 
         if ($reflectionClass->getDocComment() != '') {
-            $class->setDocblock(Zend_CodeGenerator_Php_Docblock::fromReflection($reflectionClass->getDocblock()));
+            $class->setDocblock(PHPDocblock::fromReflection($reflectionClass->getDocblock()));
         }
 
         $class->setAbstract($reflectionClass->isAbstract());
-        $class->setName($reflectionClass->getName());
+        
+        // set the namespace
+        if ($reflectionClass->inNamespace()) {
+            $class->setNamespaceName($reflectionClass->getNamespaceName());
+        }
 
+        $class->setName($reflectionClass->getName());
+        
         if ($parentClass = $reflectionClass->getParentClass()) {
             $class->setExtendedClass($parentClass->getName());
             $interfaces = array_diff($reflectionClass->getInterfaces(), $parentClass->getInterfaces());
@@ -107,7 +128,7 @@ class Zend_CodeGenerator_Php_Class extends Zend_CodeGenerator_Php_Abstract
         $properties = array();
         foreach ($reflectionClass->getProperties() as $reflectionProperty) {
             if ($reflectionProperty->getDeclaringClass()->getName() == $class->getName()) {
-                $properties[] = Zend_CodeGenerator_Php_Property::fromReflection($reflectionProperty);
+                $properties[] = PHPProperty::fromReflection($reflectionProperty);
             }
         }
         $class->setProperties($properties);
@@ -115,7 +136,7 @@ class Zend_CodeGenerator_Php_Class extends Zend_CodeGenerator_Php_Abstract
         $methods = array();
         foreach ($reflectionClass->getMethods() as $reflectionMethod) {
             if ($reflectionMethod->getDeclaringClass()->getName() == $class->getName()) {
-                $methods[] = Zend_CodeGenerator_Php_Method::fromReflection($reflectionMethod);
+                $methods[] = PHPMethod::fromReflection($reflectionMethod);
             }
         }
         $class->setMethods($methods);
@@ -124,10 +145,31 @@ class Zend_CodeGenerator_Php_Class extends Zend_CodeGenerator_Php_Abstract
     }
 
     /**
+     * setPHPFile()
+     * 
+     * @param Zend\CodeGenerator\PHP\PHPFile $phpFile
+     */
+    public function setPHPFile(PHPFile $phpFile)
+    {
+        $this->_phpFile = $phpFile;
+        return $this;
+    }
+    
+    /**
+     * getPHPFile()
+     * 
+     * @return Zend\CodeGenerator\PHP\PHPFile
+     */
+    public function getPHPFile()
+    {
+        return $this->_phpFile;
+    }
+    
+    /**
      * setDocblock() Set the docblock
      *
-     * @param Zend_CodeGenerator_Php_Docblock|array|string $docblock
-     * @return Zend_CodeGenerator_Php_File
+     * @param \Zend\CodeGenerator\PHPDocblock|array|string $docblock
+     * @return \Zend\CodeGenerator\PHP\PHPFile
      */
     public function setDocblock($docblock)
     {
@@ -136,9 +178,9 @@ class Zend_CodeGenerator_Php_Class extends Zend_CodeGenerator_Php_Abstract
         }
 
         if (is_array($docblock)) {
-            $docblock = new Zend_CodeGenerator_Php_Docblock($docblock);
-        } elseif (!$docblock instanceof Zend_CodeGenerator_Php_Docblock) {
-            throw new Zend_CodeGenerator_Php_Exception('setDocblock() is expecting either a string, array or an instance of Zend_CodeGenerator_Php_Docblock');
+            $docblock = new PHPDocblock($docblock);
+        } elseif (!$docblock instanceof PHPDocblock) {
+            throw new Exception('setDocblock() is expecting either a string, array or an instance of Zend_CodeGenerator_Php_Docblock');
         }
 
         $this->_docblock = $docblock;
@@ -146,9 +188,31 @@ class Zend_CodeGenerator_Php_Class extends Zend_CodeGenerator_Php_Abstract
     }
 
     /**
+     * getNamespaceName()
+     * 
+     * @return string
+     */
+    public function getNamespaceName()
+    {
+        return $this->_namespaceName;
+    }
+    
+    /**
+     * setNamespaceName()
+     * 
+     * @param $namespaceName
+     * @return Zend\CodeGenerator\PHP\PHPClass
+     */
+    public function setNamespaceName($namespaceName)
+    {
+        $this->_namespaceName = $namespaceName;
+        return $this;
+    }
+    
+    /**
      * getDocblock()
      *
-     * @return Zend_CodeGenerator_Php_Docblock
+     * @return \Zend\CodeGenerator\PHPDocblock
      */
     public function getDocblock()
     {
@@ -159,7 +223,7 @@ class Zend_CodeGenerator_Php_Class extends Zend_CodeGenerator_Php_Abstract
      * setName()
      *
      * @param string $name
-     * @return Zend_CodeGenerator_Php_Class
+     * @return \Zend\CodeGenerator\PHP\PHPClass
      */
     public function setName($name)
     {
@@ -181,7 +245,7 @@ class Zend_CodeGenerator_Php_Class extends Zend_CodeGenerator_Php_Abstract
      * setAbstract()
      *
      * @param bool $isAbstract
-     * @return Zend_CodeGenerator_Php_Class
+     * @return \Zend\CodeGenerator\PHP\PHPClass
      */
     public function setAbstract($isAbstract)
     {
@@ -203,7 +267,7 @@ class Zend_CodeGenerator_Php_Class extends Zend_CodeGenerator_Php_Abstract
      * setExtendedClass()
      *
      * @param string $extendedClass
-     * @return Zend_CodeGenerator_Php_Class
+     * @return \Zend\CodeGenerator\PHP\PHPClass
      */
     public function setExtendedClass($extendedClass)
     {
@@ -225,7 +289,7 @@ class Zend_CodeGenerator_Php_Class extends Zend_CodeGenerator_Php_Abstract
      * setImplementedInterfaces()
      *
      * @param array $implementedInterfaces
-     * @return Zend_CodeGenerator_Php_Class
+     * @return \Zend\CodeGenerator\PHP\PHPClass
      */
     public function setImplementedInterfaces(Array $implementedInterfaces)
     {
@@ -247,7 +311,7 @@ class Zend_CodeGenerator_Php_Class extends Zend_CodeGenerator_Php_Abstract
      * setProperties()
      *
      * @param array $properties
-     * @return Zend_CodeGenerator_Php_Class
+     * @return \Zend\CodeGenerator\PHP\PHPClass
      */
     public function setProperties(Array $properties)
     {
@@ -261,22 +325,22 @@ class Zend_CodeGenerator_Php_Class extends Zend_CodeGenerator_Php_Abstract
     /**
      * setProperty()
      *
-     * @param array|Zend_CodeGenerator_Php_Property $property
-     * @return Zend_CodeGenerator_Php_Class
+     * @param array|\Zend\CodeGenerator\PHP\PHPProperty $property
+     * @return \Zend\CodeGenerator\PHP\PHPClass
      */
     public function setProperty($property)
     {
         if (is_array($property)) {
-            $property = new Zend_CodeGenerator_Php_Property($property);
+            $property = new PHPProperty($property);
             $propertyName = $property->getName();
-        } elseif ($property instanceof Zend_CodeGenerator_Php_Property) {
+        } elseif ($property instanceof PHPProperty) {
             $propertyName = $property->getName();
         } else {
-            throw new Zend_CodeGenerator_Php_Exception('setProperty() expects either an array of property options or an instance of Zend_CodeGenerator_Php_Property');
+            throw new Exception('setProperty() expects either an array of property options or an instance of Zend_CodeGenerator_Php_Property');
         }
 
         if (isset($this->_properties[$propertyName])) {
-            throw new Zend_CodeGenerator_Php_Exception('A property by name ' . $propertyName . ' already exists in this class.');
+            throw new Exception('A property by name ' . $propertyName . ' already exists in this class.');
         }
 
         $this->_properties[$propertyName] = $property;
@@ -297,7 +361,7 @@ class Zend_CodeGenerator_Php_Class extends Zend_CodeGenerator_Php_Abstract
      * getProperty()
      *
      * @param string $propertyName
-     * @return Zend_CodeGenerator_Php_Property
+     * @return \Zend\CodeGenerator\PHP\PHPProperty
      */
     public function getProperty($propertyName)
     {
@@ -324,7 +388,7 @@ class Zend_CodeGenerator_Php_Class extends Zend_CodeGenerator_Php_Abstract
      * setMethods()
      *
      * @param array $methods
-     * @return Zend_CodeGenerator_Php_Class
+     * @return \Zend\CodeGenerator\PHP\PHPClass
      */
     public function setMethods(Array $methods)
     {
@@ -337,22 +401,22 @@ class Zend_CodeGenerator_Php_Class extends Zend_CodeGenerator_Php_Abstract
     /**
      * setMethod()
      *
-     * @param array|Zend_CodeGenerator_Php_Method $method
-     * @return Zend_CodeGenerator_Php_Class
+     * @param array|\Zend\CodeGenerator\PHP\PHPMethod $method
+     * @return \Zend\CodeGenerator\PHP\PHPClass
      */
     public function setMethod($method)
     {
         if (is_array($method)) {
-            $method = new Zend_CodeGenerator_Php_Method($method);
+            $method = new PHPMethod($method);
             $methodName = $method->getName();
-        } elseif ($method instanceof Zend_CodeGenerator_Php_Method) {
+        } elseif ($method instanceof PHPMethod) {
             $methodName = $method->getName();
         } else {
-            throw new Zend_CodeGenerator_Php_Exception('setMethod() expects either an array of method options or an instance of Zend_CodeGenerator_Php_Method');
+            throw new Exception('setMethod() expects either an array of method options or an instance of Zend_CodeGenerator_Php_Method');
         }
 
         if (isset($this->_methods[$methodName])) {
-            throw new Zend_CodeGenerator_Php_Exception('A method by name ' . $methodName . ' already exists in this class.');
+            throw new Exception('A method by name ' . $methodName . ' already exists in this class.');
         }
 
         $this->_methods[$methodName] = $method;
@@ -373,7 +437,7 @@ class Zend_CodeGenerator_Php_Class extends Zend_CodeGenerator_Php_Abstract
      * getMethod()
      *
      * @param string $methodName
-     * @return Zend_CodeGenerator_Php_Method
+     * @return \Zend\CodeGenerator\PHP\PHPMethod
      */
     public function getMethod($methodName)
     {
@@ -444,15 +508,31 @@ class Zend_CodeGenerator_Php_Class extends Zend_CodeGenerator_Php_Abstract
             $output .= 'abstract ';
         }
 
-        $output .= 'class ' . $this->getName();
-
-        if (null !== ($ec = $this->_extendedClass)) {
-            $output .= ' extends ' . $ec;
+        $name = $this->getName();
+        
+        if ($this->_namespaceName && strpos($name, $this->_namespaceName) === 0) {
+            $output .= 'class ' . substr($name, strlen($this->_namespaceName)+1);
+        } else {
+            $output .= 'class ' . $name;
+        }
+        
+        if (null !== $this->_extendedClass) {
+            if ($this->_namespaceName && strpos($this->_extendedClass, $this->_namespaceName) === 0) {
+                $output .= ' extends ' . substr($this->_extendedClass, strlen($this->_namespaceName)+1);
+            } else {
+                $output .= ' extends ' . $this->_extendedClass;
+            }
         }
 
-        $implemented = $this->getImplementedInterfaces();
-        if (!empty($implemented)) {
-            $output .= ' implements ' . implode(', ', $implemented);
+        $implementedInterfaces = $this->getImplementedInterfaces();
+        if (!empty($implementedInterfaces)) {
+            $output .= ' implements ';
+            foreach ($implementedInterfaces as $iiIndex => $ii) {
+                if (strpos($ii, $this->_namespaceName) === 0) {
+                    $implementedInterfaces[$iiIndex] = substr($ii, strlen($this->_namespaceName)+1);
+                }
+            }
+            $output .= implode(', ', $implementedInterfaces);
         }
 
         $output .= self::LINE_FEED . '{' . self::LINE_FEED . self::LINE_FEED;
@@ -482,8 +562,8 @@ class Zend_CodeGenerator_Php_Class extends Zend_CodeGenerator_Php_Abstract
      */
     protected function _init()
     {
-        $this->_properties = new Zend_CodeGenerator_Php_Member_Container(Zend_CodeGenerator_Php_Member_Container::TYPE_PROPERTY);
-        $this->_methods = new Zend_CodeGenerator_Php_Member_Container(Zend_CodeGenerator_Php_Member_Container::TYPE_METHOD);
+        $this->_properties = new PHPMember\MemberContainer(PHPMember\MemberContainer::TYPE_PROPERTY);
+        $this->_methods = new PHPMember\MemberContainer(PHPMember\MemberContainer::TYPE_METHOD);
     }
 
 }

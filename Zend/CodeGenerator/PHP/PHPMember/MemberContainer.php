@@ -14,47 +14,47 @@
  *
  * @category   Zend
  * @package    Zend_CodeGenerator
- * @subpackage Php
+ * @subpackage PHP
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  * @version    $Id$
  */
 
 /**
- * A value-holder object for non-expressable parameter default values, such as null, booleans and empty array()
- *
- * @uses       Zend_CodeGenerator_Php_Exception
+ * @namespace
+ */
+namespace Zend\CodeGenerator\PHP\PHPMember;
+
+/**
  * @category   Zend
  * @package    Zend_CodeGenerator
- * @subpackage Php
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class Zend_CodeGenerator_Php_Parameter_DefaultValue
+class MemberContainer extends \ArrayObject
 {
-    /**
-     * @var string
+
+    /**#@+
+     * @param const string
      */
-    protected $_defaultValue = null;
+    const TYPE_PROPERTY = 'property';
+    const TYPE_METHOD   = 'method';
+    /**#@-*/
 
     /**
+     * @var const|string
+     */
+    protected $_type = self::TYPE_PROPERTY;
+
+    /**
+     * __construct()
      *
-     * @param string $defaultValue
-     * @throws Zend_CodeGenerator_Php_Exception
+     * @param const|string $type
      */
-    public function __construct($defaultValue)
+    public function __construct($type = self::TYPE_PROPERTY)
     {
-        if(!is_string($defaultValue)) {
-            throw new Zend_CodeGenerator_Php_Exception(
-                "Can only set a string as default value representation, ".
-                "but ".gettype($defaultValue)." was given."
-            );
-        }
-        $this->_defaultValue = $defaultValue;
+        $this->_type = $type;
+        parent::__construct(array(), self::ARRAY_AS_PROPS);
     }
 
-    public function __toString()
-    {
-        return $this->_defaultValue;
-    }
 }

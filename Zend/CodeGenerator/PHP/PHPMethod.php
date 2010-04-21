@@ -21,19 +21,24 @@
  */
 
 /**
- * @uses       Zend_CodeGenerator_Php_Docblock
- * @uses       Zend_CodeGenerator_Php_Exception
- * @uses       Zend_CodeGenerator_Php_Member_Abstract
- * @uses       Zend_CodeGenerator_Php_Parameter
+ * @namespace
+ */
+namespace Zend\CodeGenerator\PHP;
+
+/**
+ * @uses       \Zend\CodeGenerator\PHPDocblock
+ * @uses       \Zend\CodeGenerator\PHP\Exception
+ * @uses       \Zend\CodeGenerator\PHP\PHPMember\AbstractMember
+ * @uses       \Zend\CodeGenerator\PHP\PHPParameter
  * @category   Zend
  * @package    Zend_CodeGenerator
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class Zend_CodeGenerator_Php_Method extends Zend_CodeGenerator_Php_Member_Abstract
+class PHPMethod extends PHPMember\AbstractMember
 {
     /**
-     * @var Zend_CodeGenerator_Php_Docblock
+     * @var \Zend\CodeGenerator\PHPDocblock
      */
     protected $_docblock = null;
 
@@ -55,10 +60,10 @@ class Zend_CodeGenerator_Php_Method extends Zend_CodeGenerator_Php_Member_Abstra
     /**
      * fromReflection()
      *
-     * @param Zend_Reflection_Method $reflectionMethod
-     * @return Zend_CodeGenerator_Php_Method
+     * @param \Zend\Reflection\ReflectionMethod $reflectionMethod
+     * @return \Zend\CodeGenerator\PHP\PHPMethod
      */
-    public static function fromReflection(Zend_Reflection_Method $reflectionMethod)
+    public static function fromReflection(\Zend\Reflection\ReflectionMethod $reflectionMethod)
     {
         $method = new self();
 
@@ -66,7 +71,7 @@ class Zend_CodeGenerator_Php_Method extends Zend_CodeGenerator_Php_Member_Abstra
         $method->setSourceDirty(false);
 
         if ($reflectionMethod->getDocComment() != '') {
-            $method->setDocblock(Zend_CodeGenerator_Php_Docblock::fromReflection($reflectionMethod->getDocblock()));
+            $method->setDocblock(PHPDocblock::fromReflection($reflectionMethod->getDocblock()));
         }
 
         $method->setFinal($reflectionMethod->isFinal());
@@ -84,7 +89,7 @@ class Zend_CodeGenerator_Php_Method extends Zend_CodeGenerator_Php_Member_Abstra
         $method->setName($reflectionMethod->getName());
 
         foreach ($reflectionMethod->getParameters() as $reflectionParameter) {
-            $method->setParameter(Zend_CodeGenerator_Php_Parameter::fromReflection($reflectionParameter));
+            $method->setParameter(PHPParameter::fromReflection($reflectionParameter));
         }
 
         $method->setBody($reflectionMethod->getBody());
@@ -106,7 +111,7 @@ class Zend_CodeGenerator_Php_Method extends Zend_CodeGenerator_Php_Member_Abstra
      * setParameters()
      *
      * @param array $parameters
-     * @return Zend_CodeGenerator_Php_Method
+     * @return \Zend\CodeGenerator\PHP\PHPMethod
      */
     public function setParameters(Array $parameters)
     {
@@ -119,18 +124,18 @@ class Zend_CodeGenerator_Php_Method extends Zend_CodeGenerator_Php_Member_Abstra
     /**
      * setParameter()
      *
-     * @param Zend_CodeGenerator_Php_Parameter|array $parameter
-     * @return Zend_CodeGenerator_Php_Method
+     * @param \Zend\CodeGenerator\PHP\Parameter\Parameter|array $parameter
+     * @return \Zend\CodeGenerator\PHP\PHPMethod
      */
     public function setParameter($parameter)
     {
         if (is_array($parameter)) {
-            $parameter = new Zend_CodeGenerator_Php_Parameter($parameter);
+            $parameter = new PHPParameter($parameter);
             $parameterName = $parameter->getName();
-        } elseif ($parameter instanceof Zend_CodeGenerator_Php_Parameter) {
+        } elseif ($parameter instanceof PHPParameter) {
             $parameterName = $parameter->getName();
         } else {
-            throw new Zend_CodeGenerator_Php_Exception('setParameter() expects either an array of method options or an instance of Zend_CodeGenerator_Php_Parameter');
+            throw new Exception('setParameter() expects either an array of method options or an instance of Zend_CodeGenerator_Php_Parameter');
         }
 
         $this->_parameters[$parameterName] = $parameter;
@@ -140,7 +145,7 @@ class Zend_CodeGenerator_Php_Method extends Zend_CodeGenerator_Php_Member_Abstra
     /**
      * getParameters()
      *
-     * @return array Array of Zend_CodeGenerator_Php_Parameter
+     * @return array Array of \Zend\CodeGenerator\PHP\Parameter\Parameter
      */
     public function getParameters()
     {
@@ -151,7 +156,7 @@ class Zend_CodeGenerator_Php_Method extends Zend_CodeGenerator_Php_Member_Abstra
      * setBody()
      *
      * @param string $body
-     * @return Zend_CodeGenerator_Php_Method
+     * @return \Zend\CodeGenerator\PHP\PHPMethod
      */
     public function setBody($body)
     {

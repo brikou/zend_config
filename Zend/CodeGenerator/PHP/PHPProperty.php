@@ -21,15 +21,20 @@
  */
 
 /**
- * @uses       Zend_CodeGenerator_Php_Exception
- * @uses       Zend_CodeGenerator_Php_Member_Abstract
- * @uses       Zend_CodeGenerator_Php_Property_DefaultValue
+ * @namespace
+ */
+namespace Zend\CodeGenerator\PHP;
+
+/**
+ * @uses       \Zend\CodeGenerator\PHP\Exception
+ * @uses       \Zend\CodeGenerator\PHP\PHPMember\AbstractMember
+ * @uses       \Zend\CodeGenerator\PHP\PHPPropertyValue
  * @category   Zend
  * @package    Zend_CodeGenerator
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class Zend_CodeGenerator_Php_Property extends Zend_CodeGenerator_Php_Member_Abstract
+class PHPProperty extends PHPMember\AbstractMember
 {
 
     /**
@@ -45,10 +50,10 @@ class Zend_CodeGenerator_Php_Property extends Zend_CodeGenerator_Php_Member_Abst
     /**
      * fromReflection()
      *
-     * @param Zend_Reflection_Property $reflectionProperty
-     * @return Zend_CodeGenerator_Php_Property
+     * @param \Zend\Reflection\ReflectionProperty $reflectionProperty
+     * @return \Zend\CodeGenerator\PHP\PHPProperty
      */
-    public static function fromReflection(Zend_Reflection_Property $reflectionProperty)
+    public static function fromReflection(\Zend\Reflection\ReflectionProperty $reflectionProperty)
     {
         $property = new self();
 
@@ -59,7 +64,7 @@ class Zend_CodeGenerator_Php_Property extends Zend_CodeGenerator_Php_Member_Abst
         $property->setDefaultValue($allDefaultProperties[$reflectionProperty->getName()]);
 
         if ($reflectionProperty->getDocComment() != '') {
-            $property->setDocblock(Zend_CodeGenerator_Php_Docblock::fromReflection($reflectionProperty->getDocComment()));
+            $property->setDocblock(PHP\PHPDocblock::fromReflection($reflectionProperty->getDocComment()));
         }
 
         if ($reflectionProperty->isStatic()) {
@@ -83,7 +88,7 @@ class Zend_CodeGenerator_Php_Property extends Zend_CodeGenerator_Php_Member_Abst
      * setConst()
      *
      * @param bool $const
-     * @return Zend_CodeGenerator_Php_Property
+     * @return \Zend\CodeGenerator\PHP\PHPProperty
      */
     public function setConst($const)
     {
@@ -104,8 +109,8 @@ class Zend_CodeGenerator_Php_Property extends Zend_CodeGenerator_Php_Member_Abst
     /**
      * setDefaultValue()
      *
-     * @param Zend_CodeGenerator_Php_Property_DefaultValue|string|array $defaultValue
-     * @return Zend_CodeGenerator_Php_Property
+     * @param \Zend\CodeGenerator\PHP\PHPPropertyValue|string|array $defaultValue
+     * @return \Zend\CodeGenerator\PHP\PHPProperty
      */
     public function setDefaultValue($defaultValue)
     {
@@ -113,11 +118,11 @@ class Zend_CodeGenerator_Php_Property extends Zend_CodeGenerator_Php_Member_Abst
         if (is_array($defaultValue)
             && array_key_exists('value', $defaultValue)
             && array_key_exists('type', $defaultValue)) {
-            $defaultValue = new Zend_CodeGenerator_Php_Property_DefaultValue($defaultValue);
+            $defaultValue = new PHPPropertyValue($defaultValue);
         }
 
-        if (!($defaultValue instanceof Zend_CodeGenerator_Php_Property_DefaultValue)) {
-            $defaultValue = new Zend_CodeGenerator_Php_Property_DefaultValue(array('value' => $defaultValue));
+        if (!($defaultValue instanceof PHPPropertyValue)) {
+            $defaultValue = new PHPPropertyValue(array('value' => $defaultValue));
         }
 
         $this->_defaultValue = $defaultValue;
@@ -127,7 +132,7 @@ class Zend_CodeGenerator_Php_Property extends Zend_CodeGenerator_Php_Member_Abst
     /**
      * getDefaultValue()
      *
-     * @return Zend_CodeGenerator_Php_Property_DefaultValue
+     * @return \Zend\CodeGenerator\PHP\PHPPropertyValue
      */
     public function getDefaultValue()
     {
@@ -153,7 +158,7 @@ class Zend_CodeGenerator_Php_Property extends Zend_CodeGenerator_Php_Member_Abst
 
         if ($this->isConst()) {
             if ($defaultValue != null && !$defaultValue->isValidConstantType()) {
-                throw new Zend_CodeGenerator_Php_Exception('The property ' . $this->_name . ' is said to be '
+                throw new Exception('The property ' . $this->_name . ' is said to be '
                     . 'constant but does not have a valid constant value.');
             }
             $output .= $this->_indentation . 'const ' . $name . ' = '

@@ -21,13 +21,18 @@
  */
 
 /**
- * @uses       Zend_CodeGenerator_Abstract
+ * @namespace
+ */
+namespace Zend\CodeGenerator\PHP;
+
+/**
+ * @uses       \Zend\CodeGenerator\AbstractCodeGenerator
  * @category   Zend
  * @package    Zend_CodeGenerator
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-abstract class Zend_CodeGenerator_Php_Abstract extends Zend_CodeGenerator_Abstract
+abstract class AbstractPHP extends \Zend\CodeGenerator\AbstractCodeGenerator
 {
 
     /**
@@ -50,7 +55,7 @@ abstract class Zend_CodeGenerator_Php_Abstract extends Zend_CodeGenerator_Abstra
      * setSourceDirty()
      *
      * @param bool $isSourceDirty
-     * @return Zend_CodeGenerator_Php_Abstract
+     * @return \Zend\CodeGenerator\PHP\AbstractPHP
      */
     public function setSourceDirty($isSourceDirty = true)
     {
@@ -72,7 +77,7 @@ abstract class Zend_CodeGenerator_Php_Abstract extends Zend_CodeGenerator_Abstra
      * setIndentation()
      *
      * @param string|int $indentation
-     * @return Zend_CodeGenerator_Php_Abstract
+     * @return \Zend\CodeGenerator\PHP\AbstractPHP
      */
     public function setIndentation($indentation)
     {

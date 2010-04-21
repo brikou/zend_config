@@ -21,12 +21,18 @@
  */
 
 /**
+ * @namespace
+ */
+namespace Zend\CodeGenerator;
+use Zend\Config;
+
+/**
  * @category   Zend
  * @package    Zend_CodeGenerator
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-abstract class Zend_CodeGenerator_Abstract
+abstract class AbstractCodeGenerator
 {
 
     /**
@@ -49,7 +55,7 @@ abstract class Zend_CodeGenerator_Abstract
         $this->_init();
         if ($options != null) {
             // use Zend_Config objects if provided
-            if ($options instanceof Zend_Config) {
+            if ($options instanceof Config\Config) {
                 $options = $options->toArray();
             }
             // pass arrays to setOptions
@@ -63,10 +69,10 @@ abstract class Zend_CodeGenerator_Abstract
     /**
      * setConfig()
      *
-     * @param Zend_Config $config
-     * @return Zend_CodeGenerator_Abstract
+     * @param \Zend\Config\Config $config
+     * @return \Zend\CodeGenerator\AbstractCodeGenerator
      */
-    public function setConfig(Zend_Config $config)
+    public function setConfig(Config\Config $config)
     {
         $this->setOptions($config->toArray());
         return $this;
@@ -76,7 +82,7 @@ abstract class Zend_CodeGenerator_Abstract
      * setOptions()
      *
      * @param array $options
-     * @return Zend_CodeGenerator_Abstract
+     * @return \Zend\CodeGenerator\AbstractCodeGenerator
      */
     public function setOptions(Array $options)
     {
@@ -141,7 +147,15 @@ abstract class Zend_CodeGenerator_Abstract
      */
     final public function __toString()
     {
-        return $this->generate();
+        $output = '';
+        
+        try {
+            $output = $this->generate();
+        } catch (\Exception $e) {
+            trigger_error('An exception was raised when attempting to cast this object to a string', E_USER_ERROR);
+        }
+        
+        return $output;
     }
 
 }
