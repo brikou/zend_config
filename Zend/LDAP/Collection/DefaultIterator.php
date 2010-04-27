@@ -13,25 +13,31 @@
  * to license@zend.com so we can send you a copy immediately.
  *
  * @category   Zend
- * @package    Zend_Ldap
+ * @package    Zend_LDAP
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  * @version    $Id$
  */
 
 /**
- * Zend_Ldap_Collection_Iterator_Default is the default collection iterator implementation
+ * @namespace
+ */
+namespace Zend\LDAP\Collection;
+use Zend\LDAP;
+
+/**
+ * Zend_LDAP_Collection_Iterator_Default is the default collection iterator implementation
  * using ext/ldap
  *
  * @uses       Countable
  * @uses       Iterator
- * @uses       Zend_Ldap_Exception
+ * @uses       \Zend\LDAP\Exception
  * @category   Zend
- * @package    Zend_Ldap
+ * @package    Zend_LDAP
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class Zend_Ldap_Collection_Iterator_Default implements Iterator, Countable
+class DefaultIterator implements \Iterator, \Countable
 {
     const ATTRIBUTE_TO_LOWER  = 1;
     const ATTRIBUTE_TO_UPPER  = 2;
@@ -40,7 +46,7 @@ class Zend_Ldap_Collection_Iterator_Default implements Iterator, Countable
     /**
      * LDAP Connection
      *
-     * @var Zend_Ldap
+     * @var \Zend\LDAP\LDAP
      */
     protected $_ldap = null;
 
@@ -75,17 +81,17 @@ class Zend_Ldap_Collection_Iterator_Default implements Iterator, Countable
     /**
      * Constructor.
      *
-     * @param  Zend_Ldap $ldap
+     * @param  \Zend\LDAP\LDAP $ldap
      * @param  resource  $resultId
      * @return void
      */
-    public function __construct(Zend_Ldap $ldap, $resultId)
+    public function __construct(LDAP\LDAP $ldap, $resultId)
     {
         $this->_ldap = $ldap;
         $this->_resultId = $resultId;
         $this->_itemCount = @ldap_count_entries($ldap->getResource(), $resultId);
         if ($this->_itemCount === false) {
-            throw new Zend_Ldap_Exception($this->_ldap, 'counting entries');
+            throw new LDAP\Exception($this->_ldap, 'counting entries');
         }
     }
 
@@ -113,9 +119,9 @@ class Zend_Ldap_Collection_Iterator_Default implements Iterator, Countable
     /**
      * Gets the current LDAP connection.
      *
-     * @return Zend_Ldap
+     * @return \Zend\LDAP\LDAP
      */
-    public function getLdap()
+    public function getLDAP()
     {
         return $this->_ldap;
     }
@@ -124,14 +130,14 @@ class Zend_Ldap_Collection_Iterator_Default implements Iterator, Countable
      * Sets the attribute name treatment.
      *
      * Can either be one of the following constants
-     * - Zend_Ldap_Collection_Iterator_Default::ATTRIBUTE_TO_LOWER
-     * - Zend_Ldap_Collection_Iterator_Default::ATTRIBUTE_TO_UPPER
-     * - Zend_Ldap_Collection_Iterator_Default::ATTRIBUTE_NATIVE
+     * - Zend_LDAP_Collection_Iterator_Default::ATTRIBUTE_TO_LOWER
+     * - Zend_LDAP_Collection_Iterator_Default::ATTRIBUTE_TO_UPPER
+     * - Zend_LDAP_Collection_Iterator_Default::ATTRIBUTE_NATIVE
      * or a valid callback accepting the attribute's name as it's only
      * argument and returning the new attribute's name.
      *
      * @param  integer|callback $attributeNameTreatment
-     * @return Zend_Ldap_Collection_Iterator_Default Provides a fluent interface
+     * @return \Zend\LDAP\Collection\DefaultIterator Provides a fluent interface
      */
     public function setAttributeNameTreatment($attributeNameTreatment)
     {
@@ -186,7 +192,7 @@ class Zend_Ldap_Collection_Iterator_Default implements Iterator, Countable
      * Implements Iterator
      *
      * @return array|null
-     * @throws Zend_Ldap_Exception
+     * @throws \Zend\LDAP\Exception
      */
     public function current()
     {
@@ -241,7 +247,7 @@ class Zend_Ldap_Collection_Iterator_Default implements Iterator, Countable
         if (is_resource($this->_current)) {
             $currentDn = @ldap_get_dn($this->_ldap->getResource(), $this->_current);
             if ($currentDn === false) {
-                throw new Zend_Ldap_Exception($this->_ldap, 'getting dn');
+                throw new LDAP\Exception($this->_ldap, 'getting dn');
             }
             return $currentDn;
         } else {
@@ -253,7 +259,7 @@ class Zend_Ldap_Collection_Iterator_Default implements Iterator, Countable
      * Move forward to next result item
      * Implements Iterator
      *
-     * @throws Zend_Ldap_Exception
+     * @throws \Zend\LDAP\Exception
      */
     public function next()
     {
@@ -261,11 +267,11 @@ class Zend_Ldap_Collection_Iterator_Default implements Iterator, Countable
             $this->_current = @ldap_next_entry($this->_ldap->getResource(), $this->_current);
             if ($this->_current === false) {
                 $msg = $this->_ldap->getLastError($code);
-                if ($code === Zend_Ldap_Exception::LDAP_SIZELIMIT_EXCEEDED) {
+                if ($code === LDAP\Exception::LDAP_SIZELIMIT_EXCEEDED) {
                     // we have reached the size limit enforced by the server
                     return;
-                } else if ($code > Zend_Ldap_Exception::LDAP_SUCCESS) {
-                     throw new Zend_Ldap_Exception($this->_ldap, 'getting next entry (' . $msg . ')');
+                } else if ($code > LDAP\Exception::LDAP_SUCCESS) {
+                     throw new LDAP\Exception($this->_ldap, 'getting next entry (' . $msg . ')');
                 }
             }
         }
@@ -275,15 +281,15 @@ class Zend_Ldap_Collection_Iterator_Default implements Iterator, Countable
      * Rewind the Iterator to the first result item
      * Implements Iterator
      *
-     * @throws Zend_Ldap_Exception
+     * @throws \Zend\LDAP\Exception
      */
     public function rewind()
     {
         if (is_resource($this->_resultId)) {
             $this->_current = @ldap_first_entry($this->_ldap->getResource(), $this->_resultId);
             if ($this->_current === false &&
-                    $this->_ldap->getLastErrorCode() > Zend_Ldap_Exception::LDAP_SUCCESS) {
-                throw new Zend_Ldap_Exception($this->_ldap, 'getting first entry');
+                    $this->_ldap->getLastErrorCode() > LDAP\Exception::LDAP_SUCCESS) {
+                throw new LDAP\Exception($this->_ldap, 'getting first entry');
             }
         }
     }

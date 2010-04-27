@@ -13,28 +13,33 @@
  * to license@zend.com so we can send you a copy immediately.
  *
  * @category   Zend
- * @package    Zend_Ldap
+ * @package    Zend_LDAP
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  * @version    $Id$
  */
 
 /**
- * Zend_Ldap_Collection wraps a list of LDAP entries.
+ * @namespace
+ */
+namespace Zend\LDAP\Collection;
+
+/**
+ * Zend_LDAP_Collection wraps a list of LDAP entries.
  *
  * @uses       Countable
  * @uses       Iterator
  * @category   Zend
- * @package    Zend_Ldap
+ * @package    Zend_LDAP
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class Zend_Ldap_Collection implements Iterator, Countable
+class Collection implements \Iterator, \Countable
 {
     /**
      * Iterator
      *
-     * @var Zend_Ldap_Collection_Iterator_Default
+     * @var \Zend\LDAP\Collection\DefaultIterator
      */
     protected $_iterator = null;
 
@@ -55,9 +60,9 @@ class Zend_Ldap_Collection implements Iterator, Countable
     /**
      * Constructor.
      *
-     * @param Zend_Ldap_Collection_Iterator_Default $iterator
+     * @param \Zend\LDAP\Collection\DefaultIterator $iterator
      */
-    public function __construct(Zend_Ldap_Collection_Iterator_Default $iterator)
+    public function __construct(DefaultIterator $iterator)
     {
         $this->_iterator = $iterator;
     }
@@ -109,7 +114,7 @@ class Zend_Ldap_Collection implements Iterator, Countable
     /**
      * Returns the underlying iterator
      *
-     * @return Zend_Ldap_Collection_Iterator_Default
+     * @return \Zend\LDAP\Collection\DefaultIterator
      */
     public function getInnerIterator()
     {
@@ -132,7 +137,7 @@ class Zend_Ldap_Collection implements Iterator, Countable
      * Implements Iterator
      *
      * @return array|null
-     * @throws Zend_Ldap_Exception
+     * @throws \Zend\LDAP\Exception
      */
     public function current()
     {
@@ -203,7 +208,7 @@ class Zend_Ldap_Collection implements Iterator, Countable
      * Move forward to next result item
      * Implements Iterator
      *
-     * @throws Zend_Ldap_Exception
+     * @throws \Zend\LDAP\Exception
      */
     public function next()
     {
@@ -215,7 +220,7 @@ class Zend_Ldap_Collection implements Iterator, Countable
      * Rewind the Iterator to the first result item
      * Implements Iterator
      *
-     * @throws Zend_Ldap_Exception
+     * @throws \Zend\LDAP\Exception
      */
     public function rewind()
     {

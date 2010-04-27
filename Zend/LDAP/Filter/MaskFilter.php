@@ -14,7 +14,7 @@
  *
  * @category   Zend
  * @package    Zend_LDAP
- * @subpackage Node
+ * @subpackage Filter
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  * @version    $Id$
@@ -23,42 +23,44 @@
 /**
  * @namespace
  */
-namespace Zend\LDAP\Node;
+namespace Zend\LDAP\Filter;
 
 /**
- * Zend_LDAP_Node_Collection provides a collecion of nodes.
+ * Zend_LDAP_Filter_Mask provides a simple string filter to be used with a mask.
  *
- * @uses       \Zend\LDAP\Collection\Collection
- * @uses       \Zend\LDAP\Node\Node
+ * @uses       \Zend\LDAP\Filter\StringFilter
  * @category   Zend
  * @package    Zend_LDAP
- * @subpackage Node
+ * @subpackage Filter
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class Collection extends \Zend\LDAP\Collection\Collection
+class MaskFilter extends StringFilter
 {
     /**
-     * Creates the data structure for the given entry data
+     * Creates a Zend_LDAP_Filter_String.
      *
-     * @param  array $data
-     * @return \Zend\LDAP\Node\Node
+     * @param string $mask
+     * @param string $value,...
      */
-    protected function _createEntry(array $data)
+    public function __construct($mask, $value)
     {
-        $node = Node::fromArray($data, true);
-        $node->attachLDAP($this->_iterator->getLDAP());
-        return $node;
+        $args = func_get_args();
+        array_shift($args);
+        for ($i = 0; $i<count($args); $i++) {
+            $args[$i] = self::escapeValue($args[$i]);
+        }
+        $filter = vsprintf($mask, $args);
+        parent::__construct($filter);
     }
 
     /**
-     * Return the child key (DN).
-     * Implements Iterator and RecursiveIterator
+     * Returns a string representation of the filter.
      *
      * @return string
      */
-    public function key()
+    public function toString()
     {
-        return $this->_iterator->key();
+        return $this->_filter;
     }
 }

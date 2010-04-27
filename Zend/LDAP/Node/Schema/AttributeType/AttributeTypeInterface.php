@@ -13,49 +13,68 @@
  * to license@zend.com so we can send you a copy immediately.
  *
  * @category   Zend
- * @package    Zend_Ldap
- * @subpackage Filter
+ * @package    Zend_LDAP
+ * @subpackage Schema
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  * @version    $Id$
  */
 
 /**
- * Zend_Ldap_Filter_String provides a simple custom string filter.
+ * @namespace
+ */
+namespace Zend\LDAP\Node\Schema\AttributeType;
+
+/**
+ * Zend_LDAP_Node_Schema_AttributeType_Interface provides a contract for schema attribute-types.
  *
- * @uses       Zend_Ldap_Filter_Abstract
  * @category   Zend
- * @package    Zend_Ldap
- * @subpackage Filter
+ * @package    Zend_LDAP
+ * @subpackage Schema
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class Zend_Ldap_Filter_String extends Zend_Ldap_Filter_Abstract
+interface AttributeTypeInterface
 {
     /**
-     * The filter.
-     *
-     * @var string
-     */
-    protected $_filter;
-
-    /**
-     * Creates a Zend_Ldap_Filter_String.
-     *
-     * @param string $filter
-     */
-    public function __construct($filter)
-    {
-        $this->_filter = $filter;
-    }
-
-    /**
-     * Returns a string representation of the filter.
+     * Gets the attribute name
      *
      * @return string
      */
-    public function toString()
-    {
-        return '(' . $this->_filter . ')';
-    }
+    public function getName();
+
+    /**
+     * Gets the attribute OID
+     *
+     * @return string
+     */
+    public function getOid();
+
+    /**
+     * Gets the attribute syntax
+     *
+     * @return string
+     */
+    public function getSyntax();
+
+    /**
+     * Gets the attribute maximum length
+     *
+     * @return int|null
+     */
+    public function getMaxLength();
+
+    /**
+     * Returns if the attribute is single-valued.
+     *
+     * @return boolean
+     */
+    public function isSingleValued();
+
+    /**
+     * Gets the attribute description
+     *
+     * @return string
+     */
+    public function getDescription();
 }

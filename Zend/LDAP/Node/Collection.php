@@ -13,49 +13,52 @@
  * to license@zend.com so we can send you a copy immediately.
  *
  * @category   Zend
- * @package    Zend_Ldap
- * @subpackage Filter
+ * @package    Zend_LDAP
+ * @subpackage Node
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  * @version    $Id$
  */
 
 /**
- * Zend_Ldap_Filter_Mask provides a simple string filter to be used with a mask.
+ * @namespace
+ */
+namespace Zend\LDAP\Node;
+
+/**
+ * Zend_LDAP_Node_Collection provides a collecion of nodes.
  *
- * @uses       Zend_Ldap_Filter_String
+ * @uses       \Zend\LDAP\Collection\Collection
+ * @uses       \Zend\LDAP\Node\Node
  * @category   Zend
- * @package    Zend_Ldap
- * @subpackage Filter
+ * @package    Zend_LDAP
+ * @subpackage Node
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class Zend_Ldap_Filter_Mask extends Zend_Ldap_Filter_String
+class Collection extends \Zend\LDAP\Collection\Collection
 {
     /**
-     * Creates a Zend_Ldap_Filter_String.
+     * Creates the data structure for the given entry data
      *
-     * @param string $mask
-     * @param string $value,...
+     * @param  array $data
+     * @return \Zend\LDAP\Node\Node
      */
-    public function __construct($mask, $value)
+    protected function _createEntry(array $data)
     {
-        $args = func_get_args();
-        array_shift($args);
-        for ($i = 0; $i<count($args); $i++) {
-            $args[$i] = self::escapeValue($args[$i]);
-        }
-        $filter = vsprintf($mask, $args);
-        parent::__construct($filter);
+        $node = Node::fromArray($data, true);
+        $node->attachLDAP($this->_iterator->getLDAP());
+        return $node;
     }
 
     /**
-     * Returns a string representation of the filter.
+     * Return the child key (DN).
+     * Implements Iterator and RecursiveIterator
      *
      * @return string
      */
-    public function toString()
+    public function key()
     {
-        return $this->_filter;
+        return $this->_iterator->key();
     }
 }

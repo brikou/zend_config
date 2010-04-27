@@ -13,7 +13,7 @@
  * to license@zend.com so we can send you a copy immediately.
  *
  * @category   Zend
- * @package    Zend_Ldap
+ * @package    Zend_LDAP
  * @subpackage Node
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
@@ -21,20 +21,26 @@
  */
 
 /**
- * Zend_Ldap_Node_Abstract provides a bas eimplementation for LDAP nodes
+ * @namespace
+ */
+namespace Zend\LDAP\Node;
+use Zend\LDAP;
+
+/**
+ * Zend_LDAP_Node_Abstract provides a bas eimplementation for LDAP nodes
  *
  * @uses       ArrayAccess
  * @uses       BadMethodCallException
  * @uses       Countable
- * @uses       Zend_Ldap_Attribute
- * @uses       Zend_Ldap_Dn
+ * @uses       \Zend\LDAP\Attribute
+ * @uses       \Zend\LDAP\DN
  * @category   Zend
- * @package    Zend_Ldap
+ * @package    Zend_LDAP
  * @subpackage Node
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-abstract class Zend_Ldap_Node_Abstract implements ArrayAccess, Countable
+abstract class AbstractNode implements \ArrayAccess, \Countable
 {
     protected static $_systemAttributes=array('createtimestamp', 'creatorsname',
         'entrycsn', 'entrydn', 'entryuuid', 'hassubordinates', 'modifiersname',
@@ -45,7 +51,7 @@ abstract class Zend_Ldap_Node_Abstract implements ArrayAccess, Countable
     /**
      * Holds the node's DN.
      *
-     * @var Zend_Ldap_Dn
+     * @var \Zend\LDAP\DN
      */
     protected $_dn;
 
@@ -61,11 +67,11 @@ abstract class Zend_Ldap_Node_Abstract implements ArrayAccess, Countable
      *
      * Constructor is protected to enforce the use of factory methods.
      *
-     * @param  Zend_Ldap_Dn $dn
+     * @param  \Zend\LDAP\DN $dn
      * @param  array        $data
      * @param  boolean      $fromDataSource
      */
-    protected function __construct(Zend_Ldap_Dn $dn, array $data, $fromDataSource)
+    protected function __construct(LDAP\DN $dn, array $data, $fromDataSource)
     {
         $this->_dn = $dn;
         $this->_loadData($data, $fromDataSource);
@@ -74,7 +80,7 @@ abstract class Zend_Ldap_Node_Abstract implements ArrayAccess, Countable
     /**
      * @param  array   $data
      * @param  boolean $fromDataSource
-     * @throws Zend_Ldap_Exception
+     * @throws \Zend\LDAP\Exception
      */
     protected function _loadData(array $data, $fromDataSource)
     {
@@ -90,11 +96,11 @@ abstract class Zend_Ldap_Node_Abstract implements ArrayAccess, Countable
      *
      * This is an online method.
      *
-     * @param  Zend_Ldap $ldap
-     * @return Zend_Ldap_Node_Abstract Provides a fluid interface
-     * @throws Zend_Ldap_Exception
+     * @param  \Zend\LDAP\LDAP $ldap
+     * @return \Zend\LDAP\Node\AbstractNode Provides a fluid interface
+     * @throws \Zend\LDAP\Exception
      */
-    public function reload(Zend_Ldap $ldap = null)
+    public function reload(LDAP\LDAP $ldap = null)
     {
         if ($ldap !== null) {
             $data = $ldap->getEntry($this->_getDn(), array('*', '+'), true);
@@ -104,11 +110,11 @@ abstract class Zend_Ldap_Node_Abstract implements ArrayAccess, Countable
     }
 
     /**
-     * Gets the DN of the current node as a Zend_Ldap_Dn.
+     * Gets the DN of the current node as a Zend_LDAP_Dn.
      *
      * This is an offline method.
      *
-     * @return Zend_Ldap_Dn
+     * @return \Zend\LDAP\DN
      */
     protected function _getDn()
     {
@@ -116,12 +122,12 @@ abstract class Zend_Ldap_Node_Abstract implements ArrayAccess, Countable
     }
 
     /**
-     * Gets the DN of the current node as a Zend_Ldap_Dn.
+     * Gets the DN of the current node as a Zend_LDAP_Dn.
      * The method returns a clone of the node's DN to prohibit modification.
      *
      * This is an offline method.
      *
-     * @return Zend_Ldap_Dn
+     * @return \Zend\LDAP\DN
      */
     public function getDn()
     {
@@ -310,7 +316,7 @@ abstract class Zend_Ldap_Node_Abstract implements ArrayAccess, Countable
      */
     public function attributeHasValue($attribName, $value)
     {
-        return Zend_Ldap_Attribute::attributeHasValue($this->_currentData, $attribName, $value);
+        return LDAP\Attribute::attributeHasValue($this->_currentData, $attribName, $value);
     }
 
     /**
@@ -321,7 +327,7 @@ abstract class Zend_Ldap_Node_Abstract implements ArrayAccess, Countable
      * @param  string  $name
      * @param  integer $index
      * @return mixed
-     * @throws Zend_Ldap_Exception
+     * @throws \Zend\LDAP\Exception
      */
     public function getAttribute($name, $index = null)
     {
@@ -329,7 +335,7 @@ abstract class Zend_Ldap_Node_Abstract implements ArrayAccess, Countable
             return $this->getDnString();
         }
         else {
-            return Zend_Ldap_Attribute::getAttribute($this->_currentData, $name, $index);
+            return LDAP\Attribute::getAttribute($this->_currentData, $name, $index);
         }
     }
 
@@ -341,11 +347,11 @@ abstract class Zend_Ldap_Node_Abstract implements ArrayAccess, Countable
      * @param  string  $name
      * @param  integer $index
      * @return array|integer
-     * @throws Zend_Ldap_Exception
+     * @throws \Zend\LDAP\Exception
      */
     public function getDateTimeAttribute($name, $index = null)
     {
-        return Zend_Ldap_Attribute::getDateTimeAttribute($this->_currentData, $name, $index);
+        return LDAP\Attribute::getDateTimeAttribute($this->_currentData, $name, $index);
     }
 
     /**
@@ -360,7 +366,7 @@ abstract class Zend_Ldap_Node_Abstract implements ArrayAccess, Countable
      */
     public function __set($name, $value)
     {
-        throw new BadMethodCallException();
+        throw new \BadMethodCallException();
     }
 
     /**
@@ -370,7 +376,7 @@ abstract class Zend_Ldap_Node_Abstract implements ArrayAccess, Countable
      *
      * @param  string $name
      * @return array
-     * @throws Zend_Ldap_Exception
+     * @throws \Zend\LDAP\Exception
      */
     public function __get($name)
     {
@@ -390,7 +396,7 @@ abstract class Zend_Ldap_Node_Abstract implements ArrayAccess, Countable
      */
     public function __unset($name)
     {
-        throw new BadMethodCallException();
+        throw new \BadMethodCallException();
     }
 
     /**
@@ -419,7 +425,7 @@ abstract class Zend_Ldap_Node_Abstract implements ArrayAccess, Countable
      */
     public function offsetSet($name, $value)
     {
-        throw new BadMethodCallException();
+        throw new \BadMethodCallException();
     }
 
     /**
@@ -430,7 +436,7 @@ abstract class Zend_Ldap_Node_Abstract implements ArrayAccess, Countable
      *
      * @param  string $name
      * @return array
-     * @throws Zend_Ldap_Exception
+     * @throws \Zend\LDAP\Exception
      */
     public function offsetGet($name)
     {
@@ -451,7 +457,7 @@ abstract class Zend_Ldap_Node_Abstract implements ArrayAccess, Countable
      */
     public function offsetUnset($name)
     {
-        throw new BadMethodCallException();
+        throw new \BadMethodCallException();
     }
 
     /**

@@ -13,7 +13,7 @@
  * to license@zend.com so we can send you a copy immediately.
  *
  * @category   Zend
- * @package    Zend_Ldap
+ * @package    Zend_LDAP
  * @subpackage Filter
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
@@ -21,19 +21,25 @@
  */
 
 /**
- * Zend_Ldap_Filter_Abstract provides a base implementation for filters.
+ * @namespace
+ */
+namespace Zend\LDAP\Filter;
+use Zend\LDAP;
+
+/**
+ * Zend_LDAP_Filter_Abstract provides a base implementation for filters.
  *
- * @uses       Zend_Ldap_Converter
- * @uses       Zend_Ldap_Filter_And
- * @uses       Zend_Ldap_Filter_Not
- * @uses       Zend_Ldap_Filter_Or
+ * @uses       \Zend\LDAP\Converter
+ * @uses       \Zend\LDAP\Filter\AndFilter
+ * @uses       \Zend\LDAP\Filter\NotFilter
+ * @uses       \Zend\LDAP\Filter\OrFilter
  * @category   Zend
- * @package    Zend_Ldap
+ * @package    Zend_LDAP
  * @subpackage Filter
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-abstract class Zend_Ldap_Filter_Abstract
+abstract class AbstractFilter
 {
     /**
      * Returns a string representation of the filter.
@@ -56,37 +62,37 @@ abstract class Zend_Ldap_Filter_Abstract
     /**
      * Negates the filter.
      *
-     * @return Zend_Ldap_Filter_Abstract
+     * @return \Zend\LDAP\Filter\AbstractFilter
      */
     public function negate()
     {
-        return new Zend_Ldap_Filter_Not($this);
+        return new NotFilter($this);
     }
 
     /**
      * Creates an 'and' filter.
      *
-     * @param  Zend_Ldap_Filter_Abstract $filter,...
-     * @return Zend_Ldap_Filter_And
+     * @param  \Zend\LDAP\Filter\AbstractFilter $filter,...
+     * @return \Zend\LDAP\Filter\AndFilter
      */
     public function addAnd($filter)
     {
         $fa = func_get_args();
         $args = array_merge(array($this), $fa);
-        return new Zend_Ldap_Filter_And($args);
+        return new AndFilter($args);
     }
 
     /**
      * Creates an 'or' filter.
      *
-     * @param  Zend_Ldap_Filter_Abstract $filter,...
-     * @return Zend_Ldap_Filter_Or
+     * @param  \Zend\LDAP\Filter\AbstractFilter $filter,...
+     * @return \Zend\LDAP\Filter\OrFilter
      */
     public function addOr($filter)
     {
         $fa = func_get_args();
         $args = array_merge(array($this), $fa);
-        return new Zend_Ldap_Filter_Or($args);
+        return new OrFilter($args);
     }
 
     /**
@@ -109,8 +115,10 @@ abstract class Zend_Ldap_Filter_Abstract
             // Escaping of filter meta characters
             $val = str_replace(array('\\', '*', '(', ')'), array('\5c', '\2a', '\28', '\29'), $val);
             // ASCII < 32 escaping
-            $val = Zend_Ldap_Converter::ascToHex32($val);
-            if (null === $val) $val = '\0';  // apply escaped "null" if string is empty
+            $val = LDAP\Converter::ascToHex32($val);
+            if (null === $val) {
+                $val = '\0';  // apply escaped "null" if string is empty
+            }
             $values[$key] = $val;
         }
         return (count($values) == 1) ? $values[0] : $values;
@@ -132,7 +140,7 @@ abstract class Zend_Ldap_Filter_Abstract
         if (!is_array($values)) $values = array($values);
         foreach ($values as $key => $value) {
             // Translate hex code into ascii
-            $values[$key] = Zend_Ldap_Converter::hex32ToAsc($value);
+            $values[$key] = LDAP\Converter::hex32ToAsc($value);
         }
         return (count($values) == 1) ? $values[0] : $values;
     }

@@ -13,7 +13,7 @@
  * to license@zend.com so we can send you a copy immediately.
  *
  * @category   Zend
- * @package    Zend_Ldap
+ * @package    Zend_LDAP
  * @subpackage Filter
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
@@ -21,18 +21,23 @@
  */
 
 /**
- * Zend_Ldap_Filter_Logical provides a base implementation for a grouping filter.
+ * @namespace
+ */
+namespace Zend\LDAP\Filter;
+
+/**
+ * Zend_LDAP_Filter_Logical provides a base implementation for a grouping filter.
  *
- * @uses       Zend_Ldap_Filter_Abstract
- * @uses       Zend_Ldap_Filter_Exception
- * @uses       Zend_Ldap_Filter_String
+ * @uses       \Zend\LDAP\Filter\AbstractFilter
+ * @uses       \Zend\LDAP\Filter\Exception
+ * @uses       \Zend\LDAP\Filter\StringFilter
  * @category   Zend
- * @package    Zend_Ldap
+ * @package    Zend_LDAP
  * @subpackage Filter
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-abstract class Zend_Ldap_Filter_Logical extends Zend_Ldap_Filter_Abstract
+abstract class LogicalFilter extends AbstractFilter
 {
     const TYPE_AND = '&';
     const TYPE_OR  = '|';
@@ -60,9 +65,9 @@ abstract class Zend_Ldap_Filter_Logical extends Zend_Ldap_Filter_Abstract
     protected function __construct(array $subfilters, $symbol)
     {
         foreach ($subfilters as $key => $s) {
-            if (is_string($s)) $subfilters[$key] = new Zend_Ldap_Filter_String($s);
-            else if (!($s instanceof Zend_Ldap_Filter_Abstract)) {
-                throw new Zend_Ldap_Filter_Exception('Only strings or Zend_Ldap_Filter_Abstract allowed.');
+            if (is_string($s)) $subfilters[$key] = new StringFilter($s);
+            else if (!($s instanceof AbstractFilter)) {
+                throw new Exception('Only strings or Zend\LDAP\Filter\AbstractFilter allowed.');
             }
         }
         $this->_subfilters = $subfilters;
@@ -72,10 +77,10 @@ abstract class Zend_Ldap_Filter_Logical extends Zend_Ldap_Filter_Abstract
     /**
      * Adds a filter to this grouping filter.
      *
-     * @param  Zend_Ldap_Filter_Abstract $filter
-     * @return Zend_Ldap_Filter_Logical
+     * @param  \Zend\LDAP\Filter\AbstractFilter $filter
+     * @return \Zend\LDAP\Filter\LogicalFilter
      */
-    public function addFilter(Zend_Ldap_Filter_Abstract $filter)
+    public function addFilter(AbstractFilter $filter)
     {
         $new = clone $this;
         $new->_subfilters[] = $filter;

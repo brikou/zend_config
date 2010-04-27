@@ -13,7 +13,7 @@
  * to license@zend.com so we can send you a copy immediately.
  *
  * @category   Zend
- * @package    Zend_Ldap
+ * @package    Zend_LDAP
  * @subpackage Filter
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
@@ -21,24 +21,56 @@
  */
 
 /**
- * Zend_Ldap_Filter_Or provides an 'or' filter.
+ * @namespace
+ */
+namespace Zend\LDAP\Filter;
+
+/**
+ * Zend_LDAP_Filter_Not provides a negation filter.
  *
- * @uses       Zend_Ldap_Filter_Logical
+ * @uses       \Zend\LDAP\Filter\AbstractFilter
  * @category   Zend
- * @package    Zend_Ldap
+ * @package    Zend_LDAP
  * @subpackage Filter
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class Zend_Ldap_Filter_Or extends Zend_Ldap_Filter_Logical
+class NotFilter extends AbstractFilter
 {
     /**
-     * Creates an 'or' grouping filter.
+     * The underlying filter.
      *
-     * @param array $subfilters
+     * @var \Zend\LDAP\Filter\AbstractFilter
      */
-    public function __construct(array $subfilters)
+    private $_filter;
+
+    /**
+     * Creates a Zend_LDAP_Filter_Not.
+     *
+     * @param \Zend\LDAP\Filter\AbstractFilter $filter
+     */
+    public function __construct(AbstractFilter $filter)
     {
-        parent::__construct($subfilters, self::TYPE_OR);
+        $this->_filter = $filter;
+    }
+
+    /**
+     * Negates the filter.
+     *
+     * @return \Zend\LDAP\Filter\AbstractFilter
+     */
+    public function negate()
+    {
+        return $this->_filter;
+    }
+
+    /**
+     * Returns a string representation of the filter.
+     *
+     * @return string
+     */
+    public function toString()
+    {
+        return '(!' . $this->_filter->toString() . ')';
     }
 }

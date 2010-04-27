@@ -13,7 +13,7 @@
  * to license@zend.com so we can send you a copy immediately.
  *
  * @category   Zend
- * @package    Zend_Ldap
+ * @package    Zend_LDAP
  * @subpackage RootDSE
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
@@ -21,20 +21,26 @@
  */
 
 /**
- * Zend_Ldap_Node_RootDse provides a simple data-container for the RootDSE node.
+ * @namespace
+ */
+namespace Zend\LDAP\Node\RootDSE;
+use Zend\LDAP;
+
+/**
+ * Zend_LDAP_Node_RootDse provides a simple data-container for the RootDSE node.
  *
- * @uses       Zend_Ldap_Dn
- * @uses       Zend_Ldap_Node_Abstract
- * @uses       Zend_Ldap_Node_RootDse_ActiveDirectory
- * @uses       Zend_Ldap_Node_RootDse_eDirectory
- * @uses       Zend_Ldap_Node_RootDse_OpenLdap
+ * @uses       \Zend\LDAP\DN
+ * @uses       \Zend\LDAP\Node\AbstractNode
+ * @uses       \Zend\LDAP\Node\RootDSE\ActiveDirectory
+ * @uses       \Zend\LDAP\Node\RootDSE\eDirectory
+ * @uses       \Zend\LDAP\Node\RootDSE\OpenLDAP
  * @category   Zend
- * @package    Zend_Ldap
+ * @package    Zend_LDAP
  * @subpackage RootDSE
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class Zend_Ldap_Node_RootDse extends Zend_Ldap_Node_Abstract
+class RootDSE extends LDAP\Node\AbstractNode
 {
     const SERVER_TYPE_GENERIC         = 1;
     const SERVER_TYPE_OPENLDAP        = 2;
@@ -44,21 +50,21 @@ class Zend_Ldap_Node_RootDse extends Zend_Ldap_Node_Abstract
     /**
      * Factory method to create the RootDSE.
      *
-     * @param  Zend_Ldap $ldap
-     * @return Zend_Ldap_Node_RootDse
-     * @throws Zend_Ldap_Exception
+     * @param  \Zend\LDAP\LDAP $ldap
+     * @return \Zend\LDAP\Node\RootDSE\RootDSE
+     * @throws \Zend\LDAP\Exception
      */
-    public static function create(Zend_Ldap $ldap)
+    public static function create(LDAP\LDAP $ldap)
     {
-        $dn = Zend_Ldap_Dn::fromString('');
+        $dn = LDAP\DN::fromString('');
         $data = $ldap->getEntry($dn, array('*', '+'), true);
         if (isset($data['domainfunctionality'])) {
-            return new Zend_Ldap_Node_RootDse_ActiveDirectory($dn, $data);
+            return new ActiveDirectory($dn, $data);
         } else if (isset($data['dsaname'])) {
-            return new Zend_Ldap_Node_RootDse_eDirectory($dn, $data);
+            return new eDirectory($dn, $data);
         } else if (isset($data['structuralobjectclass']) &&
                 $data['structuralobjectclass'][0] === 'OpenLDAProotDSE') {
-            return new Zend_Ldap_Node_RootDse_OpenLdap($dn, $data);
+            return new OpenLDAP($dn, $data);
         } else {
             return new self($dn, $data);
         }
@@ -69,10 +75,10 @@ class Zend_Ldap_Node_RootDse extends Zend_Ldap_Node_Abstract
      *
      * Constructor is protected to enforce the use of factory methods.
      *
-     * @param  Zend_Ldap_Dn $dn
+     * @param  \Zend\LDAP\DN $dn
      * @param  array        $data
      */
-    protected function __construct(Zend_Ldap_Dn $dn, array $data)
+    protected function __construct(LDAP\DN $dn, array $data)
     {
         parent::__construct($dn, $data, true);
     }
@@ -132,11 +138,11 @@ class Zend_Ldap_Node_RootDse extends Zend_Ldap_Node_Abstract
     /**
      * Returns the schema DN
      *
-     * @return Zend_Ldap_Dn
+     * @return \Zend\LDAP\DN
      */
     public function getSchemaDn()
     {
         $schemaDn = $this->getSubschemaSubentry();
-        return Zend_Ldap_Dn::fromString($schemaDn);
+        return LDAP\DN::fromString($schemaDn);
     }
 }

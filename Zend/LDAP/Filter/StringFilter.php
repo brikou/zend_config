@@ -13,7 +13,7 @@
  * to license@zend.com so we can send you a copy immediately.
  *
  * @category   Zend
- * @package    Zend_Ldap
+ * @package    Zend_LDAP
  * @subpackage Filter
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
@@ -21,24 +21,46 @@
  */
 
 /**
- * Zend_Ldap_Filter_And provides an 'and' filter.
+ * @namespace
+ */
+namespace Zend\LDAP\Filter;
+
+/**
+ * Zend_LDAP_Filter_String provides a simple custom string filter.
  *
- * @uses       Zend_Ldap_Filter_Logical
+ * @uses       \Zend\LDAP\Filter\AbstractFilter
  * @category   Zend
- * @package    Zend_Ldap
+ * @package    Zend_LDAP
  * @subpackage Filter
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class Zend_Ldap_Filter_And extends Zend_Ldap_Filter_Logical
+class StringFilter extends AbstractFilter
 {
     /**
-     * Creates an 'and' grouping filter.
+     * The filter.
      *
-     * @param array $subfilters
+     * @var string
      */
-    public function __construct(array $subfilters)
+    protected $_filter;
+
+    /**
+     * Creates a Zend_LDAP_Filter_String.
+     *
+     * @param string $filter
+     */
+    public function __construct($filter)
     {
-        parent::__construct($subfilters, self::TYPE_AND);
+        $this->_filter = $filter;
+    }
+
+    /**
+     * Returns a string representation of the filter.
+     *
+     * @return string
+     */
+    public function toString()
+    {
+        return '(' . $this->_filter . ')';
     }
 }

@@ -23,81 +23,66 @@
 /**
  * @namespace
  */
-namespace Zend\LDAP\Node\Schema\AttributeType;
+namespace Zend\LDAP\Node\Schema\ObjectClass;
 
 /**
- * Zend_LDAP_Node_Schema_AttributeType_ActiveDirectory provides access to the attribute type
- * schema information on an Active Directory server.
+ * Zend_LDAP_Node_Schema_ObjectClass_Interface provides a contract for schema objectClasses.
  *
- * @uses       \Zend\LDAP\Node\Schema\AttributeType\AttributeTypeInterface
- * @uses       \Zend\LDAP\Node\Schema\Item
  * @category   Zend
  * @package    Zend_LDAP
  * @subpackage Schema
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class ActiveDirectory 
-    extends \Zend\LDAP\Node\Schema\Item
-    implements AttributeTypeInterface
+interface ObjectClassInterface
 {
     /**
-     * Gets the attribute name
+     * Gets the objectClass name
      *
      * @return string
      */
-    public function getName()
-    {
-        return $this->ldapdisplayname[0];
-    }
+    public function getName();
 
     /**
-     * Gets the attribute OID
+     * Gets the objectClass OID
      *
      * @return string
      */
-    public function getOid()
-    {
-
-    }
+    public function getOid();
 
     /**
-     * Gets the attribute syntax
+     * Gets the attributes that this objectClass must contain
+     *
+     * @return array
+     */
+    public function getMustContain();
+
+    /**
+     * Gets the attributes that this objectClass may contain
+     *
+     * @return array
+     */
+    public function getMayContain();
+
+    /**
+     * Gets the objectClass description
      *
      * @return string
      */
-    public function getSyntax()
-    {
-
-    }
+    public function getDescription();
 
     /**
-     * Gets the attribute maximum length
+     * Gets the objectClass type
      *
-     * @return int|null
+     * @return integer
      */
-    public function getMaxLength()
-    {
-
-    }
+    public function getType();
 
     /**
-     * Returns if the attribute is single-valued.
+     * Returns the parent objectClasses of this class.
+     * This includes structural, abstract and auxiliary objectClasses
      *
-     * @return boolean
+     * @return array
      */
-    public function isSingleValued()
-    {
-
-    }
-
-    /**
-     * Gets the attribute description
-     *
-     * @return string
-     */
-    public function getDescription()
-    {
-
-    }
+    public function getParentClasses();
 }

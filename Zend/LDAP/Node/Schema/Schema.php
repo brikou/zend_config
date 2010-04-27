@@ -13,7 +13,7 @@
  * to license@zend.com so we can send you a copy immediately.
  *
  * @category   Zend
- * @package    Zend_Ldap
+ * @package    Zend_LDAP
  * @subpackage Schema
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
@@ -21,19 +21,26 @@
  */
 
 /**
- * Zend_Ldap_Node_Schema provides a simple data-container for the Schema node.
+ * @namespace
+ */
+namespace Zend\LDAP\Node\Schema;
+use Zend\LDAP;
+use Zend\LDAP\Node\RootDSE;
+
+/**
+ * Zend_LDAP_Node_Schema provides a simple data-container for the Schema node.
  *
- * @uses       Zend_Ldap_Node_Abstract
- * @uses       Zend_Ldap_Node_RootDse
- * @uses       Zend_Ldap_Node_RootDse_ActiveDirectory
- * @uses       Zend_Ldap_Node_Schema_ActiveDirectory
+ * @uses       \Zend\LDAP\Node\AbstractNode
+ * @uses       \Zend\LDAP\Node\RootDSE\RootDSE
+ * @uses       \Zend\LDAP\Node\RootDSE\ActiveDirectory
+ * @uses       \Zend\LDAP\Node\Schema\ActiveDirectory
  * @category   Zend
- * @package    Zend_Ldap
+ * @package    Zend_LDAP
  * @subpackage Schema
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class Zend_Ldap_Node_Schema extends Zend_Ldap_Node_Abstract
+class Schema extends LDAP\Node\AbstractNode
 {
     const OBJECTCLASS_TYPE_UNKNOWN    = 0;
     const OBJECTCLASS_TYPE_STRUCTURAL = 1;
@@ -43,20 +50,20 @@ class Zend_Ldap_Node_Schema extends Zend_Ldap_Node_Abstract
     /**
      * Factory method to create the Schema node.
      *
-     * @param  Zend_Ldap $ldap
-     * @return Zend_Ldap_Node_Schema
-     * @throws Zend_Ldap_Exception
+     * @param  \Zend\LDAP\LDAP $ldap
+     * @return \Zend\LDAP\Node\Schema\Schema
+     * @throws \Zend\LDAP\Exception
      */
-    public static function create(Zend_Ldap $ldap)
+    public static function create(LDAP\LDAP $ldap)
     {
         $dn = $ldap->getRootDse()->getSchemaDn();
         $data = $ldap->getEntry($dn, array('*', '+'), true);
         switch ($ldap->getRootDse()->getServerType()) {
-            case Zend_Ldap_Node_RootDse::SERVER_TYPE_ACTIVEDIRECTORY:
-                return new Zend_Ldap_Node_Schema_ActiveDirectory($dn, $data, $ldap);
-            case Zend_Ldap_Node_RootDse::SERVER_TYPE_OPENLDAP:
-                return new Zend_Ldap_Node_Schema_OpenLdap($dn, $data, $ldap);
-            case Zend_Ldap_Node_RootDse::SERVER_TYPE_EDIRECTORY:
+            case RootDSE\RootDSE::SERVER_TYPE_ACTIVEDIRECTORY:
+                return new ActiveDirectory($dn, $data, $ldap);
+            case RootDSE\RootDSE::SERVER_TYPE_OPENLDAP:
+                return new OpenLDAP($dn, $data, $ldap);
+            case RootDSE\RootDSE::SERVER_TYPE_EDIRECTORY:
             default:
                 return new self($dn, $data, $ldap);
         }
@@ -67,11 +74,11 @@ class Zend_Ldap_Node_Schema extends Zend_Ldap_Node_Abstract
      *
      * Constructor is protected to enforce the use of factory methods.
      *
-     * @param  Zend_Ldap_Dn $dn
+     * @param  \Zend\LDAP\DN $dn
      * @param  array        $data
-     * @param  Zend_Ldap    $ldap
+     * @param  \Zend\LDAP\LDAP    $ldap
      */
-    protected function __construct(Zend_Ldap_Dn $dn, array $data, Zend_Ldap $ldap)
+    protected function __construct(LDAP\DN $dn, array $data, LDAP\LDAP $ldap)
     {
         parent::__construct($dn, $data, true);
         $this->_parseSchema($dn, $ldap);
@@ -80,11 +87,11 @@ class Zend_Ldap_Node_Schema extends Zend_Ldap_Node_Abstract
     /**
      * Parses the schema
      *
-     * @param  Zend_Ldap_Dn $dn
-     * @param  Zend_Ldap    $ldap
-     * @return Zend_Ldap_Node_Schema Provides a fluid interface
+     * @param  \Zend\LDAP\DN $dn
+     * @param  \Zend\LDAP\LDAP    $ldap
+     * @return \Zend\LDAP\Node\Schema\Schema Provides a fluid interface
      */
-    protected function _parseSchema(Zend_Ldap_Dn $dn, Zend_Ldap $ldap)
+    protected function _parseSchema(LDAP\DN $dn, LDAP\LDAP $ldap)
     {
         return $this;
     }

@@ -14,7 +14,7 @@
  *
  * @category   Zend
  * @package    Zend_LDAP
- * @subpackage Node
+ * @subpackage Filter
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  * @version    $Id$
@@ -23,42 +23,27 @@
 /**
  * @namespace
  */
-namespace Zend\LDAP\Node;
+namespace Zend\LDAP\Filter;
 
 /**
- * Zend_LDAP_Node_Collection provides a collecion of nodes.
+ * Zend_LDAP_Filter_And provides an 'and' filter.
  *
- * @uses       \Zend\LDAP\Collection\Collection
- * @uses       \Zend\LDAP\Node\Node
+ * @uses       \Zend\LDAP\Filter\LogicalFilter
  * @category   Zend
  * @package    Zend_LDAP
- * @subpackage Node
+ * @subpackage Filter
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class Collection extends \Zend\LDAP\Collection\Collection
+class AndFilter extends LogicalFilter
 {
     /**
-     * Creates the data structure for the given entry data
+     * Creates an 'and' grouping filter.
      *
-     * @param  array $data
-     * @return \Zend\LDAP\Node\Node
+     * @param array $subfilters
      */
-    protected function _createEntry(array $data)
+    public function __construct(array $subfilters)
     {
-        $node = Node::fromArray($data, true);
-        $node->attachLDAP($this->_iterator->getLDAP());
-        return $node;
-    }
-
-    /**
-     * Return the child key (DN).
-     * Implements Iterator and RecursiveIterator
-     *
-     * @return string
-     */
-    public function key()
-    {
-        return $this->_iterator->key();
+        parent::__construct($subfilters, self::TYPE_AND);
     }
 }
