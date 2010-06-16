@@ -21,13 +21,18 @@
  */
 
 /**
+ * @namespace
+ */
+namespace Zend\Controller\Action;
+
+/**
  * @category   Zend
  * @package    Zend_Controller
  * @subpackage Zend_Controller_Action
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-interface Zend_Controller_Action_Interface
+interface ActionInterface
 {
     /**
      * Class constructor
@@ -50,13 +55,13 @@ interface Zend_Controller_Action_Interface
      * tasks; as a general rule, override {@link init()} instead of the
      * constructor to customize an action controller's instantiation.
      *
-     * @param Zend_Controller_Request_Abstract $request
-     * @param Zend_Controller_Response_Abstract $response
+     * @param \Zend\Controller\Request\AbstractRequest $request
+     * @param \Zend\Controller\Response\AbstractResponse $response
      * @param array $invokeArgs Any additional invocation arguments
      * @return void
      */
-    public function __construct(Zend_Controller_Request_Abstract $request,
-                                Zend_Controller_Response_Abstract $response,
+    public function __construct(\Zend\Controller\Request\AbstractRequest $request,
+                                \Zend\Controller\Response\AbstractResponse $response,
                                 array $invokeArgs = array());
 
     /**

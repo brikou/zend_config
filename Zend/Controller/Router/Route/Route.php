@@ -21,31 +21,39 @@
  */
 
 /**
+ * @namespace
+ */
+namespace Zend\Controller\Router\Route;
+use Zend\Config;
+use Zend\Controller\Router;
+use Zend\Translator;
+
+/**
  * Route
  *
- * @uses       Zend_Controller_Router_Route_Abstract
- * @uses       Zend_Controller_Router_Exception
- * @uses       Zend_Registry
- * @uses       Zend_Registry
+ * @uses       \Zend\Controller\Router\Route\AbstractRoute
+ * @uses       \Zend\Controller\Router\Exception
+ * @uses       \Zend\Registry
+ * @uses       \Zend\Registry
  * @package    Zend_Controller
  * @subpackage Router
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  * @see        http://manuals.rubyonrails.com/read/chapter/65
  */
-class Zend_Controller_Router_Route extends Zend_Controller_Router_Route_Abstract
+class Route extends AbstractRoute
 {
     /**
      * Default translator
      *
-     * @var Zend_Translate
+     * @var \Zend\Translator\Translator
      */
     protected static $_defaultTranslator;
 
     /**
      * Translator
      *
-     * @var Zend_Translate
+     * @var \Zend\Translator\Translator
      */
     protected $_translator;
 
@@ -137,12 +145,12 @@ class Zend_Controller_Router_Route extends Zend_Controller_Router_Route_Abstract
     /**
      * Instantiates route based on passed Zend_Config structure
      *
-     * @param Zend_Config $config Configuration object
+     * @param \Zend\Config\Config $config Configuration object
      */
-    public static function getInstance(\Zend\Config\Config $config)
+    public static function getInstance(Config\Config $config)
     {
-        $reqs = ($config->reqs instanceof \Zend\Config\Config) ? $config->reqs->toArray() : array();
-        $defs = ($config->defaults instanceof \Zend\Config\Config) ? $config->defaults->toArray() : array();
+        $reqs = ($config->reqs instanceof Config\Config) ? $config->reqs->toArray() : array();
+        $defs = ($config->defaults instanceof Config\Config) ? $config->defaults->toArray() : array();
         return new self($config->route, $defs, $reqs);
     }
 
@@ -154,9 +162,9 @@ class Zend_Controller_Router_Route extends Zend_Controller_Router_Route_Abstract
      * @param string $route Map used to match with later submitted URL path
      * @param array $defaults Defaults for map variables with keys as variable names
      * @param array $reqs Regular expression requirements for variables (keys as variable names)
-     * @param Zend_Translate $translator Translator to use for this instance
+     * @param \Zend\Translator\Translator $translator Translator to use for this instance
      */
-    public function __construct($route, $defaults = array(), $reqs = array(), Zend_Translate $translator = null, $locale = null)
+    public function __construct($route, $defaults = array(), $reqs = array(), \Zend\Translator\Translator $translator = null, $locale = null)
     {
         $route               = trim($route, $this->_urlDelimiter);
         $this->_defaults     = (array) $defaults;
@@ -348,7 +356,7 @@ class Zend_Controller_Router_Route extends Zend_Controller_Router_Route_Abstract
                 } elseif (isset($this->_defaults[$name])) {
                     $value = $this->_defaults[$name];
                 } else {
-                    throw new Zend_Controller_Router_Exception($name . ' is not specified');
+                    throw new Router\Exception($name . ' is not specified');
                 }
 
                 if ($this->_isTranslated && in_array($name, $this->_translatable)) {
@@ -442,10 +450,10 @@ class Zend_Controller_Router_Route extends Zend_Controller_Router_Route_Abstract
     /**
      * Set a default translator
      *
-     * @param  Zend_Translate $translator
+     * @param  \Zend\Translator\Translator $translator
      * @return void
      */
-    public static function setDefaultTranslator(Zend_Translate $translator = null)
+    public static function setDefaultTranslator(Translator\Translator $translator = null)
     {
         self::$_defaultTranslator = $translator;
     }
@@ -453,7 +461,7 @@ class Zend_Controller_Router_Route extends Zend_Controller_Router_Route_Abstract
     /**
      * Get the default translator
      *
-     * @return Zend_Translate
+     * @return \Zend\Translator\Translator
      */
     public static function getDefaultTranslator()
     {
@@ -463,10 +471,10 @@ class Zend_Controller_Router_Route extends Zend_Controller_Router_Route_Abstract
     /**
      * Set a translator
      *
-     * @param  Zend_Translate $translator
+     * @param  \Zend\Translator\Translator $translator
      * @return void
      */
-    public function setTranslator(Zend_Translate $translator)
+    public function setTranslator(Translator\Translator $translator)
     {
         $this->_translator = $translator;
     }
@@ -474,8 +482,8 @@ class Zend_Controller_Router_Route extends Zend_Controller_Router_Route_Abstract
     /**
      * Get the translator
      *
-     * @throws Zend_Controller_Router_Exception When no translator can be found
-     * @return Zend_Translate
+     * @throws \Zend\Controller\Router\Exception When no translator can be found
+     * @return \Zend\Translator\Translator
      */
     public function getTranslator()
     {
@@ -485,17 +493,17 @@ class Zend_Controller_Router_Route extends Zend_Controller_Router_Route_Abstract
             return $translator;
         } else {
             try {
-                $translator = Zend_Registry::get('Zend_Translate');
-            } catch (Zend_Exception $e) {
+                $translator = \Zend\Registry::get('Zend_Translate');
+            } catch (\Zend\Exception $e) {
                 $translator = null;
             }
 
-            if ($translator instanceof Zend_Translate) {
+            if ($translator instanceof Translator\Translator) {
                 return $translator;
             }
         }
 
-        throw new Zend_Controller_Router_Exception('Could not find a translator');
+        throw new Router\Exception('Could not find a translator');
     }
 
     /**
@@ -543,8 +551,8 @@ class Zend_Controller_Router_Route extends Zend_Controller_Router_Route_Abstract
             return $locale;
         } else {
             try {
-                $locale = Zend_Registry::get('Zend_Locale');
-            } catch (Zend_Exception $e) {
+                $locale = \Zend\Registry::get('Zend_Locale');
+            } catch (\Zend\Exception $e) {
                 $locale = null;
             }
 

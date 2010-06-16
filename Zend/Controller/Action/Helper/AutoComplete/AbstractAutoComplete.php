@@ -21,19 +21,25 @@
  */
 
 /**
+ * @namespace
+ */
+namespace Zend\Controller\Action\Helper\AutoComplete;
+use Zend\Controller\Action\HelperBroker;
+
+/**
  * Create and send autocompletion lists
  *
- * @uses       Zend_Controller_Action_Exception
- * @uses       Zend_Controller_Action_Helper_Abstract
- * @uses       Zend_Layout
+ * @uses       \Zend\Controller\Action\Exception
+ * @uses       \Zend\Controller\Action\Helper\AbstractHelper
+ * @uses       \Zend\Layout\Layout
  * @category   Zend
  * @package    Zend_Controller
  * @subpackage Zend_Controller_Action_Helper
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-abstract class Zend_Controller_Action_Helper_AutoComplete_Abstract 
-    extends Zend_Controller_Action_Helper_Abstract
+abstract class AbstractAutoComplete 
+    extends \Zend\Controller\Action\Helper\AbstractHelper
 {
     /**
      * Suppress exit when sendJson() called
@@ -62,15 +68,15 @@ abstract class Zend_Controller_Action_Helper_AutoComplete_Abstract
     /**
      * Disable layouts and view renderer
      *
-     * @return Zend_Controller_Action_Helper_AutoComplete_Abstract Provides a fluent interface
+     * @return \Zend\Controller\Action\Helper\AutoComplete\AbstractAutoComplete Provides a fluent interface
      */
     public function disableLayouts()
     {
-        if (null !== ($layout = Zend_Layout::getMvcInstance())) {
+        if (null !== ($layout = \Zend\Layout\Layout::getMvcInstance())) {
             $layout->disableLayout();
         }
 
-        Zend_Controller_Action_HelperBroker::getStaticHelper('viewRenderer')->setNoRender(true);
+        HelperBroker\HelperBroker::getStaticHelper('viewRenderer')->setNoRender(true);
 
         return $this;
     }
@@ -80,16 +86,16 @@ abstract class Zend_Controller_Action_Helper_AutoComplete_Abstract
      *
      * @param  mixed $data
      * @param  bool  $keepLayouts
-     * @throws Zend_Controller_Action_Exception
+     * @throws \Zend\Controller\Action\Exception
      * @return string
      */
     public function encodeJson($data, $keepLayouts = false)
     {
         if ($this->validateData($data)) {
-            return Zend_Controller_Action_HelperBroker::getStaticHelper('Json')->encodeJson($data, $keepLayouts);
+            return HelperBroker\HelperBroker::getStaticHelper('Json')->encodeJson($data, $keepLayouts);
         }
 
-        throw new Zend_Controller_Action_Exception('Invalid data passed for autocompletion');
+        throw new \Zend\Controller\Action\Exception('Invalid data passed for autocompletion');
     }
 
     /**

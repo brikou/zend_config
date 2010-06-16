@@ -20,17 +20,22 @@
  */
 
 /**
+ * @namespace
+ */
+namespace Zend\View;
+
+/**
  * Concrete class for handling view scripts.
  *
- * @uses       Zend_View_Abstract
- * @uses       Zend_View_Exception
- * @uses       Zend_View_Stream
+ * @uses       \Zend\View\AbstractView
+ * @uses       \Zend\View\Exception
+ * @uses       \Zend\View\Stream
  * @category   Zend
  * @package    Zend_View
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class Zend_View extends Zend_View_Abstract
+class View extends AbstractView
 {
     /**
      * Whether or not to use streams to mimic short tags
@@ -57,7 +62,7 @@ class Zend_View extends Zend_View_Abstract
         $this->_useViewStream = (bool) ini_get('short_open_tag') ? false : true;
         if ($this->_useViewStream) {
             if (!in_array('zend.view', stream_get_wrappers())) {
-                stream_wrapper_register('zend.view', 'Zend_View_Stream');
+                stream_wrapper_register('zend.view', 'Zend\View\Stream');
             }
         }
 
@@ -72,7 +77,7 @@ class Zend_View extends Zend_View_Abstract
      * Set flag indicating if stream wrapper should be used if short_open_tag is off
      *
      * @param  bool $flag
-     * @return Zend_View
+     * @return \Zend\View\View
      */
     public function setUseStreamWrapper($flag)
     {

@@ -21,17 +21,23 @@
  */
 
 /**
+ * @namespace
+ */
+namespace Zend\Controller\Router\Route;
+use Zend\Config;
+
+/**
  * StaticRoute is used for managing static URIs.
  *
  * It's a lot faster compared to the standard Route implementation.
  *
- * @uses       Zend_Controller_Router_Route_Abstract
+ * @uses       \Zend\Controller\Router\Route\AbstractRoute
  * @package    Zend_Controller
  * @subpackage Router
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class Zend_Controller_Router_Route_Static extends Zend_Controller_Router_Route_Abstract
+class StaticRoute extends AbstractRoute
 {
 
     protected $_route = null;
@@ -46,9 +52,9 @@ class Zend_Controller_Router_Route_Static extends Zend_Controller_Router_Route_A
      *
      * @param Zend\Config\Config $config Configuration object
      */
-    public static function getInstance(\Zend\Config\Config $config)
+    public static function getInstance(Config\Config $config)
     {
-        $defs = ($config->defaults instanceof \Zend\Config\Config) ? $config->defaults->toArray() : array();
+        $defs = ($config->defaults instanceof Config\Config) ? $config->defaults->toArray() : array();
         return new self($config->route, $defs);
     }
 

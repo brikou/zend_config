@@ -21,12 +21,19 @@
  */
 
 /**
+ * @namespace
+ */
+namespace Zend\Controller\Dispatcher;
+use Zend\Controller\Request;
+use Zend\Controller\Response;
+
+/**
  * @package    Zend_Controller
  * @subpackage Dispatcher
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-interface Zend_Controller_Dispatcher_Interface
+interface DispatcherInterface
 {
     /**
      * Formats a string into a controller name.  This is used to take a raw
@@ -64,17 +71,17 @@ interface Zend_Controller_Dispatcher_Interface
     /**
      * Returns TRUE if an action can be dispatched, or FALSE otherwise.
      *
-     * @param  Zend_Controller_Request_Abstract $request
+     * @param  \Zend\Controller\Request\AbstractRequest $request
      * @return boolean
      */
-    public function isDispatchable(Zend_Controller_Request_Abstract $request);
+    public function isDispatchable(Request\AbstractRequest $request);
 
     /**
      * Add or modify a parameter with which to instantiate an Action Controller
      *
      * @param string $name
      * @param mixed $value
-     * @return Zend_Controller_Dispatcher_Interface
+     * @return \Zend\Controller\Dispatcher\DispatcherInterface
      */
     public function setParam($name, $value);
 
@@ -82,7 +89,7 @@ interface Zend_Controller_Dispatcher_Interface
      * Set an array of a parameters to pass to the Action Controller constructor
      *
      * @param array $params
-     * @return Zend_Controller_Dispatcher_Interface
+     * @return \Zend\Controller\Dispatcher\DispatcherInterface
      */
     public function setParams(array $params);
 
@@ -109,22 +116,22 @@ interface Zend_Controller_Dispatcher_Interface
      * each.
      *
      * @param null|string|array single key or array of keys for params to clear
-     * @return Zend_Controller_Dispatcher_Interface
+     * @return \Zend\Controller\Dispatcher\DispatcherInterface
      */
     public function clearParams($name = null);
 
     /**
      * Set the response object to use, if any
      *
-     * @param Zend_Controller_Response_Abstract|null $response
+     * @param \Zend\Controller\Response\AbstractResponse|null $response
      * @return void
      */
-    public function setResponse(Zend_Controller_Response_Abstract $response = null);
+    public function setResponse(Response\AbstractResponse $response = null);
 
     /**
      * Retrieve the response object, if any
      *
-     * @return Zend_Controller_Response_Abstract|null
+     * @return \Zend\Controller\Response\AbstractResponse|null
      */
     public function getResponse();
 
@@ -133,7 +140,7 @@ interface Zend_Controller_Dispatcher_Interface
      *
      * @param string $path
      * @param string $args
-     * @return Zend_Controller_Dispatcher_Interface
+     * @return \Zend\Controller\Dispatcher\DispatcherInterface
      */
     public function addControllerDirectory($path, $args = null);
 
@@ -144,7 +151,7 @@ interface Zend_Controller_Dispatcher_Interface
      * added.
      *
      * @param string|array $dir
-     * @return Zend_Controller_Dispatcher_Interface
+     * @return \Zend\Controller\Dispatcher\DispatcherInterface
      */
     public function setControllerDirectory($path);
 
@@ -159,11 +166,11 @@ interface Zend_Controller_Dispatcher_Interface
      * Dispatches a request object to a controller/action.  If the action
      * requests a forward to another action, a new request will be returned.
      *
-     * @param  Zend_Controller_Request_Abstract $request
-     * @param  Zend_Controller_Response_Abstract $response
+     * @param  \Zend\Controller\Request\AbstractRequest $request
+     * @param  \Zend\Controller\Response\AbstractResponse $response
      * @return void
      */
-    public function dispatch(Zend_Controller_Request_Abstract $request, Zend_Controller_Response_Abstract $response);
+    public function dispatch(Request\AbstractRequest $request, Response\AbstractResponse $response);
 
     /**
      * Whether or not a given module is valid

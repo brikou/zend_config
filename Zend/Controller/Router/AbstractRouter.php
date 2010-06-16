@@ -21,22 +21,28 @@
  */
 
 /**
+ * @namespace
+ */
+namespace Zend\Controller\Router;
+use Zend\Controller;
+
+/**
  * Simple first implementation of a router, to be replaced
  * with rules-based URI processor.
  *
- * @uses       Zend_Controller_Front
- * @uses       Zend_Controller_Router_Interface
+ * @uses       \Zend\Controller\Front
+ * @uses       \Zend\Controller\Router\RouterInterface
  * @category   Zend
  * @package    Zend_Controller
  * @subpackage Router
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-abstract class Zend_Controller_Router_Abstract implements Zend_Controller_Router_Interface
+abstract class AbstractRouter implements RouterInterface
 {
     /**
      * Front controller instance
-     * @var Zend_Controller_Front
+     * @var \Zend\Controller\Front
      */
     protected $_frontController;
 
@@ -139,7 +145,7 @@ abstract class Zend_Controller_Router_Abstract implements Zend_Controller_Router
     /**
      * Retrieve Front Controller
      *
-     * @return Zend_Controller_Front
+     * @return \Zend\Controller\Front
      */
     public function getFrontController()
     {
@@ -148,17 +154,17 @@ abstract class Zend_Controller_Router_Abstract implements Zend_Controller_Router
             return $this->_frontController;
         }
 
-        $this->_frontController = Zend_Controller_Front::getInstance();
+        $this->_frontController = Controller\Front::getInstance();
         return $this->_frontController;
     }
 
     /**
      * Set Front Controller
      *
-     * @param Zend_Controller_Front $controller
-     * @return Zend_Controller_Router_Interface
+     * @param \Zend\Controller\Front $controller
+     * @return \Zend\Controller\Router\RouterInterface
      */
-    public function setFrontController(Zend_Controller_Front $controller)
+    public function setFrontController(Controller\Front $controller)
     {
         $this->_frontController = $controller;
         return $this;

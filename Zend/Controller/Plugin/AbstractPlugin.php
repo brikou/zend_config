@@ -21,31 +21,37 @@
  */
 
 /**
+ * @namespace
+ */
+namespace Zend\Controller\Plugin;
+use Zend\Controller\Request;
+
+/**
  * @category   Zend
  * @package    Zend_Controller
  * @subpackage Plugins
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-abstract class Zend_Controller_Plugin_Abstract
+abstract class AbstractPlugin
 {
     /**
-     * @var Zend_Controller_Request_Abstract
+     * @var \Zend\Controller\Request\AbstractRequest
      */
     protected $_request;
 
     /**
-     * @var Zend_Controller_Response_Abstract
+     * @var \Zend\Controller\Response\AbstractResponse
      */
     protected $_response;
 
     /**
      * Set request object
      *
-     * @param Zend_Controller_Request_Abstract $request
-     * @return Zend_Controller_Plugin_Abstract
+     * @param \Zend\Controller\Request\AbstractRequest $request
+     * @return \Zend\Controller\Plugin\AbstractPlugin
      */
-    public function setRequest(Zend_Controller_Request_Abstract $request)
+    public function setRequest(Request\AbstractRequest $request)
     {
         $this->_request = $request;
         return $this;
@@ -54,7 +60,7 @@ abstract class Zend_Controller_Plugin_Abstract
     /**
      * Get request object
      *
-     * @return Zend_Controller_Request_Abstract $request
+     * @return \Zend\Controller\Request\AbstractRequest $request
      */
     public function getRequest()
     {
@@ -64,10 +70,10 @@ abstract class Zend_Controller_Plugin_Abstract
     /**
      * Set response object
      *
-     * @param Zend_Controller_Response_Abstract $response
-     * @return Zend_Controller_Plugin_Abstract
+     * @param \Zend\Controller\Response\AbstractResponse $response
+     * @return \Zend\Controller\Plugin\AbstractPlugin
      */
-    public function setResponse(Zend_Controller_Response_Abstract $response)
+    public function setResponse(\Zend\Controller\Response\AbstractResponse $response)
     {
         $this->_response = $response;
         return $this;
@@ -76,7 +82,7 @@ abstract class Zend_Controller_Plugin_Abstract
     /**
      * Get response object
      *
-     * @return Zend_Controller_Response_Abstract $response
+     * @return \Zend\Controller\Response\AbstractResponse $response
      */
     public function getResponse()
     {
@@ -87,10 +93,10 @@ abstract class Zend_Controller_Plugin_Abstract
      * Called before Zend_Controller_Front begins evaluating the
      * request against its routes.
      *
-     * @param Zend_Controller_Request_Abstract $request
+     * @param \Zend\Controller\Request\AbstractRequest $request
      * @return void
      */
-    public function routeStartup(Zend_Controller_Request_Abstract $request)
+    public function routeStartup(Request\AbstractRequest $request)
     {}
 
     /**
@@ -98,19 +104,19 @@ abstract class Zend_Controller_Plugin_Abstract
      *
      * Called after Zend_Controller_Front exits from the router.
      *
-     * @param  Zend_Controller_Request_Abstract $request
+     * @param  \Zend\Controller\Request\AbstractRequest $request
      * @return void
      */
-    public function routeShutdown(Zend_Controller_Request_Abstract $request)
+    public function routeShutdown(Request\AbstractRequest $request)
     {}
 
     /**
      * Called before Zend_Controller_Front enters its dispatch loop.
      *
-     * @param  Zend_Controller_Request_Abstract $request
+     * @param  \Zend\Controller\Request\AbstractRequest $request
      * @return void
      */
-    public function dispatchLoopStartup(Zend_Controller_Request_Abstract $request)
+    public function dispatchLoopStartup(Request\AbstractRequest $request)
     {}
 
     /**
@@ -121,10 +127,10 @@ abstract class Zend_Controller_Plugin_Abstract
      * {@link Zend_Controller_Request_Abstract::setDispatched() setDispatched(false)}),
      * the current action may be skipped.
      *
-     * @param  Zend_Controller_Request_Abstract $request
+     * @param  \Zend\Controller\Request\AbstractRequest $request
      * @return void
      */
-    public function preDispatch(Zend_Controller_Request_Abstract $request)
+    public function preDispatch(Request\AbstractRequest $request)
     {}
 
     /**
@@ -135,10 +141,10 @@ abstract class Zend_Controller_Plugin_Abstract
      * {@link Zend_Controller_Request_Abstract::setDispatched() setDispatched(false)}),
      * a new action may be specified for dispatching.
      *
-     * @param  Zend_Controller_Request_Abstract $request
+     * @param  \Zend\Controller\Request\AbstractRequest $request
      * @return void
      */
-    public function postDispatch(Zend_Controller_Request_Abstract $request)
+    public function postDispatch(Request\AbstractRequest $request)
     {}
 
     /**

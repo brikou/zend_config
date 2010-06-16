@@ -21,18 +21,23 @@
  */
 
 /**
+ * @namespace
+ */
+namespace Zend\Controller\Action\Helper;
+
+/**
  * @category   Zend
  * @package    Zend_Controller
  * @subpackage Zend_Controller_Action_Helper
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-abstract class Zend_Controller_Action_Helper_Abstract
+abstract class AbstractHelper
 {
     /**
      * $_actionController
      *
-     * @var Zend_Controller_Action $_actionController
+     * @var \Zend\Controller\Action\Action $_actionController
      */
     protected $_actionController = null;
 
@@ -44,10 +49,10 @@ abstract class Zend_Controller_Action_Helper_Abstract
     /**
      * setActionController()
      *
-     * @param  Zend_Controller_Action $actionController
+     * @param  \Zend\Controller\Action\Action $actionController
      * @return Zend_Controller_ActionHelper_Abstract Provides a fluent interface
      */
-    public function setActionController(Zend_Controller_Action $actionController = null)
+    public function setActionController(\Zend\Controller\Action\Action $actionController = null)
     {
         $this->_actionController = $actionController;
         return $this;
@@ -56,7 +61,7 @@ abstract class Zend_Controller_Action_Helper_Abstract
     /**
      * Retrieve current action controller
      *
-     * @return Zend_Controller_Action
+     * @return \Zend\Controller\Action\Action
      */
     public function getActionController()
     {
@@ -66,11 +71,11 @@ abstract class Zend_Controller_Action_Helper_Abstract
     /**
      * Retrieve front controller instance
      *
-     * @return Zend_Controller_Front
+     * @return \Zend\Controller\Front
      */
     public function getFrontController()
     {
-        return Zend_Controller_Front::getInstance();
+        return \Zend\Controller\Front::getInstance();
     }
 
     /**
@@ -103,7 +108,7 @@ abstract class Zend_Controller_Action_Helper_Abstract
     /**
      * getRequest() -
      *
-     * @return Zend_Controller_Request_Abstract $request
+     * @return \Zend\Controller\Request\AbstractRequest $request
      */
     public function getRequest()
     {
@@ -118,7 +123,7 @@ abstract class Zend_Controller_Action_Helper_Abstract
     /**
      * getResponse() -
      *
-     * @return Zend_Controller_Response_Abstract $response
+     * @return \Zend\Controller\Response\AbstractResponse $response
      */
     public function getResponse()
     {
@@ -139,11 +144,12 @@ abstract class Zend_Controller_Action_Helper_Abstract
     {
         $full_class_name = get_class($this);
 
-        if (strpos($full_class_name, '_') !== false) {
-            $helper_name = strrchr($full_class_name, '_');
-            return ltrim($helper_name, '_');
+        if (strpos($full_class_name, '\\') !== false) {
+            $helper_name = strrchr($full_class_name, '\\');
+            return ltrim($helper_name, '\\');
         } else {
             return $full_class_name;
         }
     }
+
 }
