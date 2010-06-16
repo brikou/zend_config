@@ -21,18 +21,23 @@
  */
 
 /**
+ * @namespace
+ */
+namespace Zend\Controller\Router\Route;
+
+/**
  * Abstract Route
  *
  * Implements interface and provides convenience methods
  *
- * @uses       Zend_Controller_Router_Route_Interface
- * @uses       Zend_Controller_Router_Route_Chain
+ * @uses       \Zend\Controller\Router\Route\RouteInterface
+ * @uses       \Zend\Controller\Router\Route\Chain
  * @package    Zend_Controller
  * @subpackage Router
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-abstract class Zend_Controller_Router_Route_Abstract implements Zend_Controller_Router_Route_Interface
+abstract class AbstractRoute implements RouteInterface
 {
     /**
      * Wether this route is abstract or not
@@ -97,14 +102,14 @@ abstract class Zend_Controller_Router_Route_Abstract implements Zend_Controller_
     /**
      * Create a new chain
      *
-     * @param  Zend_Controller_Router_Route_Abstract $route
+     * @param  \Zend\Controller\Router\Route\AbstractRoute $route
      * @param  string                                $separator
-     * @return Zend_Controller_Router_Route_Chain
+     * @return \Zend\Controller\Router\Route\Chain
      */
-    public function chain(Zend_Controller_Router_Route_Abstract $route, $separator = '/')
+    public function addChain(AbstractRoute $route, $separator = '/')
     {
-        $chain = new Zend_Controller_Router_Route_Chain();
-        $chain->chain($this)->chain($route, $separator);
+        $chain = new Chain();
+        $chain->addChain($this)->addChain($route, $separator);
         return $chain;
     }
 }

@@ -20,17 +20,22 @@
  */
 
 /**
+ * @namespace
+ */
+namespace Zend\Controller\Response;
+
+/**
  * Zend_Controller_Response_Abstract
  *
  * Base class for Zend_Controller responses
  *
- * @uses       Zend_Controller_Response_Exception
+ * @uses       \Zend\Controller\Response\Exception
  * @package    Zend_Controller
  * @subpackage Response
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-abstract class Zend_Controller_Response_Abstract
+abstract class AbstractResponse
 {
     /**
      * Body content
@@ -109,7 +114,7 @@ abstract class Zend_Controller_Response_Abstract
      * @param string $name
      * @param string $value
      * @param boolean $replace
-     * @return Zend_Controller_Response_Abstract
+     * @return \Zend\Controller\Response\AbstractResponse
      */
     public function setHeader($name, $value, $replace = false)
     {
@@ -142,13 +147,13 @@ abstract class Zend_Controller_Response_Abstract
      *
      * @param string $url
      * @param int $code
-     * @return Zend_Controller_Response_Abstract
+     * @return \Zend\Controller\Response\AbstractResponse
      */
     public function setRedirect($url, $code = 302)
     {
         $this->canSendHeaders(true);
         $this->setHeader('Location', $url, true)
-             ->setHttpResponseCode($code);
+             ->setHTTPResponseCode($code);
 
         return $this;
     }
@@ -176,7 +181,7 @@ abstract class Zend_Controller_Response_Abstract
     /**
      * Clear headers
      *
-     * @return Zend_Controller_Response_Abstract
+     * @return \Zend\Controller\Response\AbstractResponse
      */
     public function clearHeaders()
     {
@@ -189,7 +194,7 @@ abstract class Zend_Controller_Response_Abstract
      * Clears the specified HTTP header
      *
      * @param  string $name
-     * @return Zend_Controller_Response_Abstract
+     * @return \Zend\Controller\Response\AbstractResponse
      */
     public function clearHeader($name)
     {
@@ -212,7 +217,7 @@ abstract class Zend_Controller_Response_Abstract
      * Allows setting non key => value headers, such as status codes
      *
      * @param string $value
-     * @return Zend_Controller_Response_Abstract
+     * @return \Zend\Controller\Response\AbstractResponse
      */
     public function setRawHeader($value)
     {
@@ -237,7 +242,7 @@ abstract class Zend_Controller_Response_Abstract
     /**
      * Clear all {@link setRawHeader() raw HTTP headers}
      *
-     * @return Zend_Controller_Response_Abstract
+     * @return \Zend\Controller\Response\AbstractResponse
      */
     public function clearRawHeaders()
     {
@@ -249,7 +254,7 @@ abstract class Zend_Controller_Response_Abstract
      * Clears the specified raw HTTP header
      *
      * @param  string $headerRaw
-     * @return Zend_Controller_Response_Abstract
+     * @return \Zend\Controller\Response\AbstractResponse
      */
     public function clearRawHeader($headerRaw)
     {
@@ -266,7 +271,7 @@ abstract class Zend_Controller_Response_Abstract
     /**
      * Clear all headers, normal and raw
      *
-     * @return Zend_Controller_Response_Abstract
+     * @return \Zend\Controller\Response\AbstractResponse
      */
     public function clearAllHeaders()
     {
@@ -278,12 +283,12 @@ abstract class Zend_Controller_Response_Abstract
      * Set HTTP response code to use with headers
      *
      * @param int $code
-     * @return Zend_Controller_Response_Abstract
+     * @return \Zend\Controller\Response\AbstractResponse
      */
-    public function setHttpResponseCode($code)
+    public function setHTTPResponseCode($code)
     {
         if (!is_int($code) || (100 > $code) || (599 < $code)) {
-            throw new Zend_Controller_Response_Exception('Invalid HTTP response code');
+            throw new Exception('Invalid HTTP response code');
         }
 
         if ((300 <= $code) && (307 >= $code)) {
@@ -301,7 +306,7 @@ abstract class Zend_Controller_Response_Abstract
      *
      * @return int
      */
-    public function getHttpResponseCode()
+    public function getHTTPResponseCode()
     {
         return $this->_httpResponseCode;
     }
@@ -311,13 +316,13 @@ abstract class Zend_Controller_Response_Abstract
      *
      * @param boolean $throw Whether or not to throw an exception if headers have been sent; defaults to false
      * @return boolean
-     * @throws Zend_Controller_Response_Exception
+     * @throws \Zend\Controller\Response\Exception
      */
     public function canSendHeaders($throw = false)
     {
         $ok = headers_sent($file, $line);
         if ($ok && $throw && $this->headersSentThrowsException) {
-            throw new Zend_Controller_Response_Exception('Cannot send headers; headers already sent in ' . $file . ', line ' . $line);
+            throw new Exception('Cannot send headers; headers already sent in ' . $file . ', line ' . $line);
         }
 
         return !$ok;
@@ -326,10 +331,10 @@ abstract class Zend_Controller_Response_Abstract
     /**
      * Send all headers
      *
-     * Sends any headers specified. If an {@link setHttpResponseCode() HTTP response code}
+     * Sends any headers specified. If an {@link setHTTPResponseCode() HTTP response code}
      * has been specified, it is sent with the first header.
      *
-     * @return Zend_Controller_Response_Abstract
+     * @return \Zend\Controller\Response\AbstractResponse
      */
     public function sendHeaders()
     {
@@ -380,7 +385,7 @@ abstract class Zend_Controller_Response_Abstract
      *
      * @param string $content
      * @param null|string $name
-     * @return Zend_Controller_Response_Abstract
+     * @return \Zend\Controller\Response\AbstractResponse
      */
     public function setBody($content, $name = null)
     {
@@ -398,7 +403,7 @@ abstract class Zend_Controller_Response_Abstract
      *
      * @param string $content
      * @param null|string $name
-     * @return Zend_Controller_Response_Abstract
+     * @return \Zend\Controller\Response\AbstractResponse
      */
     public function appendBody($content, $name = null)
     {
@@ -477,12 +482,12 @@ abstract class Zend_Controller_Response_Abstract
      *
      * @param string $name
      * @param string $content
-     * @return Zend_Controller_Response_Abstract
+     * @return \Zend\Controller\Response\AbstractResponse
      */
     public function append($name, $content)
     {
         if (!is_string($name)) {
-            throw new Zend_Controller_Response_Exception('Invalid body segment key ("' . gettype($name) . '")');
+            throw new Exception('Invalid body segment key ("' . gettype($name) . '")');
         }
 
         if (isset($this->_body[$name])) {
@@ -505,7 +510,7 @@ abstract class Zend_Controller_Response_Abstract
     public function prepend($name, $content)
     {
         if (!is_string($name)) {
-            throw new Zend_Controller_Response_Exception('Invalid body segment key ("' . gettype($name) . '")');
+            throw new Exception('Invalid body segment key ("' . gettype($name) . '")');
         }
 
         if (isset($this->_body[$name])) {
@@ -526,16 +531,16 @@ abstract class Zend_Controller_Response_Abstract
      * @param  string $parent
      * @param  boolean $before Whether to insert the new segment before or
      * after the parent. Defaults to false (after)
-     * @return Zend_Controller_Response_Abstract
+     * @return \Zend\Controller\Response\AbstractResponse
      */
     public function insert($name, $content, $parent = null, $before = false)
     {
         if (!is_string($name)) {
-            throw new Zend_Controller_Response_Exception('Invalid body segment key ("' . gettype($name) . '")');
+            throw new Exception('Invalid body segment key ("' . gettype($name) . '")');
         }
 
         if ((null !== $parent) && !is_string($parent)) {
-            throw new Zend_Controller_Response_Exception('Invalid body segment parent key ("' . gettype($parent) . '")');
+            throw new Exception('Invalid body segment parent key ("' . gettype($parent) . '")');
         }
 
         if (isset($this->_body[$name])) {
@@ -585,9 +590,9 @@ abstract class Zend_Controller_Response_Abstract
      * Register an exception with the response
      *
      * @param Exception $e
-     * @return Zend_Controller_Response_Abstract
+     * @return \Zend\Controller\Response\AbstractResponse
      */
-    public function setException(Exception $e)
+    public function setException(\Exception $e)
     {
         $this->_exceptions[] = $e;
         return $this;

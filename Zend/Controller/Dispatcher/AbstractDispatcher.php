@@ -21,16 +21,22 @@
  */
 
 /**
- * @uses       Zend_Controller_Dispatcher_Exception
- * @uses       Zend_Controller_Dispatcher_Interface
- * @uses       Zend_Controller_Front
+ * @namespace
+ */
+namespace Zend\Controller\Dispatcher;
+use Zend\Controller;
+
+/**
+ * @uses       \Zend\Controller\Dispatcher\Exception
+ * @uses       \Zend\Controller\Dispatcher\DispatcherInterface
+ * @uses       \Zend\Controller\Front
  * @category   Zend
  * @package    Zend_Controller
  * @subpackage Dispatcher
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-abstract class Zend_Controller_Dispatcher_Abstract implements Zend_Controller_Dispatcher_Interface
+abstract class AbstractDispatcher implements DispatcherInterface
 {
     /**
      * Default action
@@ -52,7 +58,7 @@ abstract class Zend_Controller_Dispatcher_Abstract implements Zend_Controller_Di
 
     /**
      * Front Controller instance
-     * @var Zend_Controller_Front
+     * @var \Zend\Controller\Front
      */
     protected $_frontController;
 
@@ -71,7 +77,7 @@ abstract class Zend_Controller_Dispatcher_Abstract implements Zend_Controller_Di
 
     /**
      * Response object to pass to action controllers, if any
-     * @var Zend_Controller_Response_Abstract|null
+     * @var \Zend\Controller\Response\AbstractResponse|null
      */
     protected $_response = null;
 
@@ -128,7 +134,7 @@ abstract class Zend_Controller_Dispatcher_Abstract implements Zend_Controller_Di
      *
      * @param string|array $spec
      * @return array
-     * @throws Zend_Controller_Dispatcher_Exception with invalid delimiters
+     * @throws \Zend\Controller\Dispatcher\Exception with invalid delimiters
      */
     public function _verifyDelimiter($spec)
     {
@@ -144,13 +150,13 @@ abstract class Zend_Controller_Dispatcher_Abstract implements Zend_Controller_Di
             }
 
             if (!$allStrings) {
-                throw new Zend_Controller_Dispatcher_Exception('Word delimiter array must contain only strings');
+                throw new Exception('Word delimiter array must contain only strings');
             }
 
             return $spec;
         }
 
-        throw new Zend_Controller_Dispatcher_Exception('Invalid word delimiter');
+        throw new Exception('Invalid word delimiter');
     }
 
     /**
@@ -171,7 +177,7 @@ abstract class Zend_Controller_Dispatcher_Abstract implements Zend_Controller_Di
      * single string or an array of strings.
      *
      * @param string|array $spec
-     * @return Zend_Controller_Dispatcher_Abstract
+     * @return \Zend\Controller\Dispatcher\AbstractDispatcher
      */
     public function setWordDelimiter($spec)
     {
@@ -199,12 +205,12 @@ abstract class Zend_Controller_Dispatcher_Abstract implements Zend_Controller_Di
      * an array of strings.
      *
      * @param string $spec
-     * @return Zend_Controller_Dispatcher_Abstract
+     * @return \Zend\Controller\Dispatcher\AbstractDispatcher
      */
     public function setPathDelimiter($spec)
     {
         if (!is_string($spec)) {
-            throw new Zend_Controller_Dispatcher_Exception('Invalid path delimiter');
+            throw new Exception('Invalid path delimiter');
         }
         $this->_pathDelimiter = $spec;
 
@@ -245,12 +251,12 @@ abstract class Zend_Controller_Dispatcher_Abstract implements Zend_Controller_Di
     /**
      * Retrieve front controller instance
      *
-     * @return Zend_Controller_Front
+     * @return \Zend\Controller\Front
      */
     public function getFrontController()
     {
         if (null === $this->_frontController) {
-            $this->_frontController = Zend_Controller_Front::getInstance();
+            $this->_frontController = Controller\Front::getInstance();
         }
 
         return $this->_frontController;
@@ -259,10 +265,10 @@ abstract class Zend_Controller_Dispatcher_Abstract implements Zend_Controller_Di
     /**
      * Set front controller instance
      *
-     * @param Zend_Controller_Front $controller
-     * @return Zend_Controller_Dispatcher_Abstract
+     * @param \Zend\Controller\Front $controller
+     * @return \Zend\Controller\Dispatcher\AbstractDispatcher
      */
-    public function setFrontController(Zend_Controller_Front $controller)
+    public function setFrontController(Controller\Front $controller)
     {
         $this->_frontController = $controller;
         return $this;
@@ -273,7 +279,7 @@ abstract class Zend_Controller_Dispatcher_Abstract implements Zend_Controller_Di
      *
      * @param string $name
      * @param mixed $value
-     * @return Zend_Controller_Dispatcher_Abstract
+     * @return \Zend\Controller\Dispatcher\AbstractDispatcher
      */
     public function setParam($name, $value)
     {
@@ -286,7 +292,7 @@ abstract class Zend_Controller_Dispatcher_Abstract implements Zend_Controller_Di
      * Set parameters to pass to action controller constructors
      *
      * @param array $params
-     * @return Zend_Controller_Dispatcher_Abstract
+     * @return \Zend\Controller\Dispatcher\AbstractDispatcher
      */
     public function setParams(array $params)
     {
@@ -327,7 +333,7 @@ abstract class Zend_Controller_Dispatcher_Abstract implements Zend_Controller_Di
      * each.
      *
      * @param null|string|array single key or array of keys for params to clear
-     * @return Zend_Controller_Dispatcher_Abstract
+     * @return \Zend\Controller\Dispatcher\AbstractDispatcher
      */
     public function clearParams($name = null)
     {
@@ -349,10 +355,10 @@ abstract class Zend_Controller_Dispatcher_Abstract implements Zend_Controller_Di
     /**
      * Set response object to pass to action controllers
      *
-     * @param Zend_Controller_Response_Abstract|null $response
-     * @return Zend_Controller_Dispatcher_Abstract
+     * @param \Zend\Controller\Response\AbstractResponse|null $response
+     * @return \Zend\Controller\Dispatcher\AbstractDispatcher
      */
-    public function setResponse(Zend_Controller_Response_Abstract $response = null)
+    public function setResponse(Controller\Response\AbstractResponse $response = null)
     {
         $this->_response = $response;
         return $this;
@@ -361,7 +367,7 @@ abstract class Zend_Controller_Dispatcher_Abstract implements Zend_Controller_Di
     /**
      * Return the registered response object
      *
-     * @return Zend_Controller_Response_Abstract|null
+     * @return \Zend\Controller\Response\AbstractResponse|null
      */
     public function getResponse()
     {
@@ -372,7 +378,7 @@ abstract class Zend_Controller_Dispatcher_Abstract implements Zend_Controller_Di
      * Set the default controller (minus any formatting)
      *
      * @param string $controller
-     * @return Zend_Controller_Dispatcher_Abstract
+     * @return \Zend\Controller\Dispatcher\AbstractDispatcher
      */
     public function setDefaultControllerName($controller)
     {
@@ -394,7 +400,7 @@ abstract class Zend_Controller_Dispatcher_Abstract implements Zend_Controller_Di
      * Set the default action (minus any formatting)
      *
      * @param string $action
-     * @return Zend_Controller_Dispatcher_Abstract
+     * @return \Zend\Controller\Dispatcher\AbstractDispatcher
      */
     public function setDefaultAction($action)
     {
@@ -416,7 +422,7 @@ abstract class Zend_Controller_Dispatcher_Abstract implements Zend_Controller_Di
      * Set the default module
      *
      * @param string $module
-     * @return Zend_Controller_Dispatcher_Abstract
+     * @return \Zend\Controller\Dispatcher\AbstractDispatcher
      */
     public function setDefaultModule($module)
     {
