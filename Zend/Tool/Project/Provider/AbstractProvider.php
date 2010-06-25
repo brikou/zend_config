@@ -21,19 +21,25 @@
  */
 
 /**
- * @uses       Zend_Tool_Framework_Provider_Abstract
- * @uses       Zend_Tool_Framework_Registry
- * @uses       Zend_Tool_Project_Context_Content_Engine
- * @uses       Zend_Tool_Project_Context_Repository
- * @uses       Zend_Tool_Project_Profile
- * @uses       Zend_Tool_Project_Profile_FileParser_Xml
- * @uses       Zend_Tool_Project_Provider_Exception
+ * @namespace
+ */
+namespace Zend\Tool\Project\Provider;
+use Zend\Tool\Project\Context;
+
+/**
+ * @uses       \Zend\Tool\Framework\Provider\AbstractProvider
+ * @uses       \Zend\Tool\Framework\Registry\Registry
+ * @uses       \Zend\Tool\Project\Context\Content\Engine\Engine
+ * @uses       \Zend\Tool\Project\Context\Repository
+ * @uses       \Zend\Tool\Project\Profile\Profile
+ * @uses       \Zend\Tool\Project\Profile\FileParser\Xml
+ * @uses       \Zend\Tool\Project\Provider\Exception
  * @category   Zend
  * @package    Zend_Tool
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-abstract class Zend_Tool_Project_Provider_Abstract extends Zend_Tool_Framework_Provider_Abstract
+abstract class AbstractProvider extends \Zend\Tool\Framework\Provider\AbstractProvider
 {
 
     const NO_PROFILE_THROW_EXCEPTION = true;
@@ -47,7 +53,7 @@ abstract class Zend_Tool_Project_Provider_Abstract extends Zend_Tool_Framework_P
     protected $_projectPath = null;
 
     /**
-     * @var Zend_Tool_Project_Profile
+     * @var \Zend\Tool\Project\Profile\Profile
      */
     protected $_loadedProfile = null;
 
@@ -61,12 +67,12 @@ abstract class Zend_Tool_Project_Provider_Abstract extends Zend_Tool_Framework_P
     {
         // initialize the ZF Contexts (only once per php request)
         if (!self::$_isInitialized) {
-            $contextRegistry = Zend_Tool_Project_Context_Repository::getInstance();
+            $contextRegistry = Context\Repository::getInstance();
             $contextRegistry->addContextsFromDirectory(
-                dirname(dirname(__FILE__)) . '/Context/Zf/', 'Zend_Tool_Project_Context_Zf_'
+                dirname(dirname(__FILE__)) . '/Context/Zf/', 'Zend\Tool\Project\Context\Zf\\'
             );
             $contextRegistry->addContextsFromDirectory(
-                dirname(dirname(__FILE__)) . '/Context/Filesystem/', 'Zend_Tool_Project_Context_Filesystem_'
+                dirname(dirname(__FILE__)) . '/Context/Filesystem/', 'Zend\Tool\Project\Context\Filesystem\\'
             );
             self::$_isInitialized = true;
         }
@@ -93,7 +99,7 @@ abstract class Zend_Tool_Project_Provider_Abstract extends Zend_Tool_Framework_P
      * @param $loadProfileFlag bool Whether or not to throw an exception when no profile is found
      * @param $projectDirectory string The project directory to use to search
      * @param $searchParentDirectories bool Whether or not to search upper level direcotries
-     * @return Zend_Tool_Project_Profile
+     * @return \Zend\Tool\Project\Profile\Profile
      */
     protected function _loadProfile($loadProfileFlag = self::NO_PROFILE_THROW_EXCEPTION, $projectDirectory = null, $searchParentDirectories = true)
     {
@@ -101,10 +107,10 @@ abstract class Zend_Tool_Project_Provider_Abstract extends Zend_Tool_Framework_P
         if ($projectDirectory == null) {
             $projectDirectory = getcwd();
         } elseif (realpath($projectDirectory) == false) {
-            throw new Zend_Tool_Project_Provider_Exception('The $projectDirectory supplied does not exist.');
+            throw new Exception('The $projectDirectory supplied does not exist.');
         }
 
-        $profile = new Zend_Tool_Project_Profile();
+        $profile = new \Zend\Tool\Project\Profile\Profile();
 
         $parentDirectoriesArray = explode(DIRECTORY_SEPARATOR, ltrim($projectDirectory, DIRECTORY_SEPARATOR));
         while ($parentDirectoriesArray) {
@@ -133,7 +139,7 @@ abstract class Zend_Tool_Project_Provider_Abstract extends Zend_Tool_Framework_P
 
         if ($this->_loadedProfile == null) {
             if ($loadProfileFlag == self::NO_PROFILE_THROW_EXCEPTION) {
-                throw new Zend_Tool_Project_Provider_Exception('A project profile was not found.');
+                throw new Exception('A project profile was not found.');
             } elseif ($loadProfileFlag == self::NO_PROFILE_RETURN_FALSE) {
                 return false;
             }
@@ -145,13 +151,13 @@ abstract class Zend_Tool_Project_Provider_Abstract extends Zend_Tool_Framework_P
     /**
      * Load the project profile from the current working directory, if not throw exception
      *
-     * @return Zend_Tool_Project_Profile
+     * @return \Zend\Tool\Project\Profile\Profile
      */
     protected function _loadProfileRequired()
     {
         $profile = $this->_loadProfile();
         if ($profile === false) {
-            throw new Zend_Tool_Project_Provider_Exception('A project profile was not found in the current working directory.');
+            throw new Exception('A project profile was not found in the current working directory.');
         }
         return $profile;
     }
@@ -159,7 +165,7 @@ abstract class Zend_Tool_Project_Provider_Abstract extends Zend_Tool_Framework_P
     /**
      * Return the currently loaded profile
      *
-     * @return Zend_Tool_Project_Profile
+     * @return \Zend\Tool\Project\Profile\Profile
      */
     protected function _getProfile($loadProfileFlag = self::NO_PROFILE_THROW_EXCEPTION)
     {
@@ -189,14 +195,14 @@ abstract class Zend_Tool_Project_Provider_Abstract extends Zend_Tool_Framework_P
         $projectProfileFile->getContext()->save();
     }
 
-    protected function _getContentForContext(Zend_Tool_Project_Context_Interface $context, $methodName, $parameters)
+    protected function _getContentForContext(Context\ContextInterface $context, $methodName, $parameters)
     {
         $storage = $this->_registry->getStorage();
         if (!$storage->isEnabled()) {
             return false;
         }
 
-        $engine = new Zend_Tool_Project_Context_Content_Engine($storage);
+        $engine = new Context\Content\Engine\Engine($storage);
         return $engine->getContent($context, $methodName, $parameters);
     }
 
@@ -209,7 +215,7 @@ abstract class Zend_Tool_Project_Provider_Abstract extends Zend_Tool_Framework_P
      */
     private function _loadContextClassesIntoRegistry($contextClasses)
     {
-        $registry = Zend_Tool_Project_Context_Repository::getInstance();
+        $registry = Context\Repository::getInstance();
 
         foreach ($contextClasses as $contextClass) {
             $registry->addContextClass($contextClass);

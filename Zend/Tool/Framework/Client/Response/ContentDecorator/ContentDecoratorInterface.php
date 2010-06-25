@@ -14,11 +14,15 @@
  *
  * @category   Zend
  * @package    Zend_Tool
- * @subpackage Framework
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  * @version    $Id$
  */
+
+/**
+ * @namespace
+ */
+namespace Zend\Tool\Framework\Client\Response\ContentDecorator;
 
 /**
  * @category   Zend
@@ -26,6 +30,11 @@
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-interface Zend_Tool_Framework_Provider_Interface
+interface ContentDecoratorInterface
 {
+
+    public function getName();
+
+    public function decorate($content, $decoratorValue);
+
 }

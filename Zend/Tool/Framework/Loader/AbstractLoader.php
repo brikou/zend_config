@@ -21,18 +21,23 @@
  */
 
 /**
+ * @namespace
+ */
+namespace Zend\Tool\Framework\Loader;
+
+/**
  * @uses       ReflectionClass
- * @uses       Zend_Tool_Framework_Loader_Interface
- * @uses       Zend_Tool_Framework_Manifest_Interface
- * @uses       Zend_Tool_Framework_Provider_Interface
- * @uses       Zend_Tool_Framework_Registry_EnabledInterface
+ * @uses       \Zend\Tool\Framework\Loader\LoaderInterface
+ * @uses       \Zend\Tool\Framework\Manifest\ManifestInterface
+ * @uses       \Zend\Tool\Framework\Provider\ProviderInterface
+ * @uses       \Zend\Tool\Framework\Registry\EnabledInterface
  * @category   Zend
  * @package    Zend_Tool
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-abstract class Zend_Tool_Framework_Loader_Abstract 
-    implements Zend_Tool_Framework_Loader_Interface, Zend_Tool_Framework_Registry_EnabledInterface
+abstract class AbstractLoader 
+    implements LoaderInterface, \Zend\Tool\Framework\Registry\EnabledInterface
 {
     /**
      * @var Zend_Tool_Framework_Repository_Interface
@@ -60,10 +65,10 @@ abstract class Zend_Tool_Framework_Loader_Abstract
      * setRegistry() - required by the enabled interface to get an instance of
      * the registry
      *
-     * @param Zend_Tool_Framework_Registry_Interface $registry
-     * @return Zend_Tool_Framework_Loader_Abstract
+     * @param \Zend\Tool\Framework\Registry\RegistryInterface $registry
+     * @return \Zend\Tool\Framework\Loader\AbstractLoader
      */
-    public function setRegistry(Zend_Tool_Framework_Registry_Interface $registry)
+    public function setRegistry(\Zend\Tool\Framework\Registry\RegistryInterface $registry)
     {
         $this->_registry = $registry;
         return $this;
@@ -102,7 +107,7 @@ abstract class Zend_Tool_Framework_Loader_Abstract
         foreach ($loadedClasses as $loadedClass) {
 
             // reflect class to see if its something we want to load
-            $reflectionClass = new ReflectionClass($loadedClass);
+            $reflectionClass = new \ReflectionClass($loadedClass);
             if ($reflectionClass->implementsInterface('Zend_Tool_Framework_Manifest_Interface')
                 && !$reflectionClass->isAbstract())
             {

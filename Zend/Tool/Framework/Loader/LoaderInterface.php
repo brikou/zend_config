@@ -14,25 +14,34 @@
  *
  * @category   Zend
  * @package    Zend_Tool
+ * @subpackage Framework
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  * @version    $Id$
  */
 
 /**
- * Interface for contexts
- *
- * setResource() is an optional method that if the context supports
- * will be set with the resource at construction time
+ * @namespace
+ */
+namespace Zend\Tool\Framework\Loader;
+
+/**
+ * Basic Interface for factilities that load Zend_Tool providers or manifests.
  *
  * @category   Zend
  * @package    Zend_Tool
+ * @subpackage Framework
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-interface Zend_Tool_Project_Context_Interface
+interface LoaderInterface
 {
-
-    public function getName();
-
+    /**
+     * Load Providers and Manifests
+     *
+     * Returns an array of all loaded class names.
+     *
+     * @return array
+     */
+    public function load();
 }

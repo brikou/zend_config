@@ -21,22 +21,37 @@
  */
 
 /**
- * Basic Interface for factilities that load Zend_Tool providers or manifests.
- *
+ * @namespace
+ */
+namespace Zend\Tool\Framework\Metadata;
+
+/**
  * @category   Zend
  * @package    Zend_Tool
- * @subpackage Framework
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-interface Zend_Tool_Framework_Loader_Interface
+interface MetadataInterface
 {
+
     /**
-     * Load Providers and Manifests
+     * getType()
      *
-     * Returns an array of all loaded class names.
+     * The type of metadata this describes
      *
-     * @return array
      */
-    public function load();
+    public function getType();
+
+    /**
+     * getName()
+     *
+     */
+    public function getName();
+
+    /**
+     * getValue()
+     *
+     */
+    public function getValue();
+    
 }

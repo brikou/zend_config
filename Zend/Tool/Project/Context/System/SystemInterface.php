@@ -21,39 +21,22 @@
  */
 
 /**
- * This is a convenience class.
+ * @namespace
+ */
+namespace Zend\Tool\Project\Context\System;
+
+/**
+ * This class is the front most class for utilizing Zend_Tool_Project
  *
- * At current it will return the request and response from the client registry
- * as they are the more common things that will be needed by providers
+ * A profile is a hierarchical set of resources that keep track of
+ * items within a specific project.
  *
- *
- * @uses       Zend_Tool_Framework_Provider_Interface
- * @uses       Zend_Tool_Framework_Registry_EnabledInterface
  * @category   Zend
  * @package    Zend_Tool
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-abstract class Zend_Tool_Framework_Provider_Abstract
-    implements Zend_Tool_Framework_Provider_Interface, Zend_Tool_Framework_Registry_EnabledInterface
+interface SystemInterface
 {
-
-    /**
-     * @var Zend_Tool_Framework_Registry_Interface
-     */
-    protected $_registry = null;
-
-    /**
-     * setRegistry() - required by Zend_Tool_Framework_Registry_EnabledInterface
-     *
-     * @param Zend_Tool_Framework_Registry_Interface $registry
-     * @return Zend_Tool_Framework_Provider_Abstract
-     */
-    public function setRegistry(Zend_Tool_Framework_Registry_Interface $registry)
-    {
-        $this->_registry = $registry;
-        return $this;
-    }
-
 
 }

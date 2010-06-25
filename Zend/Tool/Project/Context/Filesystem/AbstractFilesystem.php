@@ -21,22 +21,27 @@
  */
 
 /**
+ * @namespace
+ */
+namespace Zend\Tool\Project\Context\Filesystem;
+
+/**
  * This class is the front most class for utilizing Zend_Tool_Project
  *
  * A profile is a hierarchical set of resources that keep track of
  * items within a specific project.
  *
- * @uses       Zend_Tool_Project_Context_Interface
+ * @uses       \Zend\Tool\Project\Context\ContextInterface
  * @category   Zend
  * @package    Zend_Tool
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-abstract class Zend_Tool_Project_Context_Filesystem_Abstract implements Zend_Tool_Project_Context_Interface
+abstract class AbstractFilesystem implements \Zend\Tool\Project\Context\ContextInterface
 {
 
     /**
-     * @var Zend_Tool_Project_Profile_Resource
+     * @var \Zend\Tool\Project\Profile\Resource\Resource
      */
     protected $_resource = null;
 
@@ -53,7 +58,7 @@ abstract class Zend_Tool_Project_Context_Filesystem_Abstract implements Zend_Too
     /**
      * init()
      *
-     * @return Zend_Tool_Project_Context_Filesystem_Abstract
+     * @return \Zend\Tool\Project\Context\Filesystem\AbstractFilesystem
      */
     public function init()
     {
@@ -65,10 +70,10 @@ abstract class Zend_Tool_Project_Context_Filesystem_Abstract implements Zend_Too
     /**
      * setResource()
      *
-     * @param Zend_Tool_Project_Profile_Resource $resource
-     * @return Zend_Tool_Project_Context_Filesystem_Abstract
+     * @param \Zend\Tool\Project\Profile\Resource\Resource $resource
+     * @return \Zend\Tool\Project\Context\Filesystem\AbstractFilesystem
      */
-    public function setResource(Zend_Tool_Project_Profile_Resource $resource)
+    public function setResource(\Zend\Tool\Project\Profile\Resource\Resource $resource)
     {
         $this->_resource = $resource;
         return $this;
@@ -78,7 +83,7 @@ abstract class Zend_Tool_Project_Context_Filesystem_Abstract implements Zend_Too
      * setBaseDirectory()
      *
      * @param string $baseDirectory
-     * @return Zend_Tool_Project_Context_Filesystem_Abstract
+     * @return \Zend\Tool\Project\Context\Filesystem\AbstractFilesystem
      */
     public function setBaseDirectory($baseDirectory)
     {
@@ -100,7 +105,7 @@ abstract class Zend_Tool_Project_Context_Filesystem_Abstract implements Zend_Too
      * setFilesystemName()
      *
      * @param string $filesystemName
-     * @return Zend_Tool_Project_Context_Filesystem_Abstract
+     * @return \Zend\Tool\Project\Context\Filesystem\AbstractFilesystem
      */
     public function setFilesystemName($filesystemName)
     {

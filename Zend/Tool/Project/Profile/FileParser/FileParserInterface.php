@@ -14,10 +14,17 @@
  *
  * @category   Zend
  * @package    Zend_Tool
+ * @subpackage Framework
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  * @version    $Id$
  */
+
+/**
+ * @namespace
+ */
+namespace Zend\Tool\Project\Profile\FileParser;
+use Zend\Tool\Project\Profile;
 
 /**
  * @category   Zend
@@ -25,11 +32,29 @@
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-interface Zend_Tool_Framework_Client_Response_ContentDecorator_Interface
+interface FileParserInterface
 {
 
-    public function getName();
+    /**
+     * serialize()
+     *
+     * This method should take a profile and return a string
+     * representation of it.
+     *
+     * @param \Zend\Tool\Project\Profile\Profile $profile
+     * @return string
+     */
+    public function serialize(Profile\Profile $profile);
 
-    public function decorate($content, $decoratorValue);
+    /**
+     * unserialize()
+     *
+     * This method should be able to take string data an create a
+     * struture in the provided $profile
+     *
+     * @param string $data
+     * @param \Zend\Tool\Project\Profile\Profile $profile
+     */
+    public function unserialize($data, Profile\Profile $profile);
 
 }

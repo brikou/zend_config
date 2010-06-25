@@ -21,34 +21,44 @@
  */
 
 /**
+ * @namespace
+ */
+namespace Zend\Tool\Framework\Provider;
+
+/**
+ * This is a convenience class.
+ *
+ * At current it will return the request and response from the client registry
+ * as they are the more common things that will be needed by providers
+ *
+ *
+ * @uses       \Zend\Tool\Framework\Provider\ProviderInterface
+ * @uses       \Zend\Tool\Framework\Registry\EnabledInterface
  * @category   Zend
  * @package    Zend_Tool
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-interface Zend_Tool_Project_Profile_FileParser_Interface
+abstract class AbstractProvider
+    implements ProviderInterface, \Zend\Tool\Framework\Registry\EnabledInterface
 {
 
     /**
-     * serialize()
-     *
-     * This method should take a profile and return a string
-     * representation of it.
-     *
-     * @param Zend_Tool_Project_Profile $profile
-     * @return string
+     * @var \Zend\Tool\Framework\Registry\RegistryInterface
      */
-    public function serialize(Zend_Tool_Project_Profile $profile);
+    protected $_registry = null;
 
     /**
-     * unserialize()
+     * setRegistry() - required by Zend_Tool_Framework_Registry_EnabledInterface
      *
-     * This method should be able to take string data an create a
-     * struture in the provided $profile
-     *
-     * @param string $data
-     * @param Zend_Tool_Project_Profile $profile
+     * @param \Zend\Tool\Framework\Registry\RegistryInterface $registry
+     * @return \Zend\Tool\Framework\Provider\AbstractProvider
      */
-    public function unserialize($data, Zend_Tool_Project_Profile $profile);
+    public function setRegistry(\Zend\Tool\Framework\Registry\RegistryInterface $registry)
+    {
+        $this->_registry = $registry;
+        return $this;
+    }
+
 
 }
