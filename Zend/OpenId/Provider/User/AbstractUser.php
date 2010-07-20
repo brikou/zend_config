@@ -24,7 +24,7 @@
 /**
  * @namespace
  */
-namespace Zend\OpenID\Provider\User;
+namespace Zend\OpenId\Provider\User;
 
 /**
  * Abstract class to get/store information about logged in user in Web Browser

@@ -23,10 +23,10 @@
 /**
  * @namespace
  */
-namespace Zend\OpenID;
+namespace Zend\OpenId;
 
 /**
- * Exception class for Zend\OpenID
+ * Exception class for Zend\OpenId
  *
  * @uses       Zend\Exception
  * @category   Zend

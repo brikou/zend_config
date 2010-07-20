@@ -23,12 +23,12 @@
 /**
  * @namespace
  */
-namespace Zend\OpenID\Extension;
+namespace Zend\OpenId\Extension;
 
 /**
- * 'Simple Refistration Extension' for Zend\OpenID
+ * 'Simple Refistration Extension' for Zend\OpenId
  *
- * @uses       Zend\OpenID\Extension
+ * @uses       Zend\OpenId\Extension
  * @category   Zend
  * @package    Zend_OpenID
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)

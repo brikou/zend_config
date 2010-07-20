@@ -24,15 +24,15 @@
 /**
  * @namespace
  */
-namespace Zend\OpenID\Provider;
-use Zend\OpenID;
-use Zend\OpenID\Extension;
+namespace Zend\OpenId\Provider;
+use Zend\OpenId;
+use Zend\OpenId\Extension;
 use Zend\Controller\Response;
 
 /**
  * OpenID provider (server) implementation
  *
- * @uses       Zend\OpenID\OpenID
+ * @uses       Zend\OpenId\OpenId
  * @uses       Zend\OpenId\Extension
  * @uses       Zend\OpenId\Provider\Storage\File
  * @uses       Zend\OpenId\Provider\User\Session
@@ -96,11 +96,11 @@ class GenericProvider
      * @param string $trustUrl is an URL that shows a question if end-user
      *  trust to given consumer (by default it is the same URL with additional
      *  GET variable openid.action=trust)
-     * @param Zend\OpenID\Provider\User\AbstractUser $user is an object for communication
+     * @param Zend\OpenId\Provider\User\AbstractUser $user is an object for communication
      *  with User-Agent and store information about logged-in user (it is a
-     *  Zend\OpenID\Provider\User\Session object by default)
-     * @param Zend\OpenID\Provider\Storage $storage is an object for keeping
-     *  persistent database (it is a Zend\OpenID\Provider\Storage_File object
+     *  Zend\OpenId\Provider\User\Session object by default)
+     * @param Zend\OpenId\Provider\Storage $storage is an object for keeping
+     *  persistent database (it is a Zend\OpenId\Provider\Storage_File object
      *  by default)
      * @param integer $sessionTtl is a default time to live for association
      *   session in seconds (1 hour by default). Consumer must reestablish
@@ -113,15 +113,15 @@ class GenericProvider
                                 $sessionTtl = 3600)
     {
         if ($loginUrl === null) {
-            $loginUrl = OpenID\OpenID::selfUrl() . '?openid.action=login';
+            $loginUrl = OpenId\OpenId::selfUrl() . '?openid.action=login';
         } else {
-            $loginUrl = OpenID\OpenID::absoluteUrl($loginUrl);
+            $loginUrl = OpenId\OpenId::absoluteUrl($loginUrl);
         }
         $this->_loginUrl = $loginUrl;
         if ($trustUrl === null) {
-            $trustUrl = OpenID\OpenID::selfUrl() . '?openid.action=trust';
+            $trustUrl = OpenId\OpenId::selfUrl() . '?openid.action=trust';
         } else {
-            $trustUrl = OpenID\OpenID::absoluteUrl($trustUrl);
+            $trustUrl = OpenId\OpenId::absoluteUrl($trustUrl);
         }
         $this->_trustUrl = $trustUrl;
         if ($user === null) {
@@ -159,7 +159,7 @@ class GenericProvider
      */
     public function register($id, $password)
     {
-        if (!OpenID\OpenID::normalize($id) || empty($id)) {
+        if (!OpenId\OpenId::normalize($id) || empty($id)) {
             return false;
         }
         return $this->_storage->addUser($id, md5($id.$password));
@@ -172,7 +172,7 @@ class GenericProvider
      * @return bool
      */
     public function hasUser($id) {
-        if (!OpenID\OpenID::normalize($id)) {
+        if (!OpenId\OpenId::normalize($id)) {
             return false;
         }
         return $this->_storage->hasUser($id);
@@ -188,7 +188,7 @@ class GenericProvider
      */
     public function login($id, $password)
     {
-        if (!OpenID\OpenID::normalize($id)) {
+        if (!OpenId\OpenId::normalize($id)) {
             return false;
         }
         if (!$this->_storage->checkUser($id, md5($id.$password))) {
@@ -229,7 +229,7 @@ class GenericProvider
     {
         $version = 1.1;
         if (isset($params['openid_ns']) &&
-            $params['openid_ns'] == OpenID\OpenID::NS_2_0) {
+            $params['openid_ns'] == OpenId\OpenId::NS_2_0) {
             $version = 2.0;
         }
         if ($version >= 2.0 && isset($params['openid_realm'])) {
@@ -241,7 +241,7 @@ class GenericProvider
         } else {
             return false;
         }
-        if (OpenID\OpenID::normalizeUrl($root) && !empty($root)) {
+        if (OpenId\OpenId::normalizeUrl($root) && !empty($root)) {
             return $root;
         }
         return false;
@@ -347,7 +347,7 @@ class GenericProvider
         }
         $version = 1.1;
         if (isset($params['openid_ns']) &&
-            $params['openid_ns'] == OpenID\OpenID::NS_2_0) {
+            $params['openid_ns'] == OpenId\OpenId::NS_2_0) {
             $version = 2.0;
         }
         if (isset($params['openid_mode'])) {
@@ -362,14 +362,14 @@ class GenericProvider
                 $ret = $this->_checkId($version, $params, 1, $extensions, $response);
                 if (is_bool($ret)) return $ret;
                 if (!empty($params['openid_return_to'])) {
-                    OpenID\OpenID::redirect($params['openid_return_to'], $ret, $response);
+                    OpenId\OpenId::redirect($params['openid_return_to'], $ret, $response);
                 }
                 return true;
             } else if ($params['openid_mode'] == 'checkid_setup') {
                 $ret = $this->_checkId($version, $params, 0, $extensions, $response);
                 if (is_bool($ret)) return $ret;
                 if (!empty($params['openid_return_to'])) {
-                    OpenID\OpenID::redirect($params['openid_return_to'], $ret, $response);
+                    OpenId\OpenId::redirect($params['openid_return_to'], $ret, $response);
                 }
                 return true;
             } else if ($params['openid_mode'] == 'check_authentication') {
@@ -400,7 +400,7 @@ class GenericProvider
         } else {
             return false;
         }
-        return OpenID\OpenID::randomBytes($macLen);
+        return OpenId\OpenId::randomBytes($macLen);
     }
 
     /**
@@ -417,7 +417,7 @@ class GenericProvider
         $ret = array();
 
         if ($version >= 2.0) {
-            $ret['ns'] = OpenID\OpenID::NS_2_0;
+            $ret['ns'] = OpenId\OpenId::NS_2_0;
         }
 
         if (isset($params['openid_assoc_type']) &&
@@ -463,29 +463,29 @@ class GenericProvider
                 return $ret;
             }
             if (empty($params['openid_dh_gen'])) {
-                $g = pack('H*', OpenID\OpenID::DH_G);
+                $g = pack('H*', OpenId\OpenId::DH_G);
             } else {
                 $g = base64_decode($params['openid_dh_gen']);
             }
             if (empty($params['openid_dh_modulus'])) {
-                $p = pack('H*', OpenID\OpenID::DH_P);
+                $p = pack('H*', OpenId\OpenId::DH_P);
             } else {
                 $p = base64_decode($params['openid_dh_modulus']);
             }
 
-            $dh = OpenID\OpenID::createDhKey($p, $g);
-            $dh_details = OpenID\OpenID::getDhKeyDetails($dh);
+            $dh = OpenId\OpenId::createDhKey($p, $g);
+            $dh_details = OpenId\OpenId::getDhKeyDetails($dh);
 
-            $sec = OpenID\OpenID::computeDhSecret(
+            $sec = OpenId\OpenId::computeDhSecret(
                 base64_decode($params['openid_dh_consumer_public']), $dh);
             if ($sec === false) {
                 $ret['error'] = 'Wrong "openid.session_type"';
                 $ret['error-code'] = 'unsupported-type';
                 return $ret;
             }
-            $sec = OpenID\OpenID::digest($dhFunc, $sec);
+            $sec = OpenId\OpenId::digest($dhFunc, $sec);
             $ret['dh_server_public'] = base64_encode(
-                OpenID\OpenID::btwoc($dh_details['pub_key']));
+                OpenId\OpenId::btwoc($dh_details['pub_key']));
             $ret['enc_mac_key']      = base64_encode($secret ^ $sec);
         }
 
@@ -517,7 +517,7 @@ class GenericProvider
         $ret = array();
 
         if ($version >= 2.0) {
-            $ret['openid.ns'] = OpenID\OpenID::NS_2_0;
+            $ret['openid.ns'] = OpenId\OpenId::NS_2_0;
         }
         $root = $this->getSiteRoot($params);
         if ($root === false) {
@@ -549,11 +549,11 @@ class GenericProvider
                 $ret['openid.mode'] = ($version >= 2.0) ? 'setup_needed': 'id_res';
                 $ret['openid.user_setup_url'] = $this->_loginUrl
                     . (strpos($this->_loginUrl, '?') === false ? '?' : '&')
-                    . OpenID\OpenID::paramsToQuery($params2);
+                    . OpenId\OpenId::paramsToQuery($params2);
                 return $ret;
             } else {
                 /* Redirect to Server Login Screen */
-                OpenID\OpenID::redirect($this->_loginUrl, $params2, $response);
+                OpenId\OpenId::redirect($this->_loginUrl, $params2, $response);
                 return true;
             }
         }
@@ -621,10 +621,10 @@ class GenericProvider
                 $ret['openid.mode'] = ($version >= 2.0) ? 'setup_needed': 'id_res';
                 $ret['openid.user_setup_url'] = $this->_trustUrl
                     . (strpos($this->_trustUrl, '?') === false ? '?' : '&')
-                    . OpenID\OpenID::paramsToQuery($params2);
+                    . OpenId\OpenId::paramsToQuery($params2);
                 return $ret;
             } else {
-                OpenID\OpenID::redirect($this->_trustUrl, $params2, $response);
+                OpenId\OpenId::redirect($this->_trustUrl, $params2, $response);
                 return true;
             }
         }
@@ -647,16 +647,16 @@ class GenericProvider
     {
         $version = 1.1;
         if (isset($params['openid_ns']) &&
-            $params['openid_ns'] == OpenID\OpenID::NS_2_0) {
+            $params['openid_ns'] == OpenId\OpenId::NS_2_0) {
             $version = 2.0;
         }
         $ret = array();
         if ($version >= 2.0) {
-            $ret['openid.ns'] = OpenID\OpenID::NS_2_0;
+            $ret['openid.ns'] = OpenId\OpenId::NS_2_0;
         }
         $ret = $this->_respond($version, $ret, $params, $extensions);
         if (!empty($params['openid_return_to'])) {
-            OpenID\OpenID::redirect($params['openid_return_to'], $ret, $response);
+            OpenId\OpenId::redirect($params['openid_return_to'], $ret, $response);
         }
         return true;
     }
@@ -704,7 +704,7 @@ class GenericProvider
             if (!empty($this->_opEndpoint)) {
                 $ret['openid.op_endpoint'] = $this->_opEndpoint;
             } else {
-                $ret['openid.op_endpoint'] = OpenID\OpenID::selfUrl();
+                $ret['openid.op_endpoint'] = OpenId\OpenId::selfUrl();
             }
         }
         $ret['openid.response_nonce'] = gmdate('Y-m-d\TH:i:s\Z') . uniqid();
@@ -729,7 +729,7 @@ class GenericProvider
         $ret['openid.signed'] = $signed;
 
         $ret['openid.sig'] = base64_encode(
-            OpenID\OpenID::hashHmac($macFunc, $data, $secret));
+            OpenId\OpenId::hashHmac($macFunc, $data, $secret));
 
         return $ret;
     }
@@ -747,7 +747,7 @@ class GenericProvider
     {
         $ret = array();
         if ($version >= 2.0) {
-            $ret['ns'] = OpenID\OpenID::NS_2_0;
+            $ret['ns'] = OpenId\OpenId::NS_2_0;
         }
         $ret['openid.mode'] = 'id_res';
 
@@ -771,7 +771,7 @@ class GenericProvider
             }
         }
         if (base64_decode($params['openid_sig']) ===
-            OpenID\OpenID::hashHmac($macFunc, $data, $secret)) {
+            OpenId\OpenId::hashHmac($macFunc, $data, $secret)) {
             $ret['is_valid'] = 'true';
         } else {
             $ret['is_valid'] = 'false';

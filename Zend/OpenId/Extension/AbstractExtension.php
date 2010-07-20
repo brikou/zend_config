@@ -23,10 +23,10 @@
 /**
  * @namespace
  */
-namespace Zend\OpenID\Extension;
+namespace Zend\OpenId\Extension;
 
 /**
- * Abstract extension class for Zend\OpenID
+ * Abstract extension class for Zend\OpenId
  *
  * @category   Zend
  * @package    Zend_OpenID

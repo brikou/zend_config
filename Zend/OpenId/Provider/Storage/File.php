@@ -24,14 +24,14 @@
 /**
  * @namespace
  */
-namespace Zend\OpenID\Provider\Storage;
-use Zend\OpenID;
+namespace Zend\OpenId\Provider\Storage;
+use Zend\OpenId;
 
 /**
  * External storage implemmentation using serialized files
  *
- * @uses       Zend\OpenID\Exception
- * @uses       Zend\OpenID\Provider\Storage
+ * @uses       Zend\OpenId\Exception
+ * @uses       Zend\OpenId\Provider\Storage
  * @category   Zend
  * @package    Zend_OpenID
  * @subpackage Zend_OpenID_Provider
@@ -52,7 +52,7 @@ class File extends AbstractStorage
      * Constructs storage object and creates storage directory
      *
      * @param string $dir directory name to store data files in
-     * @throws Zend\OpenID\Exception
+     * @throws Zend\OpenId\Exception
      */
     public function __construct($dir = null)
     {
@@ -73,21 +73,21 @@ class File extends AbstractStorage
         $this->_dir = $dir;
         if (!is_dir($this->_dir)) {
             if (!@mkdir($this->_dir, 0700, 1)) {
-                throw new OpenID\Exception(
+                throw new OpenId\Exception(
                     "Cannot access storage directory $dir",
-                    OpenID\Exception::ERROR_STORAGE);
+                    OpenId\Exception::ERROR_STORAGE);
             }
         }
         if (($f = fopen($this->_dir.'/assoc.lock', 'w+')) === null) {
-            throw new OpenID\Exception(
+            throw new OpenId\Exception(
                 'Cannot create a lock file in the directory ' . $dir,
-                OpenID\Exception::ERROR_STORAGE);
+                OpenId\Exception::ERROR_STORAGE);
         }
         fclose($f);
         if (($f = fopen($this->_dir.'/user.lock', 'w+')) === null) {
-            throw new OpenID\Exception(
+            throw new OpenId\Exception(
                 'Cannot create a lock file in the directory ' . $dir,
-                OpenID\Exception::ERROR_STORAGE);
+                OpenId\Exception::ERROR_STORAGE);
         }
         fclose($f);
     }

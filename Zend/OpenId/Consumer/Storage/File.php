@@ -24,14 +24,14 @@
 /**
  * @namespace
  */
-namespace Zend\OpenID\Consumer\Storage;
-use Zend\OpenID;
+namespace Zend\OpenId\Consumer\Storage;
+use Zend\OpenId;
 
 /**
  * External storage implemmentation using serialized files
  *
- * @uses       Zend\OpenID\Consumer\Storage\AbstractStorage
- * @uses       Zend\OpenID\Exception
+ * @uses       Zend\OpenId\Consumer\Storage\AbstractStorage
+ * @uses       Zend\OpenId\Exception
  * @category   Zend
  * @package    Zend_OpenID
  * @subpackage Zend_OpenID_Consumer
@@ -52,7 +52,7 @@ class File extends AbstractStorage
      * Constructs storage object and creates storage directory
      *
      * @param string $dir directory name to store data files in
-     * @throws Zend\OpenID\Exception
+     * @throws Zend\OpenId\Exception
      */
     public function __construct($dir = null)
     {
@@ -73,27 +73,27 @@ class File extends AbstractStorage
         $this->_dir = $dir;
         if (!is_dir($this->_dir)) {
             if (!@mkdir($this->_dir, 0700, 1)) {
-                throw new OpenID\Exception(
+                throw new OpenId\Exception(
                     'Cannot access storage directory ' . $dir,
-                    OpenID\Exception::ERROR_STORAGE);
+                    OpenId\Exception::ERROR_STORAGE);
             }
         }
         if (($f = fopen($this->_dir.'/assoc.lock', 'w+')) === null) {
-            throw new OpenID\Exception(
+            throw new OpenId\Exception(
                 'Cannot create a lock file in the directory ' . $dir,
-                OpenID\Exception::ERROR_STORAGE);
+                OpenId\Exception::ERROR_STORAGE);
         }
         fclose($f);
         if (($f = fopen($this->_dir.'/discovery.lock', 'w+')) === null) {
-            throw new OpenID\Exception(
+            throw new OpenId\Exception(
                 'Cannot create a lock file in the directory ' . $dir,
-                OpenID\Exception::ERROR_STORAGE);
+                OpenId\Exception::ERROR_STORAGE);
         }
         fclose($f);
         if (($f = fopen($this->_dir.'/nonce.lock', 'w+')) === null) {
-            throw new OpenID\Exception(
+            throw new OpenId\Exception(
                 'Cannot create a lock file in the directory ' . $dir,
-                OpenID\Exception::ERROR_STORAGE);
+                OpenId\Exception::ERROR_STORAGE);
         }
         fclose($f);
     }

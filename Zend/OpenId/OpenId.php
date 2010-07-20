@@ -22,11 +22,11 @@
 /**
  * @namespace
  */
-namespace Zend\OpenID;
+namespace Zend\OpenId;
 
 /**
  * Static class that contains common utility functions for
- * {@link Zend\OpenID\Consumer\GenericConsumer} and {@link Zend\OpenID\Provider\GenericProvider}.
+ * {@link Zend\OpenId\Consumer\GenericConsumer} and {@link Zend\OpenId\Provider\GenericProvider}.
  *
  * This class implements common utility functions that are used by both
  * Consumer and Provider. They include functions for Diffie-Hellman keys
@@ -34,13 +34,13 @@ namespace Zend\OpenID;
  *
  * @uses       Zend\Controller\Response\AbstractResponse
  * @uses       Zend\Controller\Response\Http
- * @uses       Zend\OpenID\Exception
+ * @uses       Zend\OpenId\Exception
  * @category   Zend
  * @package    Zend_OpenID
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class OpenID
+class OpenId
 {
     /**
      * Default Diffie-Hellman key generator (1024 bit)
@@ -159,9 +159,9 @@ class OpenID
     static public function absoluteUrl($url)
     {
         if (empty($url)) {
-            return OpenID::selfUrl();
+            return self::selfUrl();
         } else if (!preg_match('|^([^:]+)://|', $url)) {
-            if (preg_match('|^([^:]+)://([^:@]*(?:[:][^@]*)?@)?([^/:@?#]*)(?:[:]([^/?#]*))?(/[^?]*)?((?:[?](?:[^#]*))?(?:#.*)?)$|', OpenID::selfUrl(), $reg)) {
+            if (preg_match('|^([^:]+)://([^:@]*(?:[:][^@]*)?@)?([^/:@?#]*)(?:[:]([^/?#]*))?(/[^?]*)?((?:[?](?:[^#]*))?(?:#.*)?)$|', self::selfUrl(), $reg)) {
                 $scheme = $reg[1];
                 $auth = $reg[2];
                 $host = $reg[3];
@@ -424,7 +424,7 @@ class OpenID
     static public function redirect($url, $params = null,
         \Zend\Controller\Response\AbstractResponse $response = null, $method = 'GET')
     {
-        $url = OpenID::absoluteUrl($url);
+        $url = self::absoluteUrl($url);
         $body = "";
         if (null === $response) {
             $response = new \Zend\Controller\Response\Http();
@@ -488,7 +488,7 @@ class OpenID
      * @param string $func digest algorithm
      * @param string $data data to sign
      * @return string RAW digital signature
-     * @throws Zend\OpenID\Exception
+     * @throws Zend\OpenId\Exception
      */
     static public function digest($func, $data)
     {
@@ -524,7 +524,7 @@ class OpenID
         if (function_exists('hash_hmac')) {
             return hash_hmac($macFunc, $data, $secret, 1);
         } else {
-            if (OpenID::strlen($secret) > 64) {
+            if (self::strlen($secret) > 64) {
                 $secret = self::digest($macFunc, $secret);
             }
             $secret = str_pad($secret, 64, chr(0x00));
@@ -541,7 +541,7 @@ class OpenID
      *
      * @param string $bin binary representation of big number
      * @return mixed
-     * @throws Zend\OpenID\Exception
+     * @throws Zend\OpenId\Exception
      */
     static protected function binToBigNum($bin)
     {
@@ -549,7 +549,7 @@ class OpenID
             return gmp_init(bin2hex($bin), 16);
         } else if (extension_loaded('bcmath')) {
             $bn = 0;
-            $len = OpenID::strlen($bin);
+            $len = self::strlen($bin);
             for ($i = 0; $i < $len; $i++) {
                 $bn = bcmul($bn, 256);
                 $bn = bcadd($bn, ord($bin[$i]));
@@ -567,7 +567,7 @@ class OpenID
      *
      * @param mixed $bn big number
      * @return string
-     * @throws Zend\OpenID\Exception
+     * @throws Zend\OpenId\Exception
      */
     static protected function bigNumToBin($bn)
     {
@@ -630,7 +630,7 @@ class OpenID
             $bn_p        = self::binToBigNum($p);
             $bn_g        = self::binToBigNum($g);
             if ($priv_key === null) {
-                $priv_key    = self::randomBytes(OpenID::strlen($p));
+                $priv_key    = self::randomBytes(self::strlen($p));
             }
             $bn_priv_key = self::binToBigNum($priv_key);
             if (extension_loaded('gmp')) {
@@ -681,7 +681,7 @@ class OpenID
      * @param string $pub_key other party's public value
      * @param mixed $dh Diffie-Hellman key
      * @return string
-     * @throws Zend\OpenID\Exception
+     * @throws Zend\OpenId\Exception
      */
     static public function computeDhSecret($pub_key, $dh)
     {

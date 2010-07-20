@@ -24,19 +24,19 @@
 /**
  * @namespace
  */
-namespace Zend\OpenID\Consumer;
+namespace Zend\OpenId\Consumer;
 use Zend\Controller\Response;
-use Zend\OpenID;
-use Zend\OpenID\Extension;
+use Zend\OpenId;
+use Zend\OpenId\Extension;
 
 /**
  * OpenID consumer implementation
  *
  * @uses       Zend\Http\Client
- * @uses       Zend\OpenID\OpenID
- * @uses       Zend\OpenID\Consumer\Storage
- * @uses       Zend\OpenID\Consumer\Storage\File
- * @uses       Zend\OpenID\Extension
+ * @uses       Zend\OpenId\OpenId
+ * @uses       Zend\OpenId\Consumer\Storage
+ * @uses       Zend\OpenId\Consumer\Storage\File
+ * @uses       Zend\OpenId\Extension
  * @uses       Zend\Session\Container
  * @category   Zend
  * @package    Zend_OpenID
@@ -50,7 +50,7 @@ class GenericConsumer
     /**
      * Reference to an implementation of storage object
      *
-     * @var Zend\OpenID\Consumer\Storage $_storage
+     * @var Zend\OpenId\Consumer\Storage $_storage
      */
     protected $_storage = null;
 
@@ -58,7 +58,7 @@ class GenericConsumer
      * Enables or disables consumer to use association with server based on
      * Diffie-Hellman key agreement
      *
-     * @var Zend\OpenID\Consumer\Storage $_dumbMode
+     * @var Zend\OpenId\Consumer\Storage $_dumbMode
      */
     protected $_dumbMode = false;
 
@@ -91,11 +91,11 @@ class GenericConsumer
     private $_error = '';
 
     /**
-     * Constructs a Zend\OpenID\Consumer\GenericConsumer object with given $storage.
+     * Constructs a Zend\OpenId\Consumer\GenericConsumer object with given $storage.
      * Enables or disables future association with server based on
      * Diffie-Hellman key agreement.
      *
-     * @param Zend\OpenID\Consumer\Storage $storage implementation of custom
+     * @param Zend\OpenId\Consumer\Storage $storage implementation of custom
      *  storage object
      * @param bool $dumbMode Enables or disables consumer to use association
      *  with server based on Diffie-Hellman key agreement
@@ -185,7 +185,7 @@ class GenericConsumer
 
         $version = 1.1;
         if (isset($params['openid_ns']) &&
-            $params['openid_ns'] == OpenID\OpenID::NS_2_0) {
+            $params['openid_ns'] == OpenId\OpenId::NS_2_0) {
             $version = 2.0;
         }
 
@@ -240,14 +240,14 @@ class GenericConsumer
             $this->_setError("Missing openid.assoc_handle");
             return false;
         }
-        if ($params['openid_return_to'] != OpenID\OpenID::selfUrl()) {
+        if ($params['openid_return_to'] != OpenId\OpenId::selfUrl()) {
             /* Ignore query part in openid.return_to */
             $pos = strpos($params['openid_return_to'], '?');
             if ($pos === false ||
-                SUBSTR($params['openid_return_to'], 0 , $pos) != OpenID\OpenID::selfUrl()) {
+                SUBSTR($params['openid_return_to'], 0 , $pos) != OpenId\OpenId::selfUrl()) {
 
                 $this->_setError("Wrong openid.return_to '".
-                    $params['openid_return_to']."' != '" . OpenID\OpenID::selfUrl() ."'");
+                    $params['openid_return_to']."' != '" . OpenId\OpenId::selfUrl() ."'");
                 return false;
             }
         }
@@ -291,7 +291,7 @@ class GenericConsumer
                 $data .= $key . ':' . $params['openid_' . strtr($key,'.','_')] . "\n";
             }
             if (base64_decode($params['openid_sig']) ==
-                OpenID\OpenID::hashHmac($macFunc, $data, $secret)) {
+                OpenId\OpenId::hashHmac($macFunc, $data, $secret)) {
                 if (!Extension\AbstractExtension::forAll($extensions, 'parseResponse', $params)) {
                     $this->_setError("Extension::parseResponse failure");
                     return false;
@@ -299,7 +299,7 @@ class GenericConsumer
                 /* OpenID 2.0 (11.2) Verifying Discovered Information */
                 if (isset($params['openid_claimed_id'])) {
                     $id = $params['openid_claimed_id'];
-                    if (!OpenID\OpenID::normalize($id)) {
+                    if (!OpenId\OpenId::normalize($id)) {
                         $this->_setError("Normalization failed");
                         return false;
                     } else if (!$this->_discovery($id, $discovered_server, $discovered_version)) {
@@ -332,7 +332,7 @@ class GenericConsumer
                 return false;
             }
 
-            if (!OpenID\OpenID::normalize($id)) {
+            if (!OpenId\OpenId::normalize($id)) {
                 $this->_setError("Normalization failed");
                 return false;
             } else if (!$this->_discovery($id, $server, $discovered_version)) {
@@ -541,7 +541,7 @@ class GenericConsumer
 
         if ($version >= 2.0) {
             $params = array(
-                'openid.ns'           => OpenID\OpenID::NS_2_0,
+                'openid.ns'           => OpenId\OpenId::NS_2_0,
                 'openid.mode'         => 'associate',
                 'openid.assoc_type'   => 'HMAC-SHA256',
                 'openid.session_type' => 'DH-SHA256',
@@ -554,17 +554,17 @@ class GenericConsumer
             );
         }
 
-        $dh = OpenID\OpenID::createDhKey(pack('H*', OpenID\OpenID::DH_P),
-                                       pack('H*', OpenID\OpenID::DH_G),
+        $dh = OpenId\OpenId::createDhKey(pack('H*', OpenId\OpenId::DH_P),
+                                       pack('H*', OpenId\OpenId::DH_G),
                                        $priv_key);
-        $dh_details = OpenID\OpenID::getDhKeyDetails($dh);
+        $dh_details = OpenId\OpenId::getDhKeyDetails($dh);
 
         $params['openid.dh_modulus']         = base64_encode(
-            OpenID\OpenID::btwoc($dh_details['p']));
+            OpenId\OpenId::btwoc($dh_details['p']));
         $params['openid.dh_gen']             = base64_encode(
-            OpenID\OpenID::btwoc($dh_details['g']));
+            OpenId\OpenId::btwoc($dh_details['g']));
         $params['openid.dh_consumer_public'] = base64_encode(
-            OpenID\OpenID::btwoc($dh_details['pub_key']));
+            OpenId\OpenId::btwoc($dh_details['pub_key']));
 
         while(1) {
             $ret = $this->_httpRequest($url, 'POST', $params, $status);
@@ -615,7 +615,7 @@ class GenericConsumer
 
         if ($version >= 2.0 &&
             isset($ret['ns']) &&
-            $ret['ns'] != OpenID\OpenID::NS_2_0) {
+            $ret['ns'] != OpenId\OpenId::NS_2_0) {
             $this->_setError("Wrong namespace definition in the server response");
             return false;
         }
@@ -666,12 +666,12 @@ class GenericConsumer
         }
         if (isset($dhFunc)) {
             $serverPub = base64_decode($ret['dh_server_public']);
-            $dhSec = OpenID\OpenID::computeDhSecret($serverPub, $dh);
+            $dhSec = OpenId\OpenId::computeDhSecret($serverPub, $dh);
             if ($dhSec === false) {
                 $this->_setError("DH secret comutation failed");
                 return false;
             }
-            $sec = OpenID\OpenID::digest($dhFunc, $dhSec);
+            $sec = OpenId\OpenId::digest($dhFunc, $dhSec);
             if ($sec === false) {
                 $this->_setError("Could not create digest");
                 return false;
@@ -679,12 +679,12 @@ class GenericConsumer
             $secret = $sec ^ base64_decode($ret['enc_mac_key']);
         }
         if ($macFunc == 'sha1') {
-            if (OpenID\OpenID::strlen($secret) != 20) {
+            if (OpenId\OpenId::strlen($secret) != 20) {
                 $this->_setError("The length of the sha1 secret must be 20");
                 return false;
             }
         } else if ($macFunc == 'sha256') {
-            if (OpenID\OpenID::strlen($secret) != 32) {
+            if (OpenId\OpenId::strlen($secret) != 32) {
                 $this->_setError("The length of the sha256 secret must be 32");
                 return false;
             }
@@ -809,7 +809,7 @@ class GenericConsumer
     {
         $this->_setError('');
 
-        if (!OpenID\OpenID::normalize($id)) {
+        if (!OpenId\OpenId::normalize($id)) {
             $this->_setError("Normalisation failed");
             return false;
         }
@@ -838,7 +838,7 @@ class GenericConsumer
 
         $params = array();
         if ($version >= 2.0) {
-            $params['openid.ns'] = OpenID\OpenID::NS_2_0;
+            $params['openid.ns'] = OpenId\OpenId::NS_2_0;
         }
 
         $params['openid.mode'] = $immediate ?
@@ -867,10 +867,10 @@ class GenericConsumer
             $params['openid.assoc_handle'] = $handle;
         }
 
-        $params['openid.return_to'] = OpenID\OpenID::absoluteUrl($returnTo);
+        $params['openid.return_to'] = OpenId\OpenId::absoluteUrl($returnTo);
 
         if (empty($root)) {
-            $root = OpenID\OpenID::selfUrl();
+            $root = OpenId\OpenId::selfUrl();
             if ($root[strlen($root)-1] != '/') {
                 $root = dirname($root);
             }
@@ -886,7 +886,7 @@ class GenericConsumer
             return false;
         }
 
-        OpenID\OpenID::redirect($server, $params, $response);
+        OpenId\OpenId::redirect($server, $params, $response);
         return true;
     }
 

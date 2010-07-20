@@ -24,7 +24,7 @@
 /**
  * @namespace
  */
-namespace Zend\OpenID\Provider\Storage;
+namespace Zend\OpenId\Provider\Storage;
 
 /**
  * Abstract class to implement external storage for OpenID consumer
