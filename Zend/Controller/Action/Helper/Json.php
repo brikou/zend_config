@@ -30,14 +30,14 @@ namespace Zend\Controller\Action\Helper;
  *
  * @uses       \Zend\Controller\Action\HelperBroker
  * @uses       \Zend\Controller\Action\Helper\AbstractHelper
- * @uses       \Zend\View\Helper\JSON
+ * @uses       \Zend\View\Helper\Json
  * @category   Zend
  * @package    Zend_Controller
  * @subpackage Zend_Controller_Action_Helper
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class JSON extends AbstractHelper
+class Json extends AbstractHelper
 {
     /**
      * Suppress exit when sendJson() called
@@ -61,12 +61,12 @@ class JSON extends AbstractHelper
      *         then, the array can contains a 'keepLayout'=>true|false
      *         that will not be passed to Zend_Json::encode method but will be passed
      *         to Zend_View_Helper_Json
-     * @throws \Zend\Controller\Action\Helper\JSON
+     * @throws \Zend\Controller\Action\Helper\Json
      * @return string
      */
     public function encodeJson($data, $keepLayouts = false)
     {
-        $jsonHelper = new \Zend\View\Helper\JSON();
+        $jsonHelper = new \Zend\View\Helper\Json();
         $data = $jsonHelper->direct($data, $keepLayouts);
 
         if (!$keepLayouts) {

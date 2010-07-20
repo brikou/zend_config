@@ -13,7 +13,7 @@
  * to license@zend.com so we can send you a copy immediately.
  *
  * @category   Zend
- * @package    Zend_JSON
+ * @package    Zend_Json
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  * @version    $Id$
@@ -22,12 +22,12 @@
 /**
  * @namespace
  */
-namespace Zend\JSON\Server;
+namespace Zend\Json\Server;
 
 /**
- * @uses       \Zend\JSON\JSON
+ * @uses       \Zend\Json\Json
  * @category   Zend
- * @package    Zend_JSON
+ * @package    Zend_Json
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
@@ -90,7 +90,7 @@ class Error
      * Set error code
      *
      * @param  int $code
-     * @return \Zend\JSON\Server\Error
+     * @return \Zend\Json\Server\Error
      */
     public function setCode($code)
     {
@@ -122,7 +122,7 @@ class Error
      * Set error message
      *
      * @param  string $message
-     * @return \Zend\JSON\Server\Error
+     * @return \Zend\Json\Server\Error
      */
     public function setMessage($message)
     {
@@ -148,7 +148,7 @@ class Error
      * Set error data
      *
      * @param  mixed $data
-     * @return \Zend\JSON\Server\Error
+     * @return \Zend\Json\Server\Error
      */
     public function setData($data)
     {
@@ -185,9 +185,9 @@ class Error
      *
      * @return string
      */
-    public function toJSON()
+    public function toJson()
     {
-        return \Zend\JSON\JSON::encode($this->toArray());
+        return \Zend\Json\Json::encode($this->toArray());
     }
 
     /**
@@ -197,7 +197,7 @@ class Error
      */
     public function __toString()
     {
-        return $this->toJSON();
+        return $this->toJson();
     }
 }
 

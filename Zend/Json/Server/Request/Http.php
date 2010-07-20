@@ -13,7 +13,7 @@
  * to license@zend.com so we can send you a copy immediately.
  *
  * @category   Zend
- * @package    Zend_JSON
+ * @package    Zend_Json
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  * @version    $Id$
@@ -22,17 +22,48 @@
 /**
  * @namespace
  */
-namespace Zend\JSON\Server;
+namespace Zend\Json\Server\Request;
+
+use Zend\Json\Server\Request as JSONRequest;
 
 /**
- * Zend_JSON_Server exceptions
- *
- * @uses       \Zend\JSON\Exception
- * @package    Zend_JSON
- * @subpackage Server
+ * @uses       \Zend\Json\Server\Request\Request
+ * @category   Zend
+ * @package    Zend_Json
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class Exception extends \Zend\JSON\Exception
+class Http extends JSONRequest
 {
+    /**
+     * Raw JSON pulled from POST body
+     * @var string
+     */
+    protected $_rawJson;
+
+    /**
+     * Constructor
+     *
+     * Pull JSON request from raw POST body and use to populate request.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $json = file_get_contents('php://input');
+        $this->_rawJson = $json;
+        if (!empty($json)) {
+            $this->loadJson($json);
+        }
+    }
+
+    /**
+     * Get JSON from raw POST body
+     *
+     * @return string
+     */
+    public function getRawJSON()
+    {
+        return $this->_rawJson;
+    }
 }

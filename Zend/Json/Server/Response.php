@@ -13,7 +13,7 @@
  * to license@zend.com so we can send you a copy immediately.
  *
  * @category   Zend
- * @package    Zend_JSON
+ * @package    Zend_Json
  * @subpackage Server
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
@@ -23,12 +23,12 @@
 /**
  * @namespace
  */
-namespace Zend\JSON\Server;
+namespace Zend\Json\Server;
 
 /**
- * @uses       \Zend\JSON\JSON
+ * @uses       \Zend\Json\Json
  * @category   Zend
- * @package    Zend_JSON
+ * @package    Zend_Json
  * @subpackage Server
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
@@ -37,7 +37,7 @@ class Response
 {
     /**
      * Response error
-     * @var null|\Zend\JSON\Server\Error
+     * @var null|\Zend\Json\Server\Error
      */
     protected $_error;
 
@@ -55,7 +55,7 @@ class Response
 
     /**
      * Service map
-     * @var \Zend\JSON\Server\Smd\Smd
+     * @var \Zend\Json\Server\Smd\Smd
      */
     protected $_serviceMap;
 
@@ -69,7 +69,7 @@ class Response
      * Set result
      *
      * @param  mixed $value
-     * @return \Zend\JSON\Server\Response
+     * @return \Zend\Json\Server\Response
      */
     public function setResult($value)
     {
@@ -91,8 +91,8 @@ class Response
     /**
      * Set result error
      *
-     * @param  \Zend\JSON\Server\Error $error
-     * @return \Zend\JSON\Server\Response
+     * @param  \Zend\Json\Server\Error $error
+     * @return \Zend\Json\Server\Response
      */
     public function setError(Error $error)
     {
@@ -103,7 +103,7 @@ class Response
     /**
      * Get response error
      *
-     * @return null|\Zend\JSON\Server\Error
+     * @return null|\Zend\Json\Server\Error
      */
     public function getError()
     {
@@ -124,7 +124,7 @@ class Response
      * Set request ID
      *
      * @param  mixed $name
-     * @return \Zend\JSON\Server\Response
+     * @return \Zend\Json\Server\Response
      */
     public function setId($name)
     {
@@ -146,7 +146,7 @@ class Response
      * Set JSON-RPC version
      *
      * @param  string $version
-     * @return \Zend\JSON\Server\Response
+     * @return \Zend\Json\Server\Response
      */
     public function setVersion($version)
     {
@@ -175,7 +175,7 @@ class Response
      *
      * @return string
      */
-    public function toJSON()
+    public function toJson()
     {
         if ($this->isError()) {
             $response = array(
@@ -195,7 +195,7 @@ class Response
             $response['jsonrpc'] = $version;
         }
 
-        return \Zend\JSON\JSON::encode($response);
+        return \Zend\Json\Json::encode($response);
     }
 
     /**
@@ -223,8 +223,8 @@ class Response
     /**
      * Set service map object
      *
-     * @param  \Zend\JSON\Server\Smd\Smd $serviceMap
-     * @return \Zend\JSON\Server\Response
+     * @param  \Zend\Json\Server\Smd\Smd $serviceMap
+     * @return \Zend\Json\Server\Response
      */
     public function setServiceMap($serviceMap)
     {
@@ -235,7 +235,7 @@ class Response
     /**
      * Retrieve service map
      *
-     * @return \Zend\JSON\Server\Smd\Smd|null
+     * @return \Zend\Json\Server\Smd\Smd|null
      */
     public function getServiceMap()
     {
@@ -249,7 +249,7 @@ class Response
      */
     public function __toString()
     {
-        return $this->toJSON();
+        return $this->toJson();
     }
 }
 

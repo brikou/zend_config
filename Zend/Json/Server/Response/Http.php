@@ -13,7 +13,7 @@
  * to license@zend.com so we can send you a copy immediately.
  *
  * @category   Zend
- * @package    Zend_JSON
+ * @package    Zend_Json
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  * @version    $Id$
@@ -22,14 +22,14 @@
 /**
  * @namespace
  */
-namespace Zend\JSON\Server\Response;
+namespace Zend\Json\Server\Response;
 
-use Zend\JSON\Server\Response as JSONResponse;
+use Zend\Json\Server\Response as JSONResponse;
 
 /**
- * @uses       \Zend\JSON\Server\Response\Response
+ * @uses       \Zend\Json\Server\Response\Response
  * @category   Zend
- * @package    Zend_JSON
+ * @package    Zend_Json
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
@@ -42,14 +42,14 @@ class Http extends JSONResponse
      *
      * @return string
      */
-    public function toJSON()
+    public function toJson()
     {
         $this->sendHeaders();
         if (!$this->isError() && null === $this->getId()) {
             return '';
         }
 
-        return parent::toJSON();
+        return parent::toJson();
     }
 
     /**

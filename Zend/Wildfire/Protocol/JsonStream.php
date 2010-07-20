@@ -30,7 +30,7 @@ use Zend\Wildfire;
 /**
  * Encodes messages into the Wildfire JSON Stream Communication Protocol.
  *
- * @uses       \Zend\JSON\JSON
+ * @uses       \Zend\Json\Json
  * @uses       \Zend\Wildfire\Channel
  * @uses       \Zend\Wildfire\Exception
  * @uses       \Zend\Wildfire\Plugin
@@ -40,7 +40,7 @@ use Zend\Wildfire;
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class JSONStream
+class JsonStream
 {
     /**
      * The protocol URI for this protocol
@@ -147,7 +147,7 @@ class JSONStream
      */
     protected function _encode($value)
     {
-        return \Zend\JSON\JSON::encode($value, true, array('silenceCyclicalExceptions'=>true));
+        return \Zend\Json\Json::encode($value, true, array('silenceCyclicalExceptions'=>true));
     }
 
     /**

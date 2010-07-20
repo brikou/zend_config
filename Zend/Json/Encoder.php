@@ -13,7 +13,7 @@
  * to license@zend.com so we can send you a copy immediately.
  *
  * @category   Zend
- * @package    Zend_JSON
+ * @package    Zend_Json
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  * @version    $Id$
@@ -22,15 +22,15 @@
 /**
  * @namespace
  */
-namespace Zend\JSON;
+namespace Zend\Json;
 
 /**
  * Encode PHP constructs to JSON
  *
  * @uses       ReflectionClass
- * @uses       \Zend\JSON\Exception
+ * @uses       \Zend\Json\Exception
  * @category   Zend
- * @package    Zend_JSON
+ * @package    Zend_Json
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
@@ -117,7 +117,7 @@ class Encoder
      *
      * @param $value object
      * @return string
-     * @throws \Zend\JSON\Exception If recursive checks are enabled and the object has been serialized previously
+     * @throws \Zend\Json\Exception If recursive checks are enabled and the object has been serialized previously
      */
     protected function _encodeObject(&$value)
     {
@@ -403,7 +403,7 @@ class Encoder
      * @param $package string Optional package name appended to JavaScript
      * proxy class name
      * @return string The class2 (JavaScript) encoding of the class
-     * @throws \Zend\JSON\Exception
+     * @throws \Zend\Json\Exception
      */
     public static function encodeClass($className, $package = '')
     {
