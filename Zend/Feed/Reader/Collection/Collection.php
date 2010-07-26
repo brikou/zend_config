@@ -16,31 +16,23 @@
  * @package    Zend_Feed_Reader
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: CollectionAbstract.php 20096 2010-01-06 02:05:09Z bkarwin $
+ * @version    $Id: Collection.php 20785 2010-01-31 09:43:03Z mikaelkael $
  */
- 
+
 /**
- * @namespace
- */
+* @namespace
+*/
 namespace Zend\Feed\Reader\Collection;
 
 /**
- * @category   Zend
- * @package    Zend_Feed_Reader
- * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
- * @license    http://framework.zend.com/license/new-bsd     New BSD License
- */
-abstract class AbstractCollection extends \ArrayObject
+* @category Zend
+* @package Zend_Feed_Reader
+* @copyright Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
+* @license http://framework.zend.com/license/new-bsd New BSD License
+*/
+class Collection extends \ArrayObject
 {
 
-    /**
-     * Return a simple array of the most relevant slice of
-     * the collection values. For example, feed categories contain
-     * the category name, domain/URI, and other data. This method would
-     * merely return the most useful data - i.e. the category names.
-     *
-     * @return array
-     */
-    public abstract function getValues();
+    
 
 }
