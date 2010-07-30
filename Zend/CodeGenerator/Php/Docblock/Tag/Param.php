@@ -23,16 +23,16 @@
 /**
  * @namespace
  */
-namespace Zend\CodeGenerator\PHP\Docblock\Tag;
+namespace Zend\CodeGenerator\Php\Docblock\Tag;
 
 /**
- * @uses       \Zend\CodeGenerator\PHP\PHPDocblockTag
+ * @uses       \Zend\CodeGenerator\Php\PhpDocblockTag
  * @category   Zend
  * @package    Zend_CodeGenerator
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class Param extends \Zend\CodeGenerator\PHP\PHPDocblockTag
+class Param extends \Zend\CodeGenerator\Php\PhpDocblockTag
 {
 
     /**
@@ -54,7 +54,7 @@ class Param extends \Zend\CodeGenerator\PHP\PHPDocblockTag
      * fromReflection()
      *
      * @param \Zend\Reflection\ReflectionDocblockTag $reflectionTagParam
-     * @return \Zend\CodeGenerator\PHP\Docblock\Tag\Param
+     * @return \Zend\CodeGenerator\Php\Docblock\Tag\Param
      */
     public static function fromReflection(\Zend\Reflection\ReflectionDocblockTag $reflectionTagParam)
     {
@@ -72,7 +72,7 @@ class Param extends \Zend\CodeGenerator\PHP\PHPDocblockTag
      * setDatatype()
      *
      * @param string $datatype
-     * @return \Zend\CodeGenerator\PHP\Docblock\Tag\Param
+     * @return \Zend\CodeGenerator\Php\Docblock\Tag\Param
      */
     public function setDatatype($datatype)
     {
@@ -94,7 +94,7 @@ class Param extends \Zend\CodeGenerator\PHP\PHPDocblockTag
      * setParamName()
      *
      * @param string $paramName
-     * @return \Zend\CodeGenerator\PHP\Docblock\Tag\Param
+     * @return \Zend\CodeGenerator\Php\Docblock\Tag\Param
      */
     public function setParamName($paramName)
     {

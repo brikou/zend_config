@@ -23,16 +23,38 @@
 /**
  * @namespace
  */
-namespace Zend\CodeGenerator\PHP;
+namespace Zend\CodeGenerator\Php\PhpMember;
 
 /**
- * @uses       \Zend\CodeGenerator\Exception
  * @category   Zend
  * @package    Zend_CodeGenerator
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class Exception extends \Zend\CodeGenerator\Exception
+class MemberContainer extends \ArrayObject
 {
+
+    /**#@+
+     * @param const string
+     */
+    const TYPE_PROPERTY = 'property';
+    const TYPE_METHOD   = 'method';
+    /**#@-*/
+
+    /**
+     * @var const|string
+     */
+    protected $_type = self::TYPE_PROPERTY;
+
+    /**
+     * __construct()
+     *
+     * @param const|string $type
+     */
+    public function __construct($type = self::TYPE_PROPERTY)
+    {
+        $this->_type = $type;
+        parent::__construct(array(), self::ARRAY_AS_PROPS);
+    }
 
 }

@@ -23,19 +23,19 @@
 /**
  * @namespace
  */
-namespace Zend\CodeGenerator\PHP\PHPMember;
-use Zend\CodeGenerator\PHP;
+namespace Zend\CodeGenerator\Php\PhpMember;
+use Zend\CodeGenerator\Php;
 
 /**
- * @uses       \Zend\CodeGenerator\PHP\AbstractPHP
- * @uses       \Zend\CodeGenerator\PHPDocblock
- * @uses       \Zend\CodeGenerator\PHP\Exception
+ * @uses       \Zend\CodeGenerator\Php\AbstractPhp
+ * @uses       \Zend\CodeGenerator\PhpDocblock
+ * @uses       \Zend\CodeGenerator\Php\Exception
  * @category   Zend
  * @package    Zend_CodeGenerator
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-abstract class AbstractMember extends PHP\AbstractPHP
+abstract class AbstractMember extends Php\AbstractPhp
 {
 
     /**#@+
@@ -47,7 +47,7 @@ abstract class AbstractMember extends PHP\AbstractPHP
     /**#@-*/
 
     /**
-     * @var \Zend\CodeGenerator\PHPDocblock
+     * @var \Zend\CodeGenerator\PhpDocblock
      */
     protected $_docblock   = null;
 
@@ -79,8 +79,8 @@ abstract class AbstractMember extends PHP\AbstractPHP
     /**
      * setDocblock() Set the docblock
      *
-     * @param \Zend\CodeGenerator\PHPDocblock|array|string $docblock
-     * @return \Zend\CodeGenerator\PHP\PHPFile
+     * @param \Zend\CodeGenerator\PhpDocblock|array|string $docblock
+     * @return \Zend\CodeGenerator\Php\PhpFile
      */
     public function setDocblock($docblock)
     {
@@ -89,9 +89,9 @@ abstract class AbstractMember extends PHP\AbstractPHP
         }
 
         if (is_array($docblock)) {
-            $docblock = new PHP\PHPDocblock($docblock);
-        } elseif (!$docblock instanceof PHP\PHPDocblock) {
-            throw new PHP\Exception('setDocblock() is expecting either a string, array or an instance of Zend_CodeGenerator_Php_Docblock');
+            $docblock = new Php\PhpDocblock($docblock);
+        } elseif (!$docblock instanceof Php\PhpDocblock) {
+            throw new Php\Exception('setDocblock() is expecting either a string, array or an instance of Zend_CodeGenerator_Php_Docblock');
         }
 
         $this->_docblock = $docblock;
@@ -101,7 +101,7 @@ abstract class AbstractMember extends PHP\AbstractPHP
     /**
      * getDocblock()
      *
-     * @return \Zend\CodeGenerator\PHPDocblock
+     * @return \Zend\CodeGenerator\PhpDocblock
      */
     public function getDocblock()
     {
@@ -112,7 +112,7 @@ abstract class AbstractMember extends PHP\AbstractPHP
      * setAbstract()
      *
      * @param bool $isAbstract
-     * @return \Zend\CodeGenerator\PHP\PHPMember\AbstractMember
+     * @return \Zend\CodeGenerator\Php\PhpMember\AbstractMember
      */
     public function setAbstract($isAbstract)
     {
@@ -134,7 +134,7 @@ abstract class AbstractMember extends PHP\AbstractPHP
      * setFinal()
      *
      * @param bool $isFinal
-     * @return \Zend\CodeGenerator\PHP\PHPMember\AbstractMember
+     * @return \Zend\CodeGenerator\Php\PhpMember\AbstractMember
      */
     public function setFinal($isFinal)
     {
@@ -156,7 +156,7 @@ abstract class AbstractMember extends PHP\AbstractPHP
      * setStatic()
      *
      * @param bool $isStatic
-     * @return \Zend\CodeGenerator\PHP\PHPMember\AbstractMember
+     * @return \Zend\CodeGenerator\Php\PhpMember\AbstractMember
      */
     public function setStatic($isStatic)
     {
@@ -178,7 +178,7 @@ abstract class AbstractMember extends PHP\AbstractPHP
      * setVisitibility()
      *
      * @param const $visibility
-     * @return \Zend\CodeGenerator\PHP\PHPMember\AbstractMember
+     * @return \Zend\CodeGenerator\Php\PhpMember\AbstractMember
      */
     public function setVisibility($visibility)
     {
@@ -200,7 +200,7 @@ abstract class AbstractMember extends PHP\AbstractPHP
      * setName()
      *
      * @param string $name
-     * @return \Zend\CodeGenerator\PHP\PHPMember\AbstractMember
+     * @return \Zend\CodeGenerator\Php\PhpMember\AbstractMember
      */
     public function setName($name)
     {

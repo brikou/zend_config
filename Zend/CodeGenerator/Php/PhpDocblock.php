@@ -23,18 +23,18 @@
 /**
  * @namespace
  */
-namespace Zend\CodeGenerator\PHP;
+namespace Zend\CodeGenerator\Php;
 
 /**
- * @uses       \Zend\CodeGenerator\PHP\AbstractPHP
- * @uses       \Zend\CodeGenerator\PHP\PHPDocblockTag
- * @uses       \Zend\CodeGenerator\PHP\Exception
+ * @uses       \Zend\CodeGenerator\Php\AbstractPhp
+ * @uses       \Zend\CodeGenerator\Php\PhpDocblockTag
+ * @uses       \Zend\CodeGenerator\Php\Exception
  * @category   Zend
  * @package    Zend_CodeGenerator
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class PHPDocblock extends AbstractPHP
+class PhpDocblock extends AbstractPhp
 {
     /**
      * @var string
@@ -60,7 +60,7 @@ class PHPDocblock extends AbstractPHP
      * fromReflection() - Build a docblock generator object from a reflection object
      *
      * @param Zend_Reflection_Docblock $reflectionDocblock
-     * @return \Zend\CodeGenerator\PHPDocblock
+     * @return \Zend\CodeGenerator\PhpDocblock
      */
     public static function fromReflection(\Zend\Reflection\ReflectionDocblock $reflectionDocblock)
     {
@@ -73,7 +73,7 @@ class PHPDocblock extends AbstractPHP
         $docblock->setLongDescription($reflectionDocblock->getLongDescription());
 
         foreach ($reflectionDocblock->getTags() as $tag) {
-            $docblock->setTag(PHPDocblockTag::fromReflection($tag));
+            $docblock->setTag(PhpDocblockTag::fromReflection($tag));
         }
 
         return $docblock;
@@ -83,7 +83,7 @@ class PHPDocblock extends AbstractPHP
      * setShortDescription()
      *
      * @param string $shortDescription
-     * @return \Zend\CodeGenerator\PHPDocblock
+     * @return \Zend\CodeGenerator\PhpDocblock
      */
     public function setShortDescription($shortDescription)
     {
@@ -105,7 +105,7 @@ class PHPDocblock extends AbstractPHP
      * setLongDescription()
      *
      * @param string $longDescription
-     * @return \Zend\CodeGenerator\PHPDocblock
+     * @return \Zend\CodeGenerator\PhpDocblock
      */
     public function setLongDescription($longDescription)
     {
@@ -127,7 +127,7 @@ class PHPDocblock extends AbstractPHP
      * setTags()
      *
      * @param array $tags
-     * @return \Zend\CodeGenerator\PHPDocblock
+     * @return \Zend\CodeGenerator\PhpDocblock
      */
     public function setTags(Array $tags)
     {
@@ -141,14 +141,14 @@ class PHPDocblock extends AbstractPHP
     /**
      * setTag()
      *
-     * @param array|\Zend\CodeGenerator\PHP\PHPDocblockTag $tag
-     * @return \Zend\CodeGenerator\PHPDocblock
+     * @param array|\Zend\CodeGenerator\Php\PhpDocblockTag $tag
+     * @return \Zend\CodeGenerator\PhpDocblock
      */
     public function setTag($tag)
     {
         if (is_array($tag)) {
-            $tag = new PHPDocblockTag($tag);
-        } elseif (!$tag instanceof PHPDocblockTag) {
+            $tag = new PhpDocblockTag($tag);
+        } elseif (!$tag instanceof PhpDocblockTag) {
             throw new Exception(
                 'setTag() expects either an array of method options or an '
                 . 'instance of Zend_CodeGenerator_Php_Docblock_Tag'
@@ -162,7 +162,7 @@ class PHPDocblock extends AbstractPHP
     /**
      * getTags
      *
-     * @return array Array of \Zend\CodeGenerator\PHP\PHPDocblockTag
+     * @return array Array of \Zend\CodeGenerator\Php\PhpDocblockTag
      */
     public function getTags()
     {

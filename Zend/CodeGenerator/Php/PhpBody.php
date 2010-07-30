@@ -14,7 +14,7 @@
  *
  * @category   Zend
  * @package    Zend_CodeGenerator
- * @subpackage Php
+ * @subpackage PHP
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  * @version    $Id$
@@ -23,30 +23,52 @@
 /**
  * @namespace
  */
-namespace Zend\CodeGenerator\PHP;
+namespace Zend\CodeGenerator\Php;
 
 /**
- * A value-holder object for non-expressable parameter default values, such as null, booleans and empty array()
- *
- * @uses       \Zend\CodeGenerator\PHP\Exception
+ * @uses       \Zend\CodeGenerator\AbstractCodeGenerator
  * @category   Zend
  * @package    Zend_CodeGenerator
- * @subpackage Php
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class PHPParameterDefaultValue extends PHPValue
+class PhpBody extends \Zend\CodeGenerator\AbstractCodeGenerator
 {
-    
-    protected $_outputMode = self::OUTPUT_SINGLE_LINE;
-    
-//    public function generate()
-//    {
-//        $indent = $this->_indentation;
-//        $this->_indentation = '';
-//        $output = parent::generate();
-//        $output = str_replace(self::LINE_FEED, '', $output);
-//        $this->_indentation = $indent;
-//        return $output;
-//    }
+
+    /**
+     * @var string
+     */
+    protected $_content = null;
+
+    /**
+     * setContent()
+     *
+     * @param string $content
+     * @return \Zend\CodeGenerator\Php\PhpBody
+     */
+    public function setContent($content)
+    {
+        $this->_content = $content;
+        return $this;
+    }
+
+    /**
+     * getContent()
+     *
+     * @return string
+     */
+    public function getContent()
+    {
+        return (string) $this->_content;
+    }
+
+    /**
+     * generate()
+     *
+     * @return string
+     */
+    public function generate()
+    {
+        return $this->getContent();
+    }
 }

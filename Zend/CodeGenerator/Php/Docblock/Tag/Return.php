@@ -23,22 +23,22 @@
 /**
  * @namespace
  */
-namespace Zend\CodeGenerator\PHP\Docblock\Tag;
+namespace Zend\CodeGenerator\Php\Docblock\Tag;
 
 /**
- * @uses       \Zend\CodeGenerator\PHP\PHPDocblockTag
+ * @uses       \Zend\CodeGenerator\Php\PhpDocblockTag
  * @category   Zend
  * @package    Zend_CodeGenerator
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class License extends \Zend\CodeGenerator\PHP\PHPDocblockTag
+class Return extends \Zend\CodeGenerator\Php\PhpDocblockTag
 {
 
     /**
      * @var string
      */
-    protected $_url = null;
+    protected $_datatype = null;
 
     /**
      * @var string
@@ -49,39 +49,39 @@ class License extends \Zend\CodeGenerator\PHP\PHPDocblockTag
      * fromReflection()
      *
      * @param \Zend\Reflection\ReflectionDocblockTag $reflectionTagReturn
-     * @return \Zend\CodeGenerator\PHP\Docblock\Tag\License
+     * @return \Zend\CodeGenerator\Php\Docblock\Tag\Return
      */
-    public static function fromReflection(\Zend\Reflection\ReflectionDocblockTag $reflectionTagLicense)
+    public static function fromReflection(\Zend\Reflection\ReflectionDocblockTag $reflectionTagReturn)
     {
         $returnTag = new \self();
 
-        $returnTag->setName('license');
-        $returnTag->setUrl($reflectionTagLicense->getUrl());
-        $returnTag->setDescription($reflectionTagLicense->getDescription());
+        $returnTag->setName('return');
+        $returnTag->setDatatype($reflectionTagReturn->getType()); // @todo rename
+        $returnTag->setDescription($reflectionTagReturn->getDescription());
 
         return $returnTag;
     }
 
     /**
-     * setUrl()
+     * setDatatype()
      *
-     * @param string $url
-     * @return \Zend\CodeGenerator\PHP\Docblock\Tag\License
+     * @param string $datatype
+     * @return \Zend\CodeGenerator\Php\Docblock\Tag\Return
      */
-    public function setUrl($url)
+    public function setDatatype($datatype)
     {
-        $this->_url = $url;
+        $this->_datatype = $datatype;
         return $this;
     }
 
     /**
-     * getUrl()
+     * getDatatype()
      *
      * @return string
      */
-    public function getUrl()
+    public function getDatatype()
     {
-        return $this->_url;
+        return $this->_datatype;
     }
 
 
@@ -92,7 +92,7 @@ class License extends \Zend\CodeGenerator\PHP\PHPDocblockTag
      */
     public function generate()
     {
-        $output = '@license ' . $this->_url . ' ' . $this->_description . self::LINE_FEED;
+        $output = '@return ' . $this->_datatype . ' ' . $this->_description;
         return $output;
     }
 
