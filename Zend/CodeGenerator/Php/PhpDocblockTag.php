@@ -23,19 +23,19 @@
 /**
  * @namespace
  */
-namespace Zend\CodeGenerator\PHP;
+namespace Zend\CodeGenerator\Php;
 
 /**
  * @uses       \Zend\CodeGenerator\AbstractCodeGenerator
- * @uses       \Zend\CodeGenerator\PHP\Docblock\Tag\Param
- * @uses       \Zend\CodeGenerator\PHP\Docblock\Tag\Return
+ * @uses       \Zend\CodeGenerator\Php\Docblock\Tag\Param
+ * @uses       \Zend\CodeGenerator\Php\Docblock\Tag\Return
  * @uses       \Zend\Loader\PluginLoader
  * @category   Zend
  * @package    Zend_CodeGenerator
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class PHPDocblockTag extends AbstractPHP
+class PhpDocblockTag extends AbstractPhp
 {
 
     protected static $_typeFormats = array(
@@ -62,7 +62,7 @@ class PHPDocblockTag extends AbstractPHP
      * fromReflection()
      *
      * @param \Zend\Reflection\ReflectionDocblockTag $reflectionTag
-     * @return \Zend\CodeGenerator\PHP\PHPDocblockTag
+     * @return \Zend\CodeGenerator\Php\PhpDocblockTag
      */
     public static function fromReflection(\Zend\Reflection\ReflectionDocblockTag $reflectionTag)
     {
@@ -89,7 +89,7 @@ class PHPDocblockTag extends AbstractPHP
      * setName()
      *
      * @param string $name
-     * @return \Zend\CodeGenerator\PHP\PHPDocblockTag
+     * @return \Zend\CodeGenerator\Php\PhpDocblockTag
      */
     public function setName($name)
     {
@@ -111,7 +111,7 @@ class PHPDocblockTag extends AbstractPHP
      * setDescription()
      *
      * @param string $description
-     * @return \Zend\CodeGenerator\PHP\PHPDocblockTag
+     * @return \Zend\CodeGenerator\Php\PhpDocblockTag
      */
     public function setDescription($description)
     {

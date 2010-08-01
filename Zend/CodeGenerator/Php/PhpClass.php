@@ -23,25 +23,25 @@
 /**
  * @namespace
  */
-namespace Zend\CodeGenerator\PHP;
+namespace Zend\CodeGenerator\Php;
 
 /**
- * @uses       \Zend\CodeGenerator\PHP\AbstractPHP
- * @uses       \Zend\CodeGenerator\PHPDocblock
- * @uses       \Zend\CodeGenerator\PHP\Exception
- * @uses       \Zend\CodeGenerator\PHP\PHPMember\MemberContainer
- * @uses       \Zend\CodeGenerator\PHP\PHPMethod
- * @uses       \Zend\CodeGenerator\PHP\PHPProperty
+ * @uses       \Zend\CodeGenerator\Php\AbstractPhp
+ * @uses       \Zend\CodeGenerator\PhpDocblock
+ * @uses       \Zend\CodeGenerator\Php\Exception
+ * @uses       \Zend\CodeGenerator\Php\PhpMember\MemberContainer
+ * @uses       \Zend\CodeGenerator\Php\PhpMethod
+ * @uses       \Zend\CodeGenerator\Php\PhpProperty
  * @category   Zend
  * @package    Zend_CodeGenerator
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class PHPClass extends AbstractPHP
+class PhpClass extends AbstractPhp
 {
 
     /**
-     * @var \Zend\CodeGenerator\PHP\PHPFile
+     * @var \Zend\CodeGenerator\Php\PhpFile
      */
     protected $_phpFile = null;
 
@@ -51,7 +51,7 @@ class PHPClass extends AbstractPHP
     protected $_namespaceName = null;
     
     /**
-     * @var \Zend\CodeGenerator\PHP\PHPDocblock
+     * @var \Zend\CodeGenerator\Php\PhpDocblock
      */
     protected $_docblock = null;
 
@@ -86,10 +86,10 @@ class PHPClass extends AbstractPHP
     protected $_methods = null;
 
     /**
-     * fromReflection() - build a Code Generation PHP Object from a Class Reflection
+     * fromReflection() - build a Code Generation Php Object from a Class Reflection
      *
      * @param \Zend\Reflection\ReflectionClass $reflectionClass
-     * @return \Zend\CodeGenerator\PHP\PHPClass
+     * @return \Zend\CodeGenerator\Php\PhpClass
      */
     public static function fromReflection(\Zend\Reflection\ReflectionClass $reflectionClass)
     {
@@ -99,7 +99,7 @@ class PHPClass extends AbstractPHP
         $class->setSourceDirty(false);
 
         if ($reflectionClass->getDocComment() != '') {
-            $class->setDocblock(PHPDocblock::fromReflection($reflectionClass->getDocblock()));
+            $class->setDocblock(PhpDocblock::fromReflection($reflectionClass->getDocblock()));
         }
 
         $class->setAbstract($reflectionClass->isAbstract());
@@ -128,7 +128,7 @@ class PHPClass extends AbstractPHP
         $properties = array();
         foreach ($reflectionClass->getProperties() as $reflectionProperty) {
             if ($reflectionProperty->getDeclaringClass()->getName() == $class->getName()) {
-                $properties[] = PHPProperty::fromReflection($reflectionProperty);
+                $properties[] = PhpProperty::fromReflection($reflectionProperty);
             }
         }
         $class->setProperties($properties);
@@ -136,7 +136,7 @@ class PHPClass extends AbstractPHP
         $methods = array();
         foreach ($reflectionClass->getMethods() as $reflectionMethod) {
             if ($reflectionMethod->getDeclaringClass()->getName() == $class->getName()) {
-                $methods[] = PHPMethod::fromReflection($reflectionMethod);
+                $methods[] = PhpMethod::fromReflection($reflectionMethod);
             }
         }
         $class->setMethods($methods);
@@ -145,22 +145,22 @@ class PHPClass extends AbstractPHP
     }
 
     /**
-     * setPHPFile()
+     * setPhpFile()
      * 
-     * @param Zend\CodeGenerator\PHP\PHPFile $phpFile
+     * @param Zend\CodeGenerator\Php\PhpFile $phpFile
      */
-    public function setPHPFile(PHPFile $phpFile)
+    public function setPhpFile(PhpFile $phpFile)
     {
         $this->_phpFile = $phpFile;
         return $this;
     }
     
     /**
-     * getPHPFile()
+     * getPhpFile()
      * 
-     * @return Zend\CodeGenerator\PHP\PHPFile
+     * @return Zend\CodeGenerator\Php\PhpFile
      */
-    public function getPHPFile()
+    public function getPhpFile()
     {
         return $this->_phpFile;
     }
@@ -168,8 +168,8 @@ class PHPClass extends AbstractPHP
     /**
      * setDocblock() Set the docblock
      *
-     * @param \Zend\CodeGenerator\PHPDocblock|array|string $docblock
-     * @return \Zend\CodeGenerator\PHP\PHPFile
+     * @param \Zend\CodeGenerator\PhpDocblock|array|string $docblock
+     * @return \Zend\CodeGenerator\Php\PhpFile
      */
     public function setDocblock($docblock)
     {
@@ -178,8 +178,8 @@ class PHPClass extends AbstractPHP
         }
 
         if (is_array($docblock)) {
-            $docblock = new PHPDocblock($docblock);
-        } elseif (!$docblock instanceof PHPDocblock) {
+            $docblock = new PhpDocblock($docblock);
+        } elseif (!$docblock instanceof PhpDocblock) {
             throw new Exception('setDocblock() is expecting either a string, array or an instance of Zend_CodeGenerator_Php_Docblock');
         }
 
@@ -201,7 +201,7 @@ class PHPClass extends AbstractPHP
      * setNamespaceName()
      * 
      * @param $namespaceName
-     * @return Zend\CodeGenerator\PHP\PHPClass
+     * @return Zend\CodeGenerator\Php\PhpClass
      */
     public function setNamespaceName($namespaceName)
     {
@@ -212,7 +212,7 @@ class PHPClass extends AbstractPHP
     /**
      * getDocblock()
      *
-     * @return \Zend\CodeGenerator\PHPDocblock
+     * @return \Zend\CodeGenerator\PhpDocblock
      */
     public function getDocblock()
     {
@@ -223,10 +223,16 @@ class PHPClass extends AbstractPHP
      * setName()
      *
      * @param string $name
-     * @return \Zend\CodeGenerator\PHP\PHPClass
+     * @return \Zend\CodeGenerator\Php\PhpClass
      */
     public function setName($name)
     {
+        if (strstr($name, '\\')) {
+            $namespace = substr($name, 0, strrpos($name, '\\'));
+            $name      = substr($name, strrpos($name, '\\') + 1);
+            $this->setNamespaceName($namespace);
+        }
+
         $this->_name = $name;
         return $this;
     }
@@ -245,7 +251,7 @@ class PHPClass extends AbstractPHP
      * setAbstract()
      *
      * @param bool $isAbstract
-     * @return \Zend\CodeGenerator\PHP\PHPClass
+     * @return \Zend\CodeGenerator\Php\PhpClass
      */
     public function setAbstract($isAbstract)
     {
@@ -267,7 +273,7 @@ class PHPClass extends AbstractPHP
      * setExtendedClass()
      *
      * @param string $extendedClass
-     * @return \Zend\CodeGenerator\PHP\PHPClass
+     * @return \Zend\CodeGenerator\Php\PhpClass
      */
     public function setExtendedClass($extendedClass)
     {
@@ -289,7 +295,7 @@ class PHPClass extends AbstractPHP
      * setImplementedInterfaces()
      *
      * @param array $implementedInterfaces
-     * @return \Zend\CodeGenerator\PHP\PHPClass
+     * @return \Zend\CodeGenerator\Php\PhpClass
      */
     public function setImplementedInterfaces(Array $implementedInterfaces)
     {
@@ -311,7 +317,7 @@ class PHPClass extends AbstractPHP
      * setProperties()
      *
      * @param array $properties
-     * @return \Zend\CodeGenerator\PHP\PHPClass
+     * @return \Zend\CodeGenerator\Php\PhpClass
      */
     public function setProperties(Array $properties)
     {
@@ -325,15 +331,15 @@ class PHPClass extends AbstractPHP
     /**
      * setProperty()
      *
-     * @param array|\Zend\CodeGenerator\PHP\PHPProperty $property
-     * @return \Zend\CodeGenerator\PHP\PHPClass
+     * @param array|\Zend\CodeGenerator\Php\PhpProperty $property
+     * @return \Zend\CodeGenerator\Php\PhpClass
      */
     public function setProperty($property)
     {
         if (is_array($property)) {
-            $property = new PHPProperty($property);
+            $property = new PhpProperty($property);
             $propertyName = $property->getName();
-        } elseif ($property instanceof PHPProperty) {
+        } elseif ($property instanceof PhpProperty) {
             $propertyName = $property->getName();
         } else {
             throw new Exception('setProperty() expects either an array of property options or an instance of Zend_CodeGenerator_Php_Property');
@@ -361,7 +367,7 @@ class PHPClass extends AbstractPHP
      * getProperty()
      *
      * @param string $propertyName
-     * @return \Zend\CodeGenerator\PHP\PHPProperty
+     * @return \Zend\CodeGenerator\Php\PhpProperty
      */
     public function getProperty($propertyName)
     {
@@ -388,7 +394,7 @@ class PHPClass extends AbstractPHP
      * setMethods()
      *
      * @param array $methods
-     * @return \Zend\CodeGenerator\PHP\PHPClass
+     * @return \Zend\CodeGenerator\Php\PhpClass
      */
     public function setMethods(Array $methods)
     {
@@ -401,18 +407,18 @@ class PHPClass extends AbstractPHP
     /**
      * setMethod()
      *
-     * @param array|\Zend\CodeGenerator\PHP\PHPMethod $method
-     * @return \Zend\CodeGenerator\PHP\PHPClass
+     * @param array|\Zend\CodeGenerator\Php\PhpMethod $method
+     * @return \Zend\CodeGenerator\Php\PhpClass
      */
     public function setMethod($method)
     {
         if (is_array($method)) {
-            $method = new PHPMethod($method);
+            $method = new PhpMethod($method);
             $methodName = $method->getName();
-        } elseif ($method instanceof PHPMethod) {
+        } elseif ($method instanceof PhpMethod) {
             $methodName = $method->getName();
         } else {
-            throw new Exception('setMethod() expects either an array of method options or an instance of Zend\CodeGenerator\PHP\Method');
+            throw new Exception('setMethod() expects either an array of method options or an instance of Zend\CodeGenerator\Php\Method');
         }
 
         if (isset($this->_methods[$methodName])) {
@@ -437,7 +443,7 @@ class PHPClass extends AbstractPHP
      * getMethod()
      *
      * @param string $methodName
-     * @return \Zend\CodeGenerator\PHP\PHPMethod
+     * @return \Zend\CodeGenerator\Php\PhpMethod
      */
     public function getMethod($methodName)
     {
@@ -494,10 +500,18 @@ class PHPClass extends AbstractPHP
     public function generate()
     {
         if (!$this->isSourceDirty()) {
-            return $this->getSourceContent();
+            $output = $this->getSourceContent();
+            if (!empty($output)) {
+                return $output;
+            }
         }
 
         $output = '';
+
+        if (null !== ($namespace = $this->getNamespaceName())) {
+            $output .= "/** @namespace */" . self::LINE_FEED;
+            $output .= 'namespace ' . $namespace . ';' . self::LINE_FEED . self::LINE_FEED;
+        }
 
         if (null !== ($docblock = $this->getDocblock())) {
             $docblock->setIndentation('');
@@ -546,8 +560,8 @@ class PHPClass extends AbstractPHP
      */
     protected function _init()
     {
-        $this->_properties = new PHPMember\MemberContainer(PHPMember\MemberContainer::TYPE_PROPERTY);
-        $this->_methods = new PHPMember\MemberContainer(PHPMember\MemberContainer::TYPE_METHOD);
+        $this->_properties = new PhpMember\MemberContainer(PhpMember\MemberContainer::TYPE_PROPERTY);
+        $this->_methods = new PhpMember\MemberContainer(PhpMember\MemberContainer::TYPE_METHOD);
     }
 
 }

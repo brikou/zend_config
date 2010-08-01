@@ -23,18 +23,18 @@
 /**
  * @namespace
  */
-namespace Zend\CodeGenerator\PHP;
+namespace Zend\CodeGenerator\Php;
 
 /**
- * @uses       \Zend\CodeGenerator\PHP\Exception
- * @uses       \Zend\CodeGenerator\PHP\PHPMember\AbstractMember
- * @uses       \Zend\CodeGenerator\PHP\PHPPropertyValue
+ * @uses       \Zend\CodeGenerator\Php\Exception
+ * @uses       \Zend\CodeGenerator\Php\PhpMember\AbstractMember
+ * @uses       \Zend\CodeGenerator\Php\PhpPropertyValue
  * @category   Zend
  * @package    Zend_CodeGenerator
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class PHPProperty extends PHPMember\AbstractMember
+class PhpProperty extends PhpMember\AbstractMember
 {
 
     /**
@@ -51,7 +51,7 @@ class PHPProperty extends PHPMember\AbstractMember
      * fromReflection()
      *
      * @param \Zend\Reflection\ReflectionProperty $reflectionProperty
-     * @return \Zend\CodeGenerator\PHP\PHPProperty
+     * @return \Zend\CodeGenerator\Php\PhpProperty
      */
     public static function fromReflection(\Zend\Reflection\ReflectionProperty $reflectionProperty)
     {
@@ -64,7 +64,7 @@ class PHPProperty extends PHPMember\AbstractMember
         $property->setDefaultValue($allDefaultProperties[$reflectionProperty->getName()]);
 
         if ($reflectionProperty->getDocComment() != '') {
-            $property->setDocblock(PHP\PHPDocblock::fromReflection($reflectionProperty->getDocComment()));
+            $property->setDocblock(Php\PhpDocblock::fromReflection($reflectionProperty->getDocComment()));
         }
 
         if ($reflectionProperty->isStatic()) {
@@ -88,7 +88,7 @@ class PHPProperty extends PHPMember\AbstractMember
      * setConst()
      *
      * @param bool $const
-     * @return \Zend\CodeGenerator\PHP\PHPProperty
+     * @return \Zend\CodeGenerator\Php\PhpProperty
      */
     public function setConst($const)
     {
@@ -109,8 +109,8 @@ class PHPProperty extends PHPMember\AbstractMember
     /**
      * setDefaultValue()
      *
-     * @param \Zend\CodeGenerator\PHP\PHPPropertyValue|string|array $defaultValue
-     * @return \Zend\CodeGenerator\PHP\PHPProperty
+     * @param \Zend\CodeGenerator\Php\PhpPropertyValue|string|array $defaultValue
+     * @return \Zend\CodeGenerator\Php\PhpProperty
      */
     public function setDefaultValue($defaultValue)
     {
@@ -118,11 +118,11 @@ class PHPProperty extends PHPMember\AbstractMember
         if (is_array($defaultValue)
             && array_key_exists('value', $defaultValue)
             && array_key_exists('type', $defaultValue)) {
-            $defaultValue = new PHPPropertyValue($defaultValue);
+            $defaultValue = new PhpPropertyValue($defaultValue);
         }
 
-        if (!($defaultValue instanceof PHPPropertyValue)) {
-            $defaultValue = new PHPPropertyValue(array('value' => $defaultValue));
+        if (!($defaultValue instanceof PhpPropertyValue)) {
+            $defaultValue = new PhpPropertyValue(array('value' => $defaultValue));
         }
 
         $this->_defaultValue = $defaultValue;
@@ -132,7 +132,7 @@ class PHPProperty extends PHPMember\AbstractMember
     /**
      * getDefaultValue()
      *
-     * @return \Zend\CodeGenerator\PHP\PHPPropertyValue
+     * @return \Zend\CodeGenerator\Php\PhpPropertyValue
      */
     public function getDefaultValue()
     {

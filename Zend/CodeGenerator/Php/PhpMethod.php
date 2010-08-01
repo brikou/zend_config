@@ -23,22 +23,22 @@
 /**
  * @namespace
  */
-namespace Zend\CodeGenerator\PHP;
+namespace Zend\CodeGenerator\Php;
 
 /**
- * @uses       \Zend\CodeGenerator\PHPDocblock
- * @uses       \Zend\CodeGenerator\PHP\Exception
- * @uses       \Zend\CodeGenerator\PHP\PHPMember\AbstractMember
- * @uses       \Zend\CodeGenerator\PHP\PHPParameter
+ * @uses       \Zend\CodeGenerator\PhpDocblock
+ * @uses       \Zend\CodeGenerator\Php\Exception
+ * @uses       \Zend\CodeGenerator\Php\PhpMember\AbstractMember
+ * @uses       \Zend\CodeGenerator\Php\PhpParameter
  * @category   Zend
  * @package    Zend_CodeGenerator
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class PHPMethod extends PHPMember\AbstractMember
+class PhpMethod extends PhpMember\AbstractMember
 {
     /**
-     * @var \Zend\CodeGenerator\PHPDocblock
+     * @var \Zend\CodeGenerator\PhpDocblock
      */
     protected $_docblock = null;
 
@@ -61,7 +61,7 @@ class PHPMethod extends PHPMember\AbstractMember
      * fromReflection()
      *
      * @param \Zend\Reflection\ReflectionMethod $reflectionMethod
-     * @return \Zend\CodeGenerator\PHP\PHPMethod
+     * @return \Zend\CodeGenerator\Php\PhpMethod
      */
     public static function fromReflection(\Zend\Reflection\ReflectionMethod $reflectionMethod)
     {
@@ -71,7 +71,7 @@ class PHPMethod extends PHPMember\AbstractMember
         $method->setSourceDirty(false);
 
         if ($reflectionMethod->getDocComment() != '') {
-            $method->setDocblock(PHPDocblock::fromReflection($reflectionMethod->getDocblock()));
+            $method->setDocblock(PhpDocblock::fromReflection($reflectionMethod->getDocblock()));
         }
 
         $method->setFinal($reflectionMethod->isFinal());
@@ -89,7 +89,7 @@ class PHPMethod extends PHPMember\AbstractMember
         $method->setName($reflectionMethod->getName());
 
         foreach ($reflectionMethod->getParameters() as $reflectionParameter) {
-            $method->setParameter(PHPParameter::fromReflection($reflectionParameter));
+            $method->setParameter(PhpParameter::fromReflection($reflectionParameter));
         }
 
         $method->setBody($reflectionMethod->getBody());
@@ -111,7 +111,7 @@ class PHPMethod extends PHPMember\AbstractMember
      * setParameters()
      *
      * @param array $parameters
-     * @return \Zend\CodeGenerator\PHP\PHPMethod
+     * @return \Zend\CodeGenerator\Php\PhpMethod
      */
     public function setParameters(Array $parameters)
     {
@@ -124,15 +124,15 @@ class PHPMethod extends PHPMember\AbstractMember
     /**
      * setParameter()
      *
-     * @param \Zend\CodeGenerator\PHP\Parameter\Parameter|array $parameter
-     * @return \Zend\CodeGenerator\PHP\PHPMethod
+     * @param \Zend\CodeGenerator\Php\Parameter\Parameter|array $parameter
+     * @return \Zend\CodeGenerator\Php\PhpMethod
      */
     public function setParameter($parameter)
     {
         if (is_array($parameter)) {
-            $parameter = new PHPParameter($parameter);
+            $parameter = new PhpParameter($parameter);
             $parameterName = $parameter->getName();
-        } elseif ($parameter instanceof PHPParameter) {
+        } elseif ($parameter instanceof PhpParameter) {
             $parameterName = $parameter->getName();
         } else {
             throw new Exception('setParameter() expects either an array of method options or an instance of Zend_CodeGenerator_Php_Parameter');
@@ -145,7 +145,7 @@ class PHPMethod extends PHPMember\AbstractMember
     /**
      * getParameters()
      *
-     * @return array Array of \Zend\CodeGenerator\PHP\Parameter\Parameter
+     * @return array Array of \Zend\CodeGenerator\Php\Parameter\Parameter
      */
     public function getParameters()
     {
@@ -156,7 +156,7 @@ class PHPMethod extends PHPMember\AbstractMember
      * setBody()
      *
      * @param string $body
-     * @return \Zend\CodeGenerator\PHP\PHPMethod
+     * @return \Zend\CodeGenerator\Php\PhpMethod
      */
     public function setBody($body)
     {

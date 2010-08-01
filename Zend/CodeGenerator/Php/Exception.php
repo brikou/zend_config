@@ -23,52 +23,16 @@
 /**
  * @namespace
  */
-namespace Zend\CodeGenerator\PHP;
+namespace Zend\CodeGenerator\Php;
 
 /**
- * @uses       \Zend\CodeGenerator\AbstractCodeGenerator
+ * @uses       \Zend\CodeGenerator\Exception
  * @category   Zend
  * @package    Zend_CodeGenerator
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class PHPBody extends \Zend\CodeGenerator\AbstractCodeGenerator
+class Exception extends \Zend\CodeGenerator\Exception
 {
 
-    /**
-     * @var string
-     */
-    protected $_content = null;
-
-    /**
-     * setContent()
-     *
-     * @param string $content
-     * @return \Zend\CodeGenerator\PHP\PHPBody
-     */
-    public function setContent($content)
-    {
-        $this->_content = $content;
-        return $this;
-    }
-
-    /**
-     * getContent()
-     *
-     * @return string
-     */
-    public function getContent()
-    {
-        return (string) $this->_content;
-    }
-
-    /**
-     * generate()
-     *
-     * @return string
-     */
-    public function generate()
-    {
-        return $this->getContent();
-    }
 }
