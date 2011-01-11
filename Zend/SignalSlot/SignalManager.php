@@ -38,6 +38,6 @@ interface SignalManager
     public function connect($signalOrAggregate, $callback = null, $priority = 1);
     public function detach($handle);
     public function getSignals();
-    public function getHandlers($signal);
-    public function clearHandlers($signal);
+    public function getSlots($signal);
+    public function clearSlots($signal);
 }
