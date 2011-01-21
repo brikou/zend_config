@@ -13,7 +13,7 @@
  * to license@zend.com so we can send you a copy immediately.
  *
  * @category   Zend
- * @package    Zend_SignalSlot
+ * @package    Zend_EventManager
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
@@ -21,22 +21,23 @@
 /**
  * @namespace
  */
-namespace Zend\SignalSlot;
+namespace Zend\EventManager;
 
 /**
- * Interface for self-registering signal handlers.
- *
- * Classes implementing this interface may be registered by name or instance
- * with a SignalSlot, without a signal name. The {@link connect()} method will
- * then be called with the current SignalSlot instance, allowing the class to
- * wire up one or more handlers.
+ * Interface for messengers
  *
  * @category   Zend
- * @package    Zend_SignalSlot
+ * @package    Zend_EventManager
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-interface SignalAggregate
+interface EventDispatcher
 {
-    public function connect(SignalManager $signals);
+    public function emit($event, $context, $argv = array());
+    public function emitUntil($event, $context, $argv, $callback);
+    public function connect($eventOrAggregate, $callback = null, $priority = 1);
+    public function detach($handle);
+    public function getEvents();
+    public function getHandlers($event);
+    public function clearHandlers($event);
 }

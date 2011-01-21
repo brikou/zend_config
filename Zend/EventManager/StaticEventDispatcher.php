@@ -13,7 +13,7 @@
  * to license@zend.com so we can send you a copy immediately.
  *
  * @category   Zend
- * @package    Zend_SignalSlot
+ * @package    Zend_EventManager
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
@@ -21,24 +21,17 @@
 /**
  * @namespace
  */
-namespace Zend\SignalSlot;
-
-use Zend\Stdlib\CallbackHandler;
+namespace Zend\EventManager;
 
 /**
- * Interface for filters
+ * Interface for global (static) message delivery
  *
  * @category   Zend
- * @package    Zend_SignalSlot
+ * @package    Zend_EventManager
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-interface Filter
+interface StaticEventDispatcher
 {
-    public function run($context, array $params = array());
-    public function connect($callback);
-    public function detach(CallbackHandler $filter);
-    public function getFilters();
-    public function clearFilters();
-    public function getResponses();
+    public function getHandlers($id, $event);
 }
