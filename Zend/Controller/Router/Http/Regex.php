@@ -23,7 +23,7 @@
 /**
  * @namespace
  */
-namespace Zend\Controller\Router\Http\Route;
+namespace Zend\Controller\Router\Http;
 use Zend\Controller\Router\Route,
     Zend\Controller\Router\RouteMatch,
     Zend\Controller\Request\AbstractRequest,

@@ -23,9 +23,8 @@
 /**
  * @namespace
  */
-namespace Zend\Controller\Router\Http\Route;
-use Zend\Controller\Router\Route,
-    Zend\Controller\Router\RouteMatch,
+namespace Zend\Controller\Router\Http;
+use Zend\Controller\Router\RouteMatch,
     Zend\Controller\Request\AbstractRequest,
     Zend\Controller\Request\Http as HttpRequest;
 
@@ -63,7 +62,24 @@ class Literal implements Route
      */
     public function __construct($options = null)
     {
+        if ($options instanceof \Zend\Config) {
+            $options = $options->toArray();
+        }
+
+        if (!is_array($options)) {
+            throw new InvalidArgumentException('Options must either be an array or an instance of \Zend\Config');
+        }
+
+        if (!isset($options['route']) || !is_string($options['route'])) {
+            throw new InvalidArgumentException('Route not defined nor not a string');
+        }
         
+        if (!isset($options['defaults']) || !is_array($options['defaults'])) {
+            throw new InvalidArgumentException('Defaults not defined nor not an array');
+        }
+        
+        $this->route    = $options['route'];
+        $this->defaults = $options['defaults'];
     }
 
     /**
