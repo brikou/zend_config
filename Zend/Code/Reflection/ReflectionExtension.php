@@ -21,27 +21,30 @@
 /**
  * @namespace
  */
-namespace Zend\Reflection;
+namespace Zend\Code\Reflection;
+
+use ReflectionExtension as PhpReflectionExtension,
+    Zend\Code\Reflection;
 
 /**
  * @uses       ReflectionExtension
- * @uses       \Zend\Reflection\ReflectionClass
- * @uses       \Zend\Reflection\Exception
- * @uses       \Zend\Reflection\ReflectionFunction
+ * @uses       \Zend\Code\Reflection\ReflectionClass
+ * @uses       \Zend\Code\Reflection\Exception
+ * @uses       \Zend\Code\Reflection\ReflectionFunction
  * @category   Zend
  * @package    Zend_Reflection
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class ReflectionExtension extends \ReflectionExtension
+class ReflectionExtension extends PhpReflectionExtension implements Reflection
 {
     /**
      * Get extension function reflection objects
      *
      * @param  string $reflectionClass Name of reflection class to use
-     * @return array Array of \Zend\Reflection\ReflectionFunction objects
+     * @return array Array of \Zend\Code\Reflection\ReflectionFunction objects
      */
-    public function getFunctions($reflectionClass = 'Zend\Reflection\ReflectionFunction')
+    public function getFunctions($reflectionClass = 'Zend\Code\Reflection\ReflectionFunction')
     {
         $phpReflections  = parent::getFunctions();
         $zendReflections = array();
@@ -61,9 +64,9 @@ class ReflectionExtension extends \ReflectionExtension
      * Get extension class reflection objects
      *
      * @param  string $reflectionClass Name of reflection class to use
-     * @return array Array of \Zend\Reflection\ReflectionClass objects
+     * @return array Array of \Zend\Code\Reflection\ReflectionClass objects
      */
-    public function getClasses($reflectionClass = 'Zend\Reflection\ReflectionClass')
+    public function getClasses($reflectionClass = 'Zend\Code\Reflection\ReflectionClass')
     {
         $phpReflections  = parent::getClasses();
         $zendReflections = array();

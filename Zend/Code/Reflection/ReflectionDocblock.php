@@ -21,54 +21,56 @@
 /**
  * @namespace
  */
-namespace Zend\Reflection;
+namespace Zend\Code\Reflection;
+
+use Zend\Code\Reflection;
 
 /**
  * @uses       Reflector
- * @uses       \Zend\Reflection\ReflectionDocblockTag
+ * @uses       \Zend\Code\Reflection\ReflectionDocblockTag
  * @category   Zend
  * @package    Zend_Reflection
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class ReflectionDocblock implements \Reflector
+class ReflectionDocblock implements Reflection
 {
     /**
      * @var Reflector
      */
-    protected $_reflector = null;
+    protected $reflector = null;
 
     /**#@+
      * @var int
      */
-    protected $_startLine = null;
-    protected $_endLine   = null;
+    protected $startLine = null;
+    protected $endLine   = null;
     /**#@-*/
 
     /**
      * @var string
      */
-    protected $_docComment = null;
+    protected $docComment = null;
 
     /**
      * @var string
      */
-    protected $_cleanDocComment = null;
+    protected $cleanDocComment = null;
 
     /**
      * @var string
      */
-    protected $_longDescription = null;
+    protected $longDescription = null;
 
     /**
      * @var string
      */
-    protected $_shortDescription = null;
+    protected $shortDescription = null;
 
     /**
      * @var array
      */
-    protected $_tags = array();
+    protected $tags = array();
 
     /**
      * Export reflection
@@ -84,29 +86,6 @@ class ReflectionDocblock implements \Reflector
     }
 
     /**
-     * Serialize to string
-     *
-     * Required by the Reflector interface
-     *
-     * @todo   What should this return?
-     * @return string
-     */
-    public function __toString()
-    {
-        $str = "Docblock [ /* Docblock */ ] {".PHP_EOL.PHP_EOL;
-        $str .= "  - Tags [".count($this->_tags)."] {".PHP_EOL;
-
-        foreach($this->_tags AS $tag) {
-            $str .= "    ".$tag;
-        }
-
-        $str .= "  }".PHP_EOL;
-        $str .= "}".PHP_EOL;
-
-        return $str;
-    }
-
-    /**
      * Constructor
      *
      * @param Reflector|string $commentOrReflector
@@ -114,7 +93,7 @@ class ReflectionDocblock implements \Reflector
     public function __construct($commentOrReflector)
     {
         if ($commentOrReflector instanceof \Reflector) {
-            $this->_reflector = $commentOrReflector;
+            $this->reflector = $commentOrReflector;
             if (!method_exists($commentOrReflector, 'getDocComment')) {
                 throw new Exception\InvalidArgumentException('Reflector must contain method "getDocComment"');
             }
@@ -122,8 +101,8 @@ class ReflectionDocblock implements \Reflector
 
             $lineCount = substr_count($docComment, "\n");
 
-            $this->_startLine = $this->_reflector->getStartLine() - $lineCount - 1;
-            $this->_endLine   = $this->_reflector->getStartLine() - 1;
+            $this->startLine = $this->reflector->getStartLine() - $lineCount - 1;
+            $this->endLine   = $this->reflector->getStartLine() - 1;
 
         } elseif (is_string($commentOrReflector)) {
             $docComment = $commentOrReflector;
@@ -135,7 +114,7 @@ class ReflectionDocblock implements \Reflector
             throw new Exception\InvalidArgumentException('DocComment cannot be empty');
         }
 
-        $this->_docComment = $docComment;
+        $this->docComment = $docComment;
         $this->_parse();
     }
 
@@ -146,7 +125,7 @@ class ReflectionDocblock implements \Reflector
      */
     public function getContents()
     {
-        return $this->_cleanDocComment;
+        return $this->cleanDocComment;
     }
 
     /**
@@ -156,7 +135,7 @@ class ReflectionDocblock implements \Reflector
      */
     public function getStartLine()
     {
-        return $this->_startLine;
+        return $this->startLine;
     }
 
     /**
@@ -166,7 +145,7 @@ class ReflectionDocblock implements \Reflector
      */
     public function getEndLine()
     {
-        return $this->_endLine;
+        return $this->endLine;
     }
 
     /**
@@ -176,7 +155,7 @@ class ReflectionDocblock implements \Reflector
      */
     public function getShortDescription()
     {
-        return $this->_shortDescription;
+        return $this->shortDescription;
     }
 
     /**
@@ -186,7 +165,7 @@ class ReflectionDocblock implements \Reflector
      */
     public function getLongDescription()
     {
-        return $this->_longDescription;
+        return $this->longDescription;
     }
 
     /**
@@ -197,7 +176,7 @@ class ReflectionDocblock implements \Reflector
      */
     public function hasTag($name)
     {
-        foreach ($this->_tags as $tag) {
+        foreach ($this->tags as $tag) {
             if ($tag->getName() == $name) {
                 return true;
             }
@@ -209,11 +188,11 @@ class ReflectionDocblock implements \Reflector
      * Retrieve the given docblock tag
      *
      * @param  string $name
-     * @return \Zend\Reflection\ReflectionDocblockTag|false
+     * @return \Zend\Code\Reflection\ReflectionDocblockTag|false
      */
     public function getTag($name)
     {
-        foreach ($this->_tags as $tag) {
+        foreach ($this->tags as $tag) {
             if ($tag->getName() == $name) {
                 return $tag;
             }
@@ -226,16 +205,16 @@ class ReflectionDocblock implements \Reflector
      * Get all docblock annotation tags
      *
      * @param string $filter
-     * @return array Array of \Zend\Reflection\ReflectionDocblockTag
+     * @return array Array of \Zend\Code\Reflection\ReflectionDocblockTag
      */
     public function getTags($filter = null)
     {
         if ($filter === null || !is_string($filter)) {
-            return $this->_tags;
+            return $this->tags;
         }
 
         $returnTags = array();
-        foreach ($this->_tags as $tag) {
+        foreach ($this->tags as $tag) {
             if ($tag->getName() == $filter) {
                 $returnTags[] = $tag;
             }
@@ -250,13 +229,13 @@ class ReflectionDocblock implements \Reflector
      */
     protected function _parse()
     {
-        $docComment = $this->_docComment;
+        $docComment = $this->docComment;
 
         // First remove doc block line starters
         $docComment = preg_replace('#[ \t]*(?:\/\*\*|\*\/|\*)?[ ]{0,1}(.*)?#', '$1', $docComment);
         $docComment = ltrim($docComment, "\r\n"); // @todo should be changed to remove first and last empty line
 
-        $this->_cleanDocComment = $docComment;
+        $this->cleanDocComment = $docComment;
 
         // Next parse out the tags and descriptions
         $parsedDocComment = $docComment;
@@ -268,13 +247,13 @@ class ReflectionDocblock implements \Reflector
             $matches = array();
 
             if ((strpos($line, '@') === 0) && (preg_match('#^(@\w+.*?)(\n)(?:@|\r?\n|$)#s', $parsedDocComment, $matches))) {
-                $this->_tags[] = new ReflectionDocblockTag($matches[1]);
+                $this->tags[] = new ReflectionDocblockTag($matches[1]);
                 $parsedDocComment = str_replace($matches[1] . $matches[2], '', $parsedDocComment);
             } else {
                 if ($lineNumber < 3 && !$firstBlandLineEncountered) {
-                    $this->_shortDescription .= $line . "\n";
+                    $this->shortDescription .= $line . "\n";
                 } else {
-                    $this->_longDescription .= $line . "\n";
+                    $this->longDescription .= $line . "\n";
                 }
 
                 if ($line == '') {
@@ -286,7 +265,31 @@ class ReflectionDocblock implements \Reflector
 
         }
 
-        $this->_shortDescription = rtrim($this->_shortDescription);
-        $this->_longDescription  = rtrim($this->_longDescription);
+        $this->shortDescription = rtrim($this->shortDescription);
+        $this->longDescription  = rtrim($this->longDescription);
     }
+
+    /**
+     * Serialize to string
+     *
+     * Required by the Reflector interface
+     *
+     * @todo   What should this return?
+     * @return string
+     */
+    public function __toString()
+    {
+        $str = "Docblock [ /* Docblock */ ] {".PHP_EOL.PHP_EOL;
+        $str .= "  - Tags [".count($this->tags)."] {".PHP_EOL;
+
+        foreach($this->tags AS $tag) {
+            $str .= "    ".$tag;
+        }
+
+        $str .= "  }".PHP_EOL;
+        $str .= "}".PHP_EOL;
+
+        return $str;
+    }
+
 }

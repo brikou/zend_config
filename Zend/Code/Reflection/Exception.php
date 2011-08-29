@@ -21,7 +21,7 @@
 /**
  * @namespace
  */
-namespace Zend\Reflection;
+namespace Zend\Code\Reflection;
 
 /**
  * @category   Zend

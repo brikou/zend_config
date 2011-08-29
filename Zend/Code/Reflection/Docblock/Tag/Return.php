@@ -21,13 +21,13 @@
 /**
  * @namespace
  */
-namespace Zend\Reflection\Docblock\Tag;
-use Zend\Reflection,
-    Zend\Reflection\Exception;
+namespace Zend\Code\Reflection\Docblock\Tag;
+use Zend\Code\Reflection,
+    Zend\Code\Reflection\Exception;
 
 /**
- * @uses       \Zend\Reflection\Exception
- * @uses       \Zend\Reflection\ReflectionDocblockTag
+ * @uses       \Zend\Code\Reflection\Exception
+ * @uses       \Zend\Code\Reflection\ReflectionDocblockTag
  * @category   Zend
  * @package    Zend_Reflection
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)

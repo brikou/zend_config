@@ -21,19 +21,22 @@
 /**
  * @namespace
  */
-namespace Zend\Reflection;
+namespace Zend\Code\Reflection;
+
+use ReflectionFunction as PhpReflectionFunction,
+    Zend\Code\Reflection;
 
 /**
  * @uses       ReflectionFunction
- * @uses       \Zend\Reflection\ReflectionDocblockTag
- * @uses       \Zend\Reflection\Exception
- * @uses       \Zend\Reflection\ReflectionParameter
+ * @uses       \Zend\Code\Reflection\ReflectionDocblockTag
+ * @uses       \Zend\Code\Reflection\Exception
+ * @uses       \Zend\Code\Reflection\ReflectionParameter
  * @category   Zend
  * @package    Zend_Reflection
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class ReflectionFunction extends \ReflectionFunction
+class ReflectionFunction extends PhpReflectionFunction implements Reflection
 {
     /**
      * Get function docblock
@@ -41,14 +44,14 @@ class ReflectionFunction extends \ReflectionFunction
      * @param  string $reflectionClass Name of reflection class to use
      * @return Zend_Reflection_Docblock
      */
-    public function getDocblock($reflectionClass = 'Zend\Reflection\ReflectionDocblock')
+    public function getDocblock($reflectionClass = 'Zend\Code\Reflection\ReflectionDocblock')
     {
         if ('' == ($comment = $this->getDocComment())) {
             throw new Exception\InvalidArgumentException($this->getName() . ' does not have a docblock');
         }
         $instance = new $reflectionClass($comment);
         if (!$instance instanceof ReflectionDocblock) {
-            throw new Exception\InvalidArgumentException('Invalid reflection class provided; must extend Zend\Reflection\ReflectionDocblock');
+            throw new Exception\InvalidArgumentException('Invalid reflection class provided; must extend Zend\Code\Reflection\ReflectionDocblock');
         }
         return $instance;
     }
@@ -92,9 +95,9 @@ class ReflectionFunction extends \ReflectionFunction
      * Get function parameters
      *
      * @param  string $reflectionClass Name of reflection class to use
-     * @return array Array of \Zend\Reflection\ReflectionParameter
+     * @return array Array of \Zend\Code\Reflection\ReflectionParameter
      */
-    public function getParameters($reflectionClass = 'Zend\Reflection\ReflectionParameter')
+    public function getParameters($reflectionClass = 'Zend\Code\Reflection\ReflectionParameter')
     {
         $phpReflections  = parent::getParameters();
         $zendReflections = array();
@@ -113,7 +116,7 @@ class ReflectionFunction extends \ReflectionFunction
     /**
      * Get return type tag
      *
-     * @return \Zend\Reflection\Docblock\Tag\Return
+     * @return \Zend\Code\Reflection\Docblock\Tag\Return
      */
     public function getReturn()
     {
@@ -124,5 +127,14 @@ class ReflectionFunction extends \ReflectionFunction
         $tag    = $docblock->getTag('return');
         $return = ReflectionDocblockTag::factory('@return ' . $tag->getDescription());
         return $return;
+    }
+
+    /**
+     * Required due to bug in php
+     * @return void
+     */
+    public function __toString()
+    {
+        return parent::__toString();
     }
 }

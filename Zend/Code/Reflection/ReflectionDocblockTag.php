@@ -21,18 +21,20 @@
 /**
  * @namespace
  */
-namespace Zend\Reflection;
+namespace Zend\Code\Reflection;
+
+use Zend\Code\Reflection;
 
 /**
  * @uses       Reflector
  * @uses       \Zend\Loader
- * @uses       \Zend\Reflection\Exception
+ * @uses       \Zend\Code\Reflection\Exception
  * @category   Zend
  * @package    Zend_Reflection
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class ReflectionDocblockTag implements \Reflector
+class ReflectionDocblockTag implements Reflection
 {
 
     const TRIM_WHITESPACE = 'trimWhitespace';
@@ -40,7 +42,7 @@ class ReflectionDocblockTag implements \Reflector
     /**
      * @var array Rules and regexs to parse tags
      */
-    protected static $_typeRules = array(
+    protected static $typeRules = array(
         array(
             'param',
             '#^@(?<name>param)\s(?<type>\s*[\w|\\\|]+)(?:\s(?<variable>\s*\$\S*))?(?:\s(?<description>.*))?#s'
@@ -58,12 +60,12 @@ class ReflectionDocblockTag implements \Reflector
     /**
      * @var string
      */
-    protected $_name = null;
+    protected $name = null;
 
     /**
      * @var array
      */
-    protected $_values = array();
+    protected $values = array();
 
     /**
      * Export reflection
@@ -85,7 +87,7 @@ class ReflectionDocblockTag implements \Reflector
      */
     public function __construct($tagDocblockLine)
     {
-        $this->_parse($tagDocblockLine);
+        $this->parse($tagDocblockLine);
     }
 
     /**
@@ -95,7 +97,7 @@ class ReflectionDocblockTag implements \Reflector
      */
     public function getName()
     {
-        return $this->_name;
+        return $this->name;
     }
 
     /**
@@ -129,7 +131,7 @@ class ReflectionDocblockTag implements \Reflector
             throw new Exception\InvalidArgumentException('Property by name ' . $name . ' does not exist');
         }
         
-        return $this->_values[strtolower($name)];
+        return $this->values[strtolower($name)];
     }
 
     /**
@@ -140,7 +142,7 @@ class ReflectionDocblockTag implements \Reflector
      */
     public function __isset($name)
     {
-        return array_key_exists(strtolower($name), $this->_values);
+        return array_key_exists(strtolower($name), $this->values);
     }
     
     /**
@@ -154,15 +156,15 @@ class ReflectionDocblockTag implements \Reflector
     public function __toString()
     {
         $str = "Docblock Tag [ * @"
-            . $this->_name
+            . $this->name
             . " ]".PHP_EOL;
 
         return $str;
     }
     
-    protected function _parse($docblockLine)
+    protected function parse($docblockLine)
     {
-        foreach (self::$_typeRules as $typeRule) {
+        foreach (self::$typeRules as $typeRule) {
             $name = $typeRule[0];
             $regex = $typeRule[1];
             $matches = array();
@@ -178,9 +180,9 @@ class ReflectionDocblockTag implements \Reflector
         foreach ($matches as $name => $value) {
             if (is_string($name)) {
                 if ($name == 'name') {
-                    $this->_name = $value;
+                    $this->name = $value;
                 } else {
-                    $this->_values[strtolower($name)] = $value;
+                    $this->values[strtolower($name)] = $value;
                 }
             }
         }

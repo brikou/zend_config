@@ -21,70 +21,72 @@
 /**
  * @namespace
  */
-namespace Zend\Reflection;
+namespace Zend\Code\Reflection;
+
+use Zend\Code\Reflection;
 
 /**
  * @uses       Reflector
  * @uses       \Zend\Loader
- * @uses       \Zend\Reflection\ReflectionClass
- * @uses       \Zend\Reflection\Exception
- * @uses       \Zend\Reflection\ReflectionFunction
+ * @uses       \Zend\Code\Reflection\ReflectionClass
+ * @uses       \Zend\Code\Reflection\Exception
+ * @uses       \Zend\Code\Reflection\ReflectionFunction
  * @category   Zend
  * @package    Zend_Reflection
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class ReflectionFile implements \Reflector
+class ReflectionFile implements Reflection
 {
     /**
      * @var string
      */
-    protected $_filepath        = null;
+    protected $filepath        = null;
 
     /**
      * @var string
      */
-    protected $_docComment      = null;
+    protected $docComment      = null;
 
     /**
      * @var int
      */
-    protected $_startLine       = 1;
+    protected $startLine       = 1;
 
     /**
      * @var int
      */
-    protected $_endLine         = null;
+    protected $endLine         = null;
 
     /**
      * @var string
      */
-    protected $_namespace       = null;
+    protected $namespace       = null;
 
     /**
      * @var string[]
      */
-    protected $_uses            = array();
+    protected $uses            = array();
 
     /**
      * @var string[]
      */
-    protected $_requiredFiles   = array();
+    protected $requiredFiles   = array();
 
     /**
-     * @var \Zend\Reflection\ReflectionClass[]
+     * @var \Zend\Code\Reflection\ReflectionClass[]
      */
-    protected $_classes         = array();
+    protected $classes         = array();
 
     /**
-     * @var \Zend\Reflection\ReflectionFunction[]
+     * @var \Zend\Code\Reflection\ReflectionFunction[]
      */
-    protected $_functions       = array();
+    protected $functions       = array();
 
     /**
      * @var string
      */
-    protected $_contents        = null;
+    protected $contents        = null;
 
     /**
      * Constructor
@@ -105,8 +107,8 @@ class ReflectionFile implements \Reflector
         }
 
         $this->_fileName = $fileRealpath;
-        $this->_contents = file_get_contents($this->_fileName);
-        $this->_reflect();
+        $this->contents = file_get_contents($this->_fileName);
+        $this->reflect();
     }
 
     /**
@@ -151,7 +153,7 @@ class ReflectionFile implements \Reflector
      */
     public function getStartLine()
     {
-        return $this->_startLine;
+        return $this->startLine;
     }
 
     /**
@@ -161,7 +163,7 @@ class ReflectionFile implements \Reflector
      */
     public function getEndLine()
     {
-        return $this->_endLine;
+        return $this->endLine;
     }
 
     /**
@@ -171,7 +173,7 @@ class ReflectionFile implements \Reflector
      */
     public function getDocComment()
     {
-        return $this->_docComment;
+        return $this->docComment;
     }
 
     /**
@@ -180,7 +182,7 @@ class ReflectionFile implements \Reflector
      * @param  string $reflectionClass Reflection class to use
      * @return Zend_Reflection_Docblock
      */
-    public function getDocblock($reflectionClass = 'Zend\Reflection\ReflectionDocblock')
+    public function getDocblock($reflectionClass = 'Zend\Code\Reflection\ReflectionDocblock')
     {
         $instance = new $reflectionClass($this);
         if (!$instance instanceof ReflectionDocblock) {
@@ -196,7 +198,7 @@ class ReflectionFile implements \Reflector
      */
     public function getNamespace()
     {
-        return $this->_namespace;
+        return $this->namespace;
     }
 
     /**
@@ -206,22 +208,22 @@ class ReflectionFile implements \Reflector
      */
     public function getUses()
     {
-        return $this->_uses;
+        return $this->uses;
     }
 
     /**
      * Return the reflection classes of the classes found inside this file
      *
      * @param  string $reflectionClass Name of reflection class to use for instances
-     * @return array Array of \Zend\Reflection\ReflectionClass instances
+     * @return array Array of \Zend\Code\Reflection\ReflectionClass instances
      */
-    public function getClasses($reflectionClass = 'Zend\Reflection\ReflectionClass')
+    public function getClasses($reflectionClass = 'Zend\Code\Reflection\ReflectionClass')
     {
         $classes = array();
-        foreach ($this->_classes as $class) {
+        foreach ($this->classes as $class) {
             $instance = new $reflectionClass($class);
             if (!$instance instanceof ReflectionClass) {
-                throw new Exception\InvalidArgumentException('Invalid reflection class provided; must extend Zend\Reflection\ReflectionClass');
+                throw new Exception\InvalidArgumentException('Invalid reflection class provided; must extend Zend\Code\Reflection\ReflectionClass');
             }
             $classes[] = $instance;
         }
@@ -234,13 +236,13 @@ class ReflectionFile implements \Reflector
      * @param  string $reflectionClass Name of reflection class to use for instances
      * @return array Array of Zend_Reflection_Functions
      */
-    public function getFunctions($reflectionClass = 'Zend\Reflection\ReflectionFunction')
+    public function getFunctions($reflectionClass = 'Zend\Code\Reflection\ReflectionFunction')
     {
         $functions = array();
-        foreach ($this->_functions as $function) {
+        foreach ($this->functions as $function) {
             $instance = new $reflectionClass($function);
             if (!$instance instanceof ReflectionFunction) {
-                throw new Exception\InvalidArgumentException('Invalid reflection class provided; must extend Zend\Reflection\ReflectionFunction');
+                throw new Exception\InvalidArgumentException('Invalid reflection class provided; must extend Zend\Code\Reflection\ReflectionFunction');
             }
             $functions[] = $instance;
         }
@@ -252,14 +254,14 @@ class ReflectionFile implements \Reflector
      *
      * @param  null|string $name
      * @param  string $reflectionClass Reflection class to use when creating reflection instance
-     * @return \Zend\Reflection\ReflectionClass
-     * @throws \Zend\Reflection\Exception for invalid class name or invalid reflection class
+     * @return \Zend\Code\Reflection\ReflectionClass
+     * @throws \Zend\Code\Reflection\Exception for invalid class name or invalid reflection class
      */
-    public function getClass($name = null, $reflectionClass = 'Zend\Reflection\ReflectionClass')
+    public function getClass($name = null, $reflectionClass = 'Zend\Code\Reflection\ReflectionClass')
     {
         if ($name === null) {
-            reset($this->_classes);
-            $selected = current($this->_classes);
+            reset($this->classes);
+            $selected = current($this->classes);
             $instance = new $reflectionClass($selected);
             if (!$instance instanceof ReflectionClass) {
                 throw new Exception\InvalidArgumentException('Invalid reflection class given; must extend Zend_Reflection_Class');
@@ -267,7 +269,7 @@ class ReflectionFile implements \Reflector
             return $instance;
         }
 
-        if (in_array($name, $this->_classes)) {
+        if (in_array($name, $this->classes)) {
             $instance = new $reflectionClass($name);
             if (!$instance instanceof ReflectionClass) {
                 throw new Exception\InvalidArgumentException('Invalid reflection class given; must extend Zend_Reflection_Class');
@@ -285,7 +287,7 @@ class ReflectionFile implements \Reflector
      */
     public function getContents()
     {
-        return $this->_contents;
+        return $this->contents;
     }
 
     /**
@@ -308,9 +310,9 @@ class ReflectionFile implements \Reflector
      *
      * @return void
      */
-    protected function _reflect()
+    protected function reflect()
     {
-        $contents = $this->_contents;
+        $contents = $this->contents;
         $tokens   = token_get_all($contents);
 
         $functionTrapped = false;
@@ -322,7 +324,7 @@ class ReflectionFile implements \Reflector
         $useIndex = 0;
         $openBraces = 0;
 
-        $this->_checkFileDocBlock($tokens);
+        $this->checkFileDocBlock($tokens);
 
         foreach ($tokens as $token) {
             /*
@@ -362,30 +364,30 @@ class ReflectionFile implements \Reflector
                 // Name of something
                 case T_STRING:
                     if ($functionTrapped) {
-                        $this->_functions[] = ($this->_namespace) ? $this->_namespace . $value : $value;
+                        $this->functions[] = ($this->namespace) ? $this->namespace . $value : $value;
                         $functionTrapped = false;
                     } elseif ($classTrapped) {
-                        $this->_classes[] = ($this->_namespace) ? $this->_namespace . $value : $value;
+                        $this->classes[] = ($this->namespace) ? $this->namespace . $value : $value;
                         $classTrapped = false;
                     } elseif ($namespaceTrapped) {
-                        $this->_namespace .= $value . '\\';
+                        $this->namespace .= $value . '\\';
                     } elseif ($useAsTrapped) {
-                        if (!isset($this->_uses[$useIndex])) {
-                            $this->_uses[$useIndex] = array();
+                        if (!isset($this->uses[$useIndex])) {
+                            $this->uses[$useIndex] = array();
                         }
-                        if (!isset($this->_uses[$useIndex]['as'])) {
-                            $this->_uses[$useIndex]['as'] = '';
+                        if (!isset($this->uses[$useIndex]['as'])) {
+                            $this->uses[$useIndex]['as'] = '';
                         }
-                        $this->_uses[$useIndex]['as'] .= $value . '\\';
+                        $this->uses[$useIndex]['as'] .= $value . '\\';
                     } elseif ($useTrapped) {
-                        $this->_uses[$useIndex]['namespace'] .= $value . '\\';
+                        $this->uses[$useIndex]['namespace'] .= $value . '\\';
                     }
                     continue;
 
                 // Required file names are T_CONSTANT_ENCAPSED_STRING
                 case T_CONSTANT_ENCAPSED_STRING:
                     if ($requireTrapped) {
-                        $this->_requiredFiles[] = $value ."\n";
+                        $this->requiredFiles[] = $value ."\n";
                         $requireTrapped = false;
                     }
                     continue;
@@ -398,7 +400,7 @@ class ReflectionFile implements \Reflector
                 // use
                 case T_USE:
                     $useTrapped = true;
-                    $this->_uses[$useIndex] = array(
+                    $this->uses[$useIndex] = array(
                         'namespace' => '',
                         'as' => ''
                         );
@@ -437,30 +439,30 @@ class ReflectionFile implements \Reflector
         }
 
         // cleanup uses
-        foreach ($this->_uses as $useIndex => $useInfo) {
-            if (!isset($this->_uses[$useIndex]['namespace'])) {
-                $this->_uses[$useIndex]['namespace'] = '';
+        foreach ($this->uses as $useIndex => $useInfo) {
+            if (!isset($this->uses[$useIndex]['namespace'])) {
+                $this->uses[$useIndex]['namespace'] = '';
             }
-            $this->_uses[$useIndex]['namespace'] = rtrim($this->_uses[$useIndex]['namespace'], '\\');
-            if (!isset($this->_uses[$useIndex]['as'])) {
-                $this->_uses[$useIndex]['as'] = '';
+            $this->uses[$useIndex]['namespace'] = rtrim($this->uses[$useIndex]['namespace'], '\\');
+            if (!isset($this->uses[$useIndex]['as'])) {
+                $this->uses[$useIndex]['as'] = '';
             }
-            $this->_uses[$useIndex]['as'] = rtrim($this->_uses[$useIndex]['as'], '\\');
+            $this->uses[$useIndex]['as'] = rtrim($this->uses[$useIndex]['as'], '\\');
 
-            if ($this->_uses[$useIndex]['as'] == '') {
-                if (($lastSeparator = strrpos($this->_uses[$useIndex]['namespace'], '\\')) !== false) {
-                    $this->_uses[$useIndex]['asResolved'] = substr($this->_uses[$useIndex]['namespace'], $lastSeparator+1);
+            if ($this->uses[$useIndex]['as'] == '') {
+                if (($lastSeparator = strrpos($this->uses[$useIndex]['namespace'], '\\')) !== false) {
+                    $this->uses[$useIndex]['asResolved'] = substr($this->uses[$useIndex]['namespace'], $lastSeparator+1);
                 } else {
-                    $this->_uses[$useIndex]['asResolved'] = $this->_uses[$useIndex]['namespace'];
+                    $this->uses[$useIndex]['asResolved'] = $this->uses[$useIndex]['namespace'];
                 }
             } else {
-                $this->_uses[$useIndex]['asResolved'] = $this->_uses[$useIndex]['as'];
+                $this->uses[$useIndex]['asResolved'] = $this->uses[$useIndex]['as'];
             }
 
         }
 
 
-        $this->_endLine = count(explode("\n", $this->_contents));
+        $this->endLine = count(explode("\n", $this->contents));
     }
 
     /**
@@ -469,7 +471,7 @@ class ReflectionFile implements \Reflector
      * @param  array $tokens Array of tokenizer tokens
      * @return void
      */
-    protected function _checkFileDocBlock($tokens) {
+    protected function checkFileDocBlock($tokens) {
         foreach ($tokens as $token) {
             $type    = $token[0];
             $value   = $token[1];
@@ -477,8 +479,8 @@ class ReflectionFile implements \Reflector
             if(($type == T_OPEN_TAG) || ($type == T_WHITESPACE)) {
                 continue;
             } elseif ($type == T_DOC_COMMENT) {
-                $this->_docComment = $value;
-                $this->_startLine  = $lineNum + substr_count($value, "\n") + 1;
+                $this->docComment = $value;
+                $this->startLine  = $lineNum + substr_count($value, "\n") + 1;
                 return;
             } else {
                 // Only whitespace is allowed before file docblocks
