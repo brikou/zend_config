@@ -22,38 +22,52 @@
 /**
  * @namespace
  */
-namespace Zend\CodeGenerator\Php\PhpMember;
+namespace Zend\Code\Generator;
 
 /**
+ * @uses       \Zend\CodeGenerator\AbstractCodeGenerator
  * @category   Zend
  * @package    Zend_CodeGenerator
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class MemberContainer extends \ArrayObject
+class PhpBody extends \Zend\CodeGenerator\AbstractCodeGenerator
 {
 
-    /**#@+
-     * @param const string
+    /**
+     * @var string
      */
-    const TYPE_PROPERTY = 'property';
-    const TYPE_METHOD   = 'method';
-    /**#@-*/
+    protected $_content = null;
 
     /**
-     * @var const|string
-     */
-    protected $_type = self::TYPE_PROPERTY;
-
-    /**
-     * __construct()
+     * setContent()
      *
-     * @param const|string $type
+     * @param string $content
+     * @return \Zend\Code\Generator\PhpBody
      */
-    public function __construct($type = self::TYPE_PROPERTY)
+    public function setContent($content)
     {
-        $this->_type = $type;
-        parent::__construct(array(), self::ARRAY_AS_PROPS);
+        $this->_content = $content;
+        return $this;
     }
 
+    /**
+     * getContent()
+     *
+     * @return string
+     */
+    public function getContent()
+    {
+        return (string) $this->_content;
+    }
+
+    /**
+     * generate()
+     *
+     * @return string
+     */
+    public function generate()
+    {
+        return $this->getContent();
+    }
 }

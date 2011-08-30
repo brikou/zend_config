@@ -22,7 +22,7 @@
 /**
  * @namespace
  */
-namespace Zend\CodeGenerator\Php;
+namespace Zend\Code\Generator;
 
 class PhpValue extends AbstractPhp
 {
@@ -130,7 +130,7 @@ class PhpValue extends AbstractPhp
      * setValue()
      *
      * @param mixed $value
-     * @return \Zend\CodeGenerator\Php\PhpPropertyValue
+     * @return \Zend\Code\Generator\PhpPropertyValue
      */
     public function setValue($value)
     {
@@ -152,7 +152,7 @@ class PhpValue extends AbstractPhp
      * setType()
      *
      * @param string $type
-     * @return \Zend\CodeGenerator\Php\PhpPropertyValue
+     * @return \Zend\Code\Generator\PhpPropertyValue
      */
     public function setType($type)
     {
@@ -174,7 +174,7 @@ class PhpValue extends AbstractPhp
      * setArrayDepth()
      *
      * @param int $arrayDepth
-     * @return \Zend\CodeGenerator\Php\PhpPropertyValue
+     * @return \Zend\Code\Generator\PhpPropertyValue
      */
     public function setArrayDepth($arrayDepth)
     {

@@ -22,13 +22,13 @@
 /**
  * @namespace
  */
-namespace Zend\CodeGenerator\Php;
+namespace Zend\Code\Generator;
 
 /**
- * @uses       \Zend\CodeGenerator\PhpDocblock
- * @uses       \Zend\CodeGenerator\Php\Exception
- * @uses       \Zend\CodeGenerator\Php\PhpMember\AbstractMember
- * @uses       \Zend\CodeGenerator\Php\PhpParameter
+ * @uses       \Zend\Code\GeneratorDocblock
+ * @uses       \Zend\Code\Generator\Exception
+ * @uses       \Zend\Code\Generator\PhpMember\AbstractMember
+ * @uses       \Zend\Code\Generator\PhpParameter
  * @category   Zend
  * @package    Zend_CodeGenerator
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
@@ -37,7 +37,7 @@ namespace Zend\CodeGenerator\Php;
 class PhpMethod extends PhpMember\AbstractMember
 {
     /**
-     * @var \Zend\CodeGenerator\PhpDocblock
+     * @var \Zend\Code\GeneratorDocblock
      */
     protected $_docblock = null;
 
@@ -60,7 +60,7 @@ class PhpMethod extends PhpMember\AbstractMember
      * fromReflection()
      *
      * @param \Zend\Reflection\ReflectionMethod $reflectionMethod
-     * @return \Zend\CodeGenerator\Php\PhpMethod
+     * @return \Zend\Code\Generator\PhpMethod
      */
     public static function fromReflection(\Zend\Reflection\ReflectionMethod $reflectionMethod)
     {
@@ -110,7 +110,7 @@ class PhpMethod extends PhpMember\AbstractMember
      * setParameters()
      *
      * @param array $parameters
-     * @return \Zend\CodeGenerator\Php\PhpMethod
+     * @return \Zend\Code\Generator\PhpMethod
      */
     public function setParameters(array $parameters)
     {
@@ -123,8 +123,8 @@ class PhpMethod extends PhpMember\AbstractMember
     /**
      * setParameter()
      *
-     * @param \Zend\CodeGenerator\Php\Parameter\Parameter|array $parameter
-     * @return \Zend\CodeGenerator\Php\PhpMethod
+     * @param \Zend\Code\Generator\Parameter\Parameter|array $parameter
+     * @return \Zend\Code\Generator\PhpMethod
      */
     public function setParameter($parameter)
     {
@@ -142,7 +142,7 @@ class PhpMethod extends PhpMember\AbstractMember
     /**
      * getParameters()
      *
-     * @return array Array of \Zend\CodeGenerator\Php\Parameter\Parameter
+     * @return array Array of \Zend\Code\Generator\Parameter\Parameter
      */
     public function getParameters()
     {
@@ -153,7 +153,7 @@ class PhpMethod extends PhpMember\AbstractMember
      * setBody()
      *
      * @param string $body
-     * @return \Zend\CodeGenerator\Php\PhpMethod
+     * @return \Zend\Code\Generator\PhpMethod
      */
     public function setBody($body)
     {

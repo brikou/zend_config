@@ -22,27 +22,38 @@
 /**
  * @namespace
  */
-namespace Zend\CodeGenerator\Php;
+namespace Zend\Code\Generator\PhpMember;
 
 /**
- * @uses       \Zend\CodeGenerator\Php\AbstractPhp
- * @uses       \Zend\CodeGenerator\Php\Exception
  * @category   Zend
  * @package    Zend_CodeGenerator
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class PhpPropertyValue extends PhpValue
+class MemberContainer extends \ArrayObject
 {
-    protected $_topMostValue = true;
+
+    /**#@+
+     * @param const string
+     */
+    const TYPE_PROPERTY = 'property';
+    const TYPE_METHOD   = 'method';
+    /**#@-*/
 
     /**
-     * generate()
-     *
-     * @return string
+     * @var const|string
      */
-    public function generate()
+    protected $_type = self::TYPE_PROPERTY;
+
+    /**
+     * __construct()
+     *
+     * @param const|string $type
+     */
+    public function __construct($type = self::TYPE_PROPERTY)
     {
-        return parent::generate() . ';';
+        $this->_type = $type;
+        parent::__construct(array(), self::ARRAY_AS_PROPS);
     }
+
 }

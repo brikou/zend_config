@@ -22,15 +22,15 @@
 /**
  * @namespace
  */
-namespace Zend\CodeGenerator\Php;
+namespace Zend\Code\Generator;
 
 /**
- * @uses       \Zend\CodeGenerator\Php\AbstractPhp
- * @uses       \Zend\CodeGenerator\PhpDocblock
- * @uses       \Zend\CodeGenerator\Php\Exception
- * @uses       \Zend\CodeGenerator\Php\PhpMember\MemberContainer
- * @uses       \Zend\CodeGenerator\Php\PhpMethod
- * @uses       \Zend\CodeGenerator\Php\PhpProperty
+ * @uses       \Zend\Code\Generator\AbstractPhp
+ * @uses       \Zend\Code\GeneratorDocblock
+ * @uses       \Zend\Code\Generator\Exception
+ * @uses       \Zend\Code\Generator\PhpMember\MemberContainer
+ * @uses       \Zend\Code\Generator\PhpMethod
+ * @uses       \Zend\Code\Generator\PhpProperty
  * @category   Zend
  * @package    Zend_CodeGenerator
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
@@ -40,7 +40,7 @@ class PhpClass extends AbstractPhp
 {
 
     /**
-     * @var \Zend\CodeGenerator\Php\PhpFile
+     * @var \Zend\Code\Generator\PhpFile
      */
     protected $_phpFile = null;
 
@@ -50,7 +50,7 @@ class PhpClass extends AbstractPhp
     protected $_namespaceName = null;
 
     /**
-     * @var \Zend\CodeGenerator\Php\PhpDocblock
+     * @var \Zend\Code\Generator\PhpDocblock
      */
     protected $_docblock = null;
 
@@ -88,7 +88,7 @@ class PhpClass extends AbstractPhp
      * fromReflection() - build a Code Generation Php Object from a Class Reflection
      *
      * @param \Zend\Reflection\ReflectionClass $reflectionClass
-     * @return \Zend\CodeGenerator\Php\PhpClass
+     * @return \Zend\Code\Generator\PhpClass
      */
     public static function fromReflection(\Zend\Reflection\ReflectionClass $reflectionClass)
     {
@@ -146,7 +146,7 @@ class PhpClass extends AbstractPhp
     /**
      * setPhpFile()
      *
-     * @param Zend\CodeGenerator\Php\PhpFile $phpFile
+     * @param Zend\Code\Generator\PhpFile $phpFile
      */
     public function setPhpFile(PhpFile $phpFile)
     {
@@ -157,7 +157,7 @@ class PhpClass extends AbstractPhp
     /**
      * getPhpFile()
      *
-     * @return Zend\CodeGenerator\Php\PhpFile
+     * @return Zend\Code\Generator\PhpFile
      */
     public function getPhpFile()
     {
@@ -167,8 +167,8 @@ class PhpClass extends AbstractPhp
     /**
      * setDocblock() Set the docblock
      *
-     * @param \Zend\CodeGenerator\PhpDocblock|array|string $docblock
-     * @return \Zend\CodeGenerator\Php\PhpFile
+     * @param \Zend\Code\GeneratorDocblock|array|string $docblock
+     * @return \Zend\Code\Generator\PhpFile
      */
     public function setDocblock($docblock)
     {
@@ -200,7 +200,7 @@ class PhpClass extends AbstractPhp
      * setNamespaceName()
      * 
      * @param $namespaceName
-     * @return Zend\CodeGenerator\Php\PhpClass
+     * @return Zend\Code\Generator\PhpClass
      */
     public function setNamespaceName($namespaceName)
     {
@@ -211,7 +211,7 @@ class PhpClass extends AbstractPhp
     /**
      * getDocblock()
      *
-     * @return \Zend\CodeGenerator\PhpDocblock
+     * @return \Zend\Code\GeneratorDocblock
      */
     public function getDocblock()
     {
@@ -222,7 +222,7 @@ class PhpClass extends AbstractPhp
      * setName()
      *
      * @param string $name
-     * @return \Zend\CodeGenerator\Php\PhpClass
+     * @return \Zend\Code\Generator\PhpClass
      */
     public function setName($name)
     {
@@ -250,7 +250,7 @@ class PhpClass extends AbstractPhp
      * setAbstract()
      *
      * @param bool $isAbstract
-     * @return \Zend\CodeGenerator\Php\PhpClass
+     * @return \Zend\Code\Generator\PhpClass
      */
     public function setAbstract($isAbstract)
     {
@@ -272,7 +272,7 @@ class PhpClass extends AbstractPhp
      * setExtendedClass()
      *
      * @param string $extendedClass
-     * @return \Zend\CodeGenerator\Php\PhpClass
+     * @return \Zend\Code\Generator\PhpClass
      */
     public function setExtendedClass($extendedClass)
     {
@@ -294,7 +294,7 @@ class PhpClass extends AbstractPhp
      * setImplementedInterfaces()
      *
      * @param array $implementedInterfaces
-     * @return \Zend\CodeGenerator\Php\PhpClass
+     * @return \Zend\Code\Generator\PhpClass
      */
     public function setImplementedInterfaces(array $implementedInterfaces)
     {
@@ -316,7 +316,7 @@ class PhpClass extends AbstractPhp
      * setProperties()
      *
      * @param array $properties
-     * @return \Zend\CodeGenerator\Php\PhpClass
+     * @return \Zend\Code\Generator\PhpClass
      */
     public function setProperties(array $properties)
     {
@@ -330,8 +330,8 @@ class PhpClass extends AbstractPhp
     /**
      * setProperty()
      *
-     * @param array|\Zend\CodeGenerator\Php\PhpProperty $property
-     * @return \Zend\CodeGenerator\Php\PhpClass
+     * @param array|\Zend\Code\Generator\PhpProperty $property
+     * @return \Zend\Code\Generator\PhpClass
      */
     public function setProperty($property)
     {
@@ -364,7 +364,7 @@ class PhpClass extends AbstractPhp
      * getProperty()
      *
      * @param string $propertyName
-     * @return \Zend\CodeGenerator\Php\PhpProperty
+     * @return \Zend\Code\Generator\PhpProperty
      */
     public function getProperty($propertyName)
     {
@@ -391,7 +391,7 @@ class PhpClass extends AbstractPhp
      * setMethods()
      *
      * @param array $methods
-     * @return \Zend\CodeGenerator\Php\PhpClass
+     * @return \Zend\Code\Generator\PhpClass
      */
     public function setMethods(array $methods)
     {
@@ -404,15 +404,15 @@ class PhpClass extends AbstractPhp
     /**
      * setMethod()
      *
-     * @param array|\Zend\CodeGenerator\Php\PhpMethod $method
-     * @return \Zend\CodeGenerator\Php\PhpClass
+     * @param array|\Zend\Code\Generator\PhpMethod $method
+     * @return \Zend\Code\Generator\PhpClass
      */
     public function setMethod($method)
     {
         if (is_array($method)) {
             $method = new PhpMethod($method);
         } elseif (!$method instanceof PhpMethod) {
-            throw new Exception\InvalidArgumentException('setMethod() expects either an array of method options or an instance of Zend\CodeGenerator\Php\Method');
+            throw new Exception\InvalidArgumentException('setMethod() expects either an array of method options or an instance of Zend\Code\Generator\Method');
         }
         $methodName = $method->getName();
 
@@ -438,7 +438,7 @@ class PhpClass extends AbstractPhp
      * getMethod()
      *
      * @param string $methodName
-     * @return \Zend\CodeGenerator\Php\PhpMethod
+     * @return \Zend\Code\Generator\PhpMethod
      */
     public function getMethod($methodName)
     {

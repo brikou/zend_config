@@ -22,12 +22,12 @@
 /**
  * @namespace
  */
-namespace Zend\CodeGenerator\Php;
+namespace Zend\Code\Generator;
 
 /**
- * @uses       \Zend\CodeGenerator\Php\AbstractPhp
- * @uses       \Zend\CodeGenerator\Php\PhpDocblockTag
- * @uses       \Zend\CodeGenerator\Php\Exception
+ * @uses       \Zend\Code\Generator\AbstractPhp
+ * @uses       \Zend\Code\Generator\PhpDocblockTag
+ * @uses       \Zend\Code\Generator\Exception
  * @category   Zend
  * @package    Zend_CodeGenerator
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
@@ -59,7 +59,7 @@ class PhpDocblock extends AbstractPhp
      * fromReflection() - Build a docblock generator object from a reflection object
      *
      * @param Zend_Reflection_Docblock $reflectionDocblock
-     * @return \Zend\CodeGenerator\PhpDocblock
+     * @return \Zend\Code\GeneratorDocblock
      */
     public static function fromReflection(\Zend\Reflection\ReflectionDocblock $reflectionDocblock)
     {
@@ -82,7 +82,7 @@ class PhpDocblock extends AbstractPhp
      * setShortDescription()
      *
      * @param string $shortDescription
-     * @return \Zend\CodeGenerator\PhpDocblock
+     * @return \Zend\Code\GeneratorDocblock
      */
     public function setShortDescription($shortDescription)
     {
@@ -104,7 +104,7 @@ class PhpDocblock extends AbstractPhp
      * setLongDescription()
      *
      * @param string $longDescription
-     * @return \Zend\CodeGenerator\PhpDocblock
+     * @return \Zend\Code\GeneratorDocblock
      */
     public function setLongDescription($longDescription)
     {
@@ -126,7 +126,7 @@ class PhpDocblock extends AbstractPhp
      * setTags()
      *
      * @param array $tags
-     * @return \Zend\CodeGenerator\PhpDocblock
+     * @return \Zend\Code\GeneratorDocblock
      */
     public function setTags(array $tags)
     {
@@ -140,8 +140,8 @@ class PhpDocblock extends AbstractPhp
     /**
      * setTag()
      *
-     * @param array|\Zend\CodeGenerator\Php\PhpDocblockTag $tag
-     * @return \Zend\CodeGenerator\PhpDocblock
+     * @param array|\Zend\Code\Generator\PhpDocblockTag $tag
+     * @return \Zend\Code\GeneratorDocblock
      */
     public function setTag($tag)
     {
@@ -161,7 +161,7 @@ class PhpDocblock extends AbstractPhp
     /**
      * getTags
      *
-     * @return array Array of \Zend\CodeGenerator\Php\PhpDocblockTag
+     * @return array Array of \Zend\Code\Generator\PhpDocblockTag
      */
     public function getTags()
     {

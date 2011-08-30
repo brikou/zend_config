@@ -22,16 +22,16 @@
 /**
  * @namespace
  */
-namespace Zend\CodeGenerator\Php\Docblock\Tag;
+namespace Zend\Code\Generator\Docblock\Tag;
 
 /**
- * @uses       \Zend\CodeGenerator\Php\PhpDocblockTag
+ * @uses       \Zend\Code\Generator\PhpDocblockTag
  * @category   Zend
  * @package    Zend_CodeGenerator
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class ReturnTag extends \Zend\CodeGenerator\Php\PhpDocblockTag
+class ReturnTag extends \Zend\Code\Generator\PhpDocblockTag
 {
 
     /**
@@ -43,7 +43,7 @@ class ReturnTag extends \Zend\CodeGenerator\Php\PhpDocblockTag
      * fromReflection()
      *
      * @param \Zend\Reflection\ReflectionDocblockTag $reflectionTagReturn
-     * @return \Zend\CodeGenerator\Php\Docblock\Tag\ReturnTag
+     * @return \Zend\Code\Generator\Docblock\Tag\ReturnTag
      */
     public static function fromReflection(\Zend\Reflection\ReflectionDocblockTag $reflectionTagReturn)
     {
@@ -60,7 +60,7 @@ class ReturnTag extends \Zend\CodeGenerator\Php\PhpDocblockTag
      * setDatatype()
      *
      * @param string $datatype
-     * @return \Zend\CodeGenerator\Php\Docblock\Tag\ReturnTag
+     * @return \Zend\Code\Generator\Docblock\Tag\ReturnTag
      */
     public function setDatatype($datatype)
     {

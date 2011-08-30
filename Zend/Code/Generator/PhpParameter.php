@@ -22,17 +22,17 @@
 /**
  * @namespace
  */
-namespace Zend\CodeGenerator\Php;
+namespace Zend\Code\Generator;
 
 /**
- * @uses       \Zend\CodeGenerator\Php\AbstractPhp
+ * @uses       \Zend\Code\Generator\AbstractPhp
  * @uses       Zend_CodeGenerator_Php_ParameterDefaultValue
  * @category   Zend
  * @package    Zend_CodeGenerator
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class PhpParameter extends \Zend\CodeGenerator\Php\AbstractPhp
+class PhpParameter extends \Zend\Code\Generator\AbstractPhp
 {
     /**
      * @var string
@@ -68,7 +68,7 @@ class PhpParameter extends \Zend\CodeGenerator\Php\AbstractPhp
      * fromReflection()
      *
      * @param \Zend\Reflection\ReflectionParameter $reflectionParameter
-     * @return \Zend\CodeGenerator\Php\PhpParameter\Parameter
+     * @return \Zend\Code\Generator\PhpParameter\Parameter
      */
     public static function fromReflection(\Zend\Reflection\ReflectionParameter $reflectionParameter)
     {
@@ -98,7 +98,7 @@ class PhpParameter extends \Zend\CodeGenerator\Php\AbstractPhp
      * setType()
      *
      * @param string $type
-     * @return \Zend\CodeGenerator\Php\PhpParameter\Parameter
+     * @return \Zend\Code\Generator\PhpParameter\Parameter
      */
     public function setType($type)
     {
@@ -120,7 +120,7 @@ class PhpParameter extends \Zend\CodeGenerator\Php\AbstractPhp
      * setName()
      *
      * @param string $name
-     * @return \Zend\CodeGenerator\Php\PhpParameter\Parameter
+     * @return \Zend\Code\Generator\PhpParameter\Parameter
      */
     public function setName($name)
     {
@@ -143,8 +143,8 @@ class PhpParameter extends \Zend\CodeGenerator\Php\AbstractPhp
      *
      * Certain variables are difficult to expres
      *
-     * @param null|bool|string|int|float|\Zend\CodeGenerator\Php\PhpParameter\DefaultValue $defaultValue
-     * @return \Zend\CodeGenerator\Php\PhpParameter\Parameter
+     * @param null|bool|string|int|float|\Zend\Code\Generator\PhpParameter\DefaultValue $defaultValue
+     * @return \Zend\Code\Generator\PhpParameter\Parameter
      */
     public function setDefaultValue($defaultValue)
     {
@@ -181,7 +181,7 @@ class PhpParameter extends \Zend\CodeGenerator\Php\AbstractPhp
      * setPosition()
      *
      * @param int $position
-     * @return \Zend\CodeGenerator\Php\PhpParameter\Parameter
+     * @return \Zend\Code\Generator\PhpParameter\Parameter
      */
     public function setPosition($position)
     {
@@ -209,7 +209,7 @@ class PhpParameter extends \Zend\CodeGenerator\Php\AbstractPhp
 
     /**
      * @param bool $passedByReference
-     * @return \Zend\CodeGenerator\Php\PhpParameter\Parameter
+     * @return \Zend\Code\Generator\PhpParameter\Parameter
      */
     public function setPassedByReference($passedByReference)
     {
@@ -240,7 +240,7 @@ class PhpParameter extends \Zend\CodeGenerator\Php\AbstractPhp
             $output .= ' = ';
             if (is_string($this->_defaultValue)) {
                 $output .= PhpValue::escape($this->_defaultValue);
-            } else if($this->_defaultValue instanceof \Zend\CodeGenerator\Php\PhpParameterDefaultValue) {
+            } else if($this->_defaultValue instanceof \Zend\Code\Generator\PhpParameterDefaultValue) {
                 $output .= (string)$this->_defaultValue;
             } else {
                 $output .= $this->_defaultValue;

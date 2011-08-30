@@ -14,7 +14,7 @@
  *
  * @category   Zend
  * @package    Zend_CodeGenerator
- * @subpackage PHP
+ * @subpackage Php
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
@@ -22,16 +22,30 @@
 /**
  * @namespace
  */
-namespace Zend\CodeGenerator\Php;
+namespace Zend\Code\Generator;
 
 /**
- * @uses       \Zend\CodeGenerator\Exception
+ * A value-holder object for non-expressable parameter default values, such as null, booleans and empty array()
+ *
+ * @uses       \Zend\Code\Generator\Exception
  * @category   Zend
  * @package    Zend_CodeGenerator
+ * @subpackage Php
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-interface Exception extends \Zend\CodeGenerator\Exception
+class PhpParameterDefaultValue extends PhpValue
 {
-
+    
+    protected $_outputMode = self::OUTPUT_SINGLE_LINE;
+    
+//    public function generate()
+//    {
+//        $indent = $this->_indentation;
+//        $this->_indentation = '';
+//        $output = parent::generate();
+//        $output = str_replace(self::LINE_FEED, '', $output);
+//        $this->_indentation = $indent;
+//        return $output;
+//    }
 }

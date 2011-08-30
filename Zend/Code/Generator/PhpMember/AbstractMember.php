@@ -22,14 +22,14 @@
 /**
  * @namespace
  */
-namespace Zend\CodeGenerator\Php\PhpMember;
-use Zend\CodeGenerator\Php,
-    Zend\CodeGenerator\Php\Exception;
+namespace Zend\Code\Generator\PhpMember;
+use Zend\Code\Generator,
+    Zend\Code\Generator\Exception;
 
 /**
- * @uses       \Zend\CodeGenerator\Php\AbstractPhp
- * @uses       \Zend\CodeGenerator\PhpDocblock
- * @uses       \Zend\CodeGenerator\Php\Exception
+ * @uses       \Zend\Code\Generator\AbstractPhp
+ * @uses       \Zend\Code\GeneratorDocblock
+ * @uses       \Zend\Code\Generator\Exception
  * @category   Zend
  * @package    Zend_CodeGenerator
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
@@ -47,7 +47,7 @@ abstract class AbstractMember extends Php\AbstractPhp
     /**#@-*/
 
     /**
-     * @var \Zend\CodeGenerator\PhpDocblock
+     * @var \Zend\Code\GeneratorDocblock
      */
     protected $_docblock   = null;
 
@@ -79,8 +79,8 @@ abstract class AbstractMember extends Php\AbstractPhp
     /**
      * setDocblock() Set the docblock
      *
-     * @param \Zend\CodeGenerator\PhpDocblock|array|string $docblock
-     * @return \Zend\CodeGenerator\Php\PhpMember\AbstractMember
+     * @param \Zend\Code\GeneratorDocblock|array|string $docblock
+     * @return \Zend\Code\Generator\PhpMember\AbstractMember
      */
     public function setDocblock($docblock)
     {
@@ -101,7 +101,7 @@ abstract class AbstractMember extends Php\AbstractPhp
     /**
      * getDocblock()
      *
-     * @return \Zend\CodeGenerator\PhpDocblock
+     * @return \Zend\Code\GeneratorDocblock
      */
     public function getDocblock()
     {
@@ -112,7 +112,7 @@ abstract class AbstractMember extends Php\AbstractPhp
      * setAbstract()
      *
      * @param bool $isAbstract
-     * @return \Zend\CodeGenerator\Php\PhpMember\AbstractMember
+     * @return \Zend\Code\Generator\PhpMember\AbstractMember
      */
     public function setAbstract($isAbstract)
     {
@@ -134,7 +134,7 @@ abstract class AbstractMember extends Php\AbstractPhp
      * setFinal()
      *
      * @param bool $isFinal
-     * @return \Zend\CodeGenerator\Php\PhpMember\AbstractMember
+     * @return \Zend\Code\Generator\PhpMember\AbstractMember
      */
     public function setFinal($isFinal)
     {
@@ -156,7 +156,7 @@ abstract class AbstractMember extends Php\AbstractPhp
      * setStatic()
      *
      * @param bool $isStatic
-     * @return \Zend\CodeGenerator\Php\PhpMember\AbstractMember
+     * @return \Zend\Code\Generator\PhpMember\AbstractMember
      */
     public function setStatic($isStatic)
     {
@@ -178,7 +178,7 @@ abstract class AbstractMember extends Php\AbstractPhp
      * setVisitibility()
      *
      * @param const $visibility
-     * @return \Zend\CodeGenerator\Php\PhpMember\AbstractMember
+     * @return \Zend\Code\Generator\PhpMember\AbstractMember
      */
     public function setVisibility($visibility)
     {
@@ -200,7 +200,7 @@ abstract class AbstractMember extends Php\AbstractPhp
      * setName()
      *
      * @param string $name
-     * @return \Zend\CodeGenerator\Php\PhpMember\AbstractMember
+     * @return \Zend\Code\Generator\PhpMember\AbstractMember
      */
     public function setName($name)
     {

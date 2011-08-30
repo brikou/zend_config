@@ -22,7 +22,7 @@
 /**
  * @namespace
  */
-namespace Zend\CodeGenerator\Php;
+namespace Zend\Code\Generator;
 
 /**
  * @uses       \Zend\CodeGenerator\AbstractCodeGenerator
@@ -64,7 +64,7 @@ class PhpDocblockTag extends AbstractPhp
      * fromReflection()
      *
      * @param \Zend\Reflection\ReflectionDocblockTag $reflectionTag
-     * @return \Zend\CodeGenerator\Php\PhpDocblockTag
+     * @return \Zend\Code\Generator\PhpDocblockTag
      */
     public static function fromReflection(\Zend\Reflection\ReflectionDocblockTag $reflectionTag)
     {
@@ -91,7 +91,7 @@ class PhpDocblockTag extends AbstractPhp
      * setName()
      *
      * @param string $name
-     * @return \Zend\CodeGenerator\Php\PhpDocblockTag
+     * @return \Zend\Code\Generator\PhpDocblockTag
      */
     public function setName($name)
     {
@@ -113,7 +113,7 @@ class PhpDocblockTag extends AbstractPhp
      * setDescription()
      *
      * @param string $description
-     * @return \Zend\CodeGenerator\Php\PhpDocblockTag
+     * @return \Zend\Code\Generator\PhpDocblockTag
      */
     public function setDescription($description)
     {

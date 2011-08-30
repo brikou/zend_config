@@ -22,7 +22,7 @@
 /**
  * @namespace
  */
-namespace Zend\CodeGenerator\Php;
+namespace Zend\Code\Generator;
 
 /**
  * @uses       \Zend\CodeGenerator\AbstractCodeGenerator
@@ -31,43 +31,67 @@ namespace Zend\CodeGenerator\Php;
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class PhpBody extends \Zend\CodeGenerator\AbstractCodeGenerator
+abstract class AbstractPhp extends \Zend\CodeGenerator\AbstractCodeGenerator
 {
 
     /**
-     * @var string
+     * Line feed to use in place of EOL
+     *
      */
-    protected $_content = null;
+    const LINE_FEED = "\n";
 
     /**
-     * setContent()
-     *
-     * @param string $content
-     * @return \Zend\CodeGenerator\Php\PhpBody
+     * @var bool
      */
-    public function setContent($content)
+    protected $_isSourceDirty = true;
+
+    /**
+     * @var int|string
+     */
+    protected $_indentation = '    ';
+
+    /**
+     * setSourceDirty()
+     *
+     * @param bool $isSourceDirty
+     * @return \Zend\Code\Generator\AbstractPhp
+     */
+    public function setSourceDirty($isSourceDirty = true)
     {
-        $this->_content = $content;
+        $this->_isSourceDirty = ($isSourceDirty) ? true : false;
         return $this;
     }
 
     /**
-     * getContent()
+     * isSourceDirty()
      *
-     * @return string
+     * @return bool
      */
-    public function getContent()
+    public function isSourceDirty()
     {
-        return (string) $this->_content;
+        return $this->_isSourceDirty;
     }
 
     /**
-     * generate()
+     * setIndentation()
      *
-     * @return string
+     * @param string|int $indentation
+     * @return \Zend\Code\Generator\AbstractPhp
      */
-    public function generate()
+    public function setIndentation($indentation)
     {
-        return $this->getContent();
+        $this->_indentation = $indentation;
+        return $this;
     }
+
+    /**
+     * getIndentation()
+     *
+     * @return string|int
+     */
+    public function getIndentation()
+    {
+        return $this->_indentation;
+    }
+
 }

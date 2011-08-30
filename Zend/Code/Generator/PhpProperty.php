@@ -22,12 +22,12 @@
 /**
  * @namespace
  */
-namespace Zend\CodeGenerator\Php;
+namespace Zend\Code\Generator;
 
 /**
- * @uses       \Zend\CodeGenerator\Php\Exception
- * @uses       \Zend\CodeGenerator\Php\PhpMember\AbstractMember
- * @uses       \Zend\CodeGenerator\Php\PhpPropertyValue
+ * @uses       \Zend\Code\Generator\Exception
+ * @uses       \Zend\Code\Generator\PhpMember\AbstractMember
+ * @uses       \Zend\Code\Generator\PhpPropertyValue
  * @category   Zend
  * @package    Zend_CodeGenerator
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
@@ -50,7 +50,7 @@ class PhpProperty extends PhpMember\AbstractMember
      * fromReflection()
      *
      * @param \Zend\Reflection\ReflectionProperty $reflectionProperty
-     * @return \Zend\CodeGenerator\Php\PhpProperty
+     * @return \Zend\Code\Generator\PhpProperty
      */
     public static function fromReflection(\Zend\Reflection\ReflectionProperty $reflectionProperty)
     {
@@ -87,7 +87,7 @@ class PhpProperty extends PhpMember\AbstractMember
      * setConst()
      *
      * @param bool $const
-     * @return \Zend\CodeGenerator\Php\PhpProperty
+     * @return \Zend\Code\Generator\PhpProperty
      */
     public function setConst($const)
     {
@@ -108,8 +108,8 @@ class PhpProperty extends PhpMember\AbstractMember
     /**
      * setDefaultValue()
      *
-     * @param \Zend\CodeGenerator\Php\PhpPropertyValue|string|array $defaultValue
-     * @return \Zend\CodeGenerator\Php\PhpProperty
+     * @param \Zend\Code\Generator\PhpPropertyValue|string|array $defaultValue
+     * @return \Zend\Code\Generator\PhpProperty
      */
     public function setDefaultValue($defaultValue)
     {
@@ -131,7 +131,7 @@ class PhpProperty extends PhpMember\AbstractMember
     /**
      * getDefaultValue()
      *
-     * @return \Zend\CodeGenerator\Php\PhpPropertyValue
+     * @return \Zend\Code\Generator\PhpPropertyValue
      */
     public function getDefaultValue()
     {
