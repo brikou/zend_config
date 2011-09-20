@@ -25,7 +25,7 @@
 namespace Zend\Application\Resource;
 
 use Zend\Registry,
-    Zend\Translator\Translator;
+    Zend\Translator\Translator as Translate;
 
 /**
  * Resource for setting translation options
@@ -40,9 +40,9 @@ use Zend\Registry,
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class Translate extends AbstractResource
+class Translator extends AbstractResource
 {
-    const DEFAULT_REGISTRY_KEY = 'Zend_Translate';
+    const DEFAULT_REGISTRY_KEY = 'Zend_Translator';
 
     /**
      * @var \Zend\Translator\Translator
@@ -64,24 +64,19 @@ class Translate extends AbstractResource
      *
      * @return \Zend\Translator\Translator
      * @throws \Zend\Application\ResourceException if registry key was used
-     *          already but is no instance of Zend_Translate
+     *          already but is no instance of Zend_Translator
      */
     public function getTranslate()
     {
         if (null === $this->_translate) {
             $options = $this->getOptions();
 
-            if (!isset($options['data'])) {
+            if (!isset($options['content'])) {
                 throw new Exception\InitializationException('No translation source data provided.');
             }
 
             if (empty($options['adapter'])) {
-                $options['adapter'] = Translator::AN_ARRAY;
-            }
-
-            if (!empty($options['data'])) {
-                $options['content'] = $options['data'];
-                unset($options['data']);
+                $options['adapter'] = Translate::AN_ARRAY;
             }
 
             if (isset($options['options'])) {
@@ -112,16 +107,16 @@ class Translate extends AbstractResource
 
             if(Registry::isRegistered($key)) {
                 $translate = Registry::get($key);
-                if(!$translate instanceof Translator) {
+                if(!$translate instanceof Translate) {
                     throw new Exception\InitializationException($key
                                    . ' already registered in registry but is '
-                                   . 'no instance of Zend_Translate');
+                                   . 'no instance of Zend_Translator');
                 }
 
                 $translate->addTranslation($options);
                 $this->_translate = $translate;
             } else {
-                $this->_translate = new Translator($options);
+                $this->_translate = new Translate($options);
                 Registry::set($key, $this->_translate);
             }
         }
