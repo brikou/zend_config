@@ -13,42 +13,40 @@
  * to license@zend.com so we can send you a copy immediately.
  *
  * @category   Zend
- * @package    Zend_Filter
+ * @package    Zend_Soap
+ * @subpackage WSDL
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-
-namespace Zend\Filter;
-
-use Zend\Loader\PluginSpecBroker;
 
 /**
- * Broker for filter instances
+ * @namespace
+ */
+namespace Zend\Soap\Wsdl;
+
+/**
+ * Interface strategies that generate an XSD-Schema for complex data types in WSDL files.
  *
  * @category   Zend
- * @package    Zend_Filter
+ * @package    Zend_Soap
+ * @subpackage WSDL
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class FilterBroker extends PluginSpecBroker
+interface ComplexTypeStrategy
 {
     /**
-     * @var string Default plugin loading strategy
+     * Method accepts the current WSDL context file.
+     *
+     * @param <type> $context
      */
-    protected $defaultClassLoader = 'Zend\Filter\FilterLoader';
+    public function setContext(\Zend\Soap\Wsdl $context);
 
     /**
-     * Determine if we have a valid filter
-     * 
-     * @param  mixed $plugin 
-     * @return true
-     * @throws Exception
+     * Create a complex type based on a strategy
+     *
+     * @param  string $type
+     * @return string XSD type
      */
-    protected function validatePlugin($plugin)
-    {
-        if (!$plugin instanceof Filter) {
-            throw new Exception\RuntimeException('Filters must implement Zend\Filter\Filter');
-        }
-        return true;
-    }
+    public function addComplexType($type);
 }
