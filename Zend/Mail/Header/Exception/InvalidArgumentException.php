@@ -14,24 +14,24 @@
  *
  * @category   Zend
  * @package    Zend_Mail
+ * @subpackage Header
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 
-namespace Zend\Mail\Exception;
+namespace Zend\Mail\Header\Exception;
 
-use Zend\Mail\Exception;
+use Zend\Mail\Header\Exception;
 
 /**
- * Exception for Zend_Mail component.
- *
  * @category   Zend
  * @package    Zend_Mail
+ * @subpackage Header
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class RuntimeException
-    extends \RuntimeException
+class InvalidArgumentException 
+    extends \InvalidArgumentException 
     implements Exception
 {
 }

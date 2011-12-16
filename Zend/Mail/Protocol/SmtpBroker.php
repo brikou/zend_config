@@ -14,24 +14,45 @@
  *
  * @category   Zend
  * @package    Zend_Mail
+ * @subpackage Protocol
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 
-namespace Zend\Mail\Exception;
+namespace Zend\Mail\Protocol;
 
-use Zend\Mail\Exception;
+use Zend\Loader\PluginBroker;
 
 /**
- * Exception for Zend_Mail component.
+ * Plugin Broker for SMTP protocol authentication extensions.
  *
  * @category   Zend
  * @package    Zend_Mail
+ * @subpackage Protocol
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class RuntimeException
-    extends \RuntimeException
-    implements Exception
+class SmtpBroker extends PluginBroker
 {
+    /**
+     * @var string Default plugin loading strategy
+     */
+    protected $defaultClassLoader = 'Zend\Mail\Protocol\SmtpLoader';
+
+    /**
+     * Determine if we have a valid extension
+     * 
+     * @param  mixed $plugin 
+     * @return true
+     * @throws Exception\InvalidHelperException
+     */
+    protected function validatePlugin($plugin)
+    {
+        if (!$plugin instanceof Smtp) {
+            throw new Exception\InvalidHelperException(
+                'SMTP authentication plugins must extend the base SMTP protocol class'
+            );
+        }
+        return true;
+    }
 }

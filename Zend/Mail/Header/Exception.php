@@ -14,24 +14,22 @@
  *
  * @category   Zend
  * @package    Zend_Mail
+ * @subpackage Header
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 
-namespace Zend\Mail\Exception;
+namespace Zend\Mail\Header;
 
-use Zend\Mail\Exception;
+use Zend\Mail\Exception as MailException;
 
 /**
- * Exception for Zend_Mail component.
- *
  * @category   Zend
  * @package    Zend_Mail
+ * @subpackage Header
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class RuntimeException
-    extends \RuntimeException
-    implements Exception
+interface Exception extends MailException
 {
 }

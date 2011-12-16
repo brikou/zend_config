@@ -14,24 +14,29 @@
  *
  * @category   Zend
  * @package    Zend_Mail
+ * @subpackage Transport
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 
-namespace Zend\Mail\Exception;
-
-use Zend\Mail\Exception;
+namespace Zend\Mail;
 
 /**
- * Exception for Zend_Mail component.
+ * Interface for mail transports
  *
  * @category   Zend
  * @package    Zend_Mail
+ * @subpackage Transport
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class RuntimeException
-    extends \RuntimeException
-    implements Exception
+interface Transport
 {
+    /**
+     * Send a mail message
+     * 
+     * @param  Message $message 
+     * @return void
+     */
+    public function send(Message $message);
 }

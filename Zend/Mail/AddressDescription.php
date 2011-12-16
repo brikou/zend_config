@@ -18,20 +18,17 @@
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 
-namespace Zend\Mail\Exception;
-
-use Zend\Mail\Exception;
+namespace Zend\Mail;
 
 /**
- * Exception for Zend_Mail component.
- *
  * @category   Zend
  * @package    Zend_Mail
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class RuntimeException
-    extends \RuntimeException
-    implements Exception
+interface AddressDescription
 {
+    public function getEmail();
+    public function getName();
+    public function toString();
 }

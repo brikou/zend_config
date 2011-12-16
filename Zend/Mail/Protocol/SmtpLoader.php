@@ -14,24 +14,33 @@
  *
  * @category   Zend
  * @package    Zend_Mail
+ * @subpackage Protocol
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 
-namespace Zend\Mail\Exception;
+namespace Zend\Mail\Protocol;
 
-use Zend\Mail\Exception;
+use Zend\Loader\PluginClassLoader;
 
 /**
- * Exception for Zend_Mail component.
+ * Plugin Class Loader implementation for SMTP protocol authentication extensions.
  *
  * @category   Zend
  * @package    Zend_Mail
+ * @subpackage Protocol
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class RuntimeException
-    extends \RuntimeException
-    implements Exception
+class SmtpLoader extends PluginClassLoader
 {
+    /**
+     * @var array Pre-aliased authentication plugins
+     */
+    protected $plugins = array(
+        'crammd5'          => 'Zend\Mail\Protocol\Smtp\Auth\Crammd5',
+        'login'            => 'Zend\Mail\Protocol\Smtp\Auth\Login',
+        'plain'            => 'Zend\Mail\Protocol\Smtp\Auth\Plain',
+        'smtp'             => 'Zend\Mail\Protocol\Smtp',
+    );
 }
