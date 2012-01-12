@@ -1,5 +1,7 @@
 <?php
 /**
+ * Zend Framework
+ *
  * LICENSE
  *
  * This source file is subject to the new BSD license that is bundled
@@ -12,7 +14,6 @@
  *
  * @category   Zend
  * @package    Zend\Cloud
- * @subpackage QueueService
  * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
@@ -20,46 +21,16 @@
 /**
  * namespace
  */
-namespace Zend\Cloud\QueueService;
+namespace Zend\Cloud\QueueService\Exception;
 
 /**
- * Generic message class
- *
  * @category   Zend
  * @package    Zend\Cloud
- * @subpackage QueueService
  * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class Message
-{
-    protected $_body;
-    protected $_clientMessage;
+class OperationNotAvailableException
+    extends \Exception
+    implements \Zend\Cloud\QueueService\Exception
+{}
 
-    /**
-     * @param string $body Message text
-     * @param string $message Original message
-     */
-    function __construct($body, $message)
-    {
-        $this->_body = $body;
-        $this->_clientMessage = $message;
-    }
-
-    /**
-     * Get the message body
-     * @return string
-     */
-    public function getBody()
-    {
-        return $this->_body;
-    }
-
-    /**
-     * Get the original adapter-specific message
-     */
-    public function getMessage()
-    {
-        return $this->_clientMessage;
-    }
-}

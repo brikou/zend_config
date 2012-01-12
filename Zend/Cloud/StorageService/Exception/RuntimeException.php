@@ -1,5 +1,7 @@
 <?php
 /**
+ * Zend Framework
+ *
  * LICENSE
  *
  * This source file is subject to the new BSD license that is bundled
@@ -11,55 +13,27 @@
  * to license@zend.com so we can send you a copy immediately.
  *
  * @category   Zend
- * @package    Zend\Cloud
- * @subpackage QueueService
+ * @package    Zend\Cloud\StorageService
+ * @subpackage Exception
  * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 
 /**
- * namespace
+ * @namespace
  */
-namespace Zend\Cloud\QueueService;
+namespace Zend\Cloud\StorageService\Exception;
+
+use Zend\Cloud\StorageService\Exception;
 
 /**
- * Generic message class
- *
- * @category   Zend
- * @package    Zend\Cloud
- * @subpackage QueueService
+ * @package    Zend\Cloud\StorageService
+ * @subpackage Exception
  * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class Message
+class RuntimeException 
+    extends \RuntimeException 
+    implements \Zend\Cloud\StorageService\Exception
 {
-    protected $_body;
-    protected $_clientMessage;
-
-    /**
-     * @param string $body Message text
-     * @param string $message Original message
-     */
-    function __construct($body, $message)
-    {
-        $this->_body = $body;
-        $this->_clientMessage = $message;
-    }
-
-    /**
-     * Get the message body
-     * @return string
-     */
-    public function getBody()
-    {
-        return $this->_body;
-    }
-
-    /**
-     * Get the original adapter-specific message
-     */
-    public function getMessage()
-    {
-        return $this->_clientMessage;
-    }
 }
