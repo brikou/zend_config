@@ -14,65 +14,49 @@
  *
  * @category   Zend
  * @package    Zend_Service
- * @subpackage Simpy
+ * @subpackage AgileZen
  * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
+
+namespace Zend\Service\AgileZen;
 
 /**
  * @category   Zend
  * @package    Zend_Service
- * @subpackage Simpy
+ * @subpackage AgileZen
  * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class Zend_Service_Simpy_WatchlistFilter
+abstract class Entity 
 {
     /**
-     * Name of the filter
-     *
-     * @var string
+     * Id of the entity
+     * 
+     * @var string 
      */
-    protected $_name;
+    protected $id;
 
     /**
-     * Query for the filter
-     *
-     * @var string
+     * Get the Id
+     * 
+     * @return string 
      */
-    protected $_query;
-
-    /**
-     * Constructor to initialize the object with data
-     *
-     * @param  DOMNode $node Individual <filter> node from a parsed response from
-     *                       a GetWatchlists or GetWatchlist operation
-     * @return void
-     */
-    public function __construct($node)
+    public function getId() 
     {
-        $map =& $node->attributes;
-        $this->_name = $map->getNamedItem('name')->nodeValue;
-        $this->_query = $map->getNamedItem('query')->nodeValue;
+        return $this->id;
     }
 
     /**
-     * Returns the name of the filter
-     *
-     * @return string
+     * Constructor
+     * 
+     * @param string $id 
      */
-    public function getName()
+    public function __construct($id) 
     {
-        return $this->_name;
-    }
-
-    /**
-     * Returns the query for the filter
-     *
-     * @return string
-     */
-    public function getQuery()
-    {
-        return $this->_query;
+        if (empty($id)) {
+            throw new Exception\InvalidArgumentException('The id is required for the entity');
+        }
+        $this->id = $id;
     }
 }
