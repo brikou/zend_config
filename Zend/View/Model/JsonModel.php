@@ -13,23 +13,37 @@
  * to license@zend.com so we can send you a copy immediately.
  *
  * @category   Zend
- * @package    Zend_Layout
+ * @package    Zend_View
+ * @subpackage Model
  * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 
-/**
- * @namespace
- */
-namespace Zend\Layout;
+namespace Zend\View\Model;
+
+use Traversable,
+    Zend\Stdlib\IteratorToArray;
 
 /**
- * @uses       \Exception
  * @category   Zend
- * @package    Zend_Layout
+ * @package    Zend_View
+ * @subpackage Model
  * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-interface Exception
-{}
-
+class JsonModel extends ViewModel
+{
+    /**
+     * Serialize to JSON
+     * 
+     * @return string
+     */
+    public function serialize()
+    {
+        $variables = $this->getVariables();
+        if ($variables instanceof Traversable) {
+            $variables = IteratorToArray::convert($variables);
+        }
+        return json_encode($variables);
+    }
+}
