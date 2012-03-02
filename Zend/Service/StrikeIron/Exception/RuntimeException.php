@@ -13,7 +13,8 @@
  * to license@zend.com so we can send you a copy immediately.
  *
  * @category   Zend
- * @package    Zend_Config
+ * @package    Zend_Service
+ * @subpackage StrikeIron
  * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
@@ -21,35 +22,16 @@
 /**
  * @namespace
  */
-namespace Zend\Config\Writer;
+namespace Zend\Service\StrikeIron\Exception;
+
+use Zend\Service\StrikeIron\Exception;
 
 /**
- * @uses       \Zend\Config\Writer\FileAbstract
  * @category   Zend
- * @package    Zend_Config
+ * @package    Zend_Service
+ * @subpackage StrikeIron
  * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class ArrayWriter extends AbstractFileWriter
-{
-    /**
-     * Render a Zend_Config into a PHP Array config string.
-     *
-     * @since 1.10
-     * @return string
-     */
-    public function render()
-    {
-        $data        = $this->_config->toArray();
-        $sectionName = $this->_config->getSectionName();
-
-        if (is_string($sectionName)) {
-            $data = array($sectionName => $data);
-        }
-
-        $arrayString = "<?php\n"
-                     . "return " . var_export($data, true) . ";\n";
-
-        return $arrayString;
-    }
-}
+class RuntimeException extends \RuntimeException implements Exception
+{}

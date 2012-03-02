@@ -13,22 +13,33 @@
  * to license@zend.com so we can send you a copy immediately.
  *
  * @category   Zend
- * @package    Zend_Session
+ * @package    Zend_Config
  * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 
-namespace Zend\Session\SaveHandler;
+namespace Zend\Config\Writer;
 
 /**
- * Zend_Session_SaveHandler_Exception
- *
- * @uses       Zend\Session\Exception
  * @category   Zend
- * @package    Zend_Session
- * @subpackage SaveHandler
+ * @package    Zend_Config
  * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-interface Exception extends \Zend\Session\Exception
-{}
+class PhpArray extends AbstractWriter
+{
+    /**
+     * processConfig(): defined by AbstractWriter.
+     *
+     * @param  array $config
+     * @return string
+     */
+    public function processConfig(array $config)
+    {
+
+        $arrayString = "<?php\n"
+                     . "return " . var_export($config, true) . ";\n";
+
+        return $arrayString;
+    }
+}
