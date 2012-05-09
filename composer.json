@@ -1,0 +1,29 @@
+{
+    "name": "brikou/zend_config",
+    "type": "library",
+    "description": "",
+    "description": "Zend Framework Config Library",
+    "keywords": [
+        "zend framework",
+        "config"
+    ],
+    "homepage": "https://github.com/brikou/zend_config",
+    "license": "Zend Framework",
+    "authors": [
+        {
+            "name": "Zend Technologies USA, Inc.",
+            "homepage": "http://framework.zend.com/"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.3",
+        "brikou/zend_filter": "*",
+        "brikou/zend_json": "*",
+        "brikou/zend_locale": "*",
+        "brikou/zend_stdlib": "*",
+        "brikou/zend_translator": "*"
+    },
+    "autoload": {
+        "psr-0": { "Zend\\Config": "" }
+    }
+}
